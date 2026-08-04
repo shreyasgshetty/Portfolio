@@ -113,7 +113,7 @@ function App() {
 
       {/* Main app */}
       {!loading && (
-        <div style={{ minHeight: '100vh', background: '#0B0F19', position: 'relative' }}>
+        <div style={{ minHeight: '100vh', background: '#0B0F19', position: 'relative', overflowX: 'hidden' }}>
           {/* Floating particles */}
           <ParticlesBackground />
 
