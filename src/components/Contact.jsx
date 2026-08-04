@@ -107,7 +107,7 @@ const Contact = () => {
           </p>
         </motion.div>
 
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '2rem', alignItems: 'start' }}>
+        <div className="contact-grid">
           {/* Contact info */}
           <motion.div {...fadeUp(0.1)} style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
             {CONTACT_INFO.map((info, i) => (

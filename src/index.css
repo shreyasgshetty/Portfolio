@@ -321,3 +321,88 @@ body {
     padding: 0 2.5rem;
   }
 }
+
+/* ─── Skills grid responsive ─────────────────────────────── */
+.skills-row-top {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1.5rem;
+  margin-bottom: 1.5rem;
+}
+.skills-row-bottom {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1.5rem;
+}
+
+@media (min-width: 600px) {
+  .skills-row-top    { grid-template-columns: repeat(2, 1fr); }
+  .skills-row-bottom { grid-template-columns: repeat(2, 1fr); }
+}
+
+@media (min-width: 1024px) {
+  .skills-row-top    { grid-template-columns: repeat(3, 1fr); }
+  /* skills-row-bottom stays 2-col on desktop */
+}
+
+/* ─── Project card responsive ────────────────────────────── */
+.project-row-card {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+@media (min-width: 640px) {
+  .project-row-card {
+    flex-direction: row;
+    align-items: flex-start;
+    gap: 2rem;
+  }
+}
+
+/* bottom row inside card: stack on mobile, side-by-side on sm+ */
+.project-card-bottom {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+@media (min-width: 640px) {
+  .project-card-bottom {
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+  }
+}
+
+/* Name + grid: stack on mobile */
+.contact-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 2rem;
+  align-items: start;
+}
+
+@media (min-width: 768px) {
+  .contact-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+/* ─── Navbar responsive ──────────────────────────────────── */
+.desktop-nav {
+  display: flex;
+}
+.mobile-menu-btn {
+  display: none;
+}
+
+@media (max-width: 768px) {
+  .desktop-nav {
+    display: none;
+  }
+  .mobile-menu-btn {
+    display: flex;
+  }
+}
+

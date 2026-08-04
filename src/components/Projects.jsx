@@ -93,11 +93,8 @@ const ProjectCard = ({ project, index }) => {
       initial={{ opacity: 0, y: 28 }}
       animate={inView ? { opacity: 1, y: 0 } : {}}
       transition={{ duration: 0.55, delay: index * 0.08, ease: 'easeOut' }}
+      className="project-row-card"
       style={{
-        display: 'flex',
-        flexDirection: 'row',
-        alignItems: 'flex-start',
-        gap: '2rem',
         background: '#0F172A',
         border: `1px solid ${hexToRgba(accent, 0.22)}`,
         borderLeft: `3px solid ${hexToRgba(accent, 0.7)}`,
@@ -188,7 +185,7 @@ const ProjectCard = ({ project, index }) => {
         </div>
 
         {/* Bottom row: tech + actions */}
-        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: '0.75rem' }}>
+        <div className="project-card-bottom">
           {/* Tech badges — tinted with accent */}
           <div style={{ display: 'flex', flexWrap: 'wrap', gap: '5px' }}>
             {project.tech.map((t) => (

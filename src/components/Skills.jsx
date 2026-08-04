@@ -152,15 +152,15 @@ const Skills = () => {
           </p>
         </motion.div>
 
-        {/* Row 1 — 3 columns: Languages, Frontend, Backend */}
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '1.5rem', marginBottom: '1.5rem' }}>
+        {/* Row 1 — Languages, Backend, Database */}
+        <div className="skills-row-top">
           {SKILL_CATEGORIES.slice(0, 3).map((category, catIdx) => (
             <CategoryCard key={category.title} category={category} catIdx={catIdx} inView={inView} />
           ))}
         </div>
 
-        {/* Row 2 — 2 columns: Database, Tools & Platforms */}
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '1.5rem' }}>
+        {/* Row 2 — Frontend, Tools & Platforms */}
+        <div className="skills-row-bottom">
           {SKILL_CATEGORIES.slice(3).map((category, catIdx) => (
             <CategoryCard key={category.title} category={category} catIdx={catIdx + 3} inView={inView} />
           ))}
