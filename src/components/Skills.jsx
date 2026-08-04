@@ -1,78 +1,68 @@
 import { motion } from 'framer-motion';
 import { useInView } from '../hooks/useInView';
 import {
-  FaJava, FaPython, FaJs, FaReact, FaNodeJs, FaGitAlt, FaGithub, FaDatabase, FaHtml5, FaCss3Alt, FaFire,
+  FaJava, FaPython, FaJs, FaReact, FaNodeJs, FaGitAlt, FaGithub, FaHtml5, FaCss3Alt, FaFire, FaSearch,
 } from 'react-icons/fa';
 import {
-  SiMongodb, SiMysql, SiExpress, SiTailwindcss, SiScikitlearn, SiPandas, SiNumpy, SiPostman,
+  SiMongodb, SiMysql, SiExpress, SiTailwindcss, SiPostman, SiLinux,
 } from 'react-icons/si';
 import { VscCode } from 'react-icons/vsc';
 import { TbApi } from 'react-icons/tb';
-import { FiBarChart2 } from 'react-icons/fi';
 
 const SKILL_CATEGORIES = [
   {
     title: 'Programming Languages',
     color: '#06B6D4',
     skills: [
-      { name: 'Java', icon: <FaJava />, level: 78 },
-      { name: 'Python', icon: <FaPython />, level: 68 },
-      { name: 'JavaScript', icon: <FaJs />, level: 72 },
-      { name: 'SQL', icon: <FaDatabase />, level: 65 },
+      { name: 'Java', icon: <FaJava /> },
+      { name: 'Python', icon: <FaPython /> },
+      { name: 'JavaScript', icon: <FaJs /> },
     ],
   },
   {
     title: 'Frontend',
     color: '#3B82F6',
     skills: [
-      { name: 'React', icon: <FaReact />, level: 74 },
-      { name: 'HTML', icon: <FaHtml5 />, level: 80 },
-      { name: 'CSS', icon: <FaCss3Alt />, level: 75 },
-      { name: 'Tailwind CSS', icon: <SiTailwindcss />, level: 72 },
+      { name: 'React', icon: <FaReact /> },
+      { name: 'HTML', icon: <FaHtml5 /> },
+      { name: 'CSS', icon: <FaCss3Alt /> },
+      { name: 'Tailwind CSS', icon: <SiTailwindcss /> },
     ],
   },
   {
     title: 'Backend',
     color: '#8B5CF6',
     skills: [
-      { name: 'Node.js', icon: <FaNodeJs />, level: 68 },
-      { name: 'Express.js', icon: <SiExpress />, level: 65 },
-      { name: 'REST APIs', icon: <TbApi />, level: 70 },
+      { name: 'Node.js', icon: <FaNodeJs /> },
+      { name: 'Express.js', icon: <SiExpress /> },
+      { name: 'REST APIs', icon: <TbApi /> },
     ],
   },
   {
     title: 'Database',
     color: '#10B981',
     skills: [
-      { name: 'MongoDB', icon: <SiMongodb />, level: 68 },
-      { name: 'MySQL', icon: <SiMysql />, level: 62 },
-    ],
-  },
-  {
-    title: 'Machine Learning',
-    color: '#F59E0B',
-    skills: [
-      { name: 'Scikit-learn', icon: <SiScikitlearn />, level: 60 },
-      { name: 'Pandas', icon: <SiPandas />, level: 64 },
-      { name: 'NumPy', icon: <SiNumpy />, level: 62 },
-      { name: 'Matplotlib', icon: <FiBarChart2 />, level: 58 },
+      { name: 'MongoDB', icon: <SiMongodb /> },
+      { name: 'MySQL', icon: <SiMysql /> },
     ],
   },
   {
     title: 'Tools & Platforms',
     color: '#EF4444',
     skills: [
-      { name: 'Git', icon: <FaGitAlt />, level: 72 },
-      { name: 'GitHub', icon: <FaGithub />, level: 75 },
-      { name: 'Firebase', icon: <FaFire />, level: 62 },
-      { name: 'Postman', icon: <SiPostman />, level: 68 },
-      { name: 'VS Code', icon: <VscCode />, level: 80 },
+      { name: 'Git', icon: <FaGitAlt /> },
+      { name: 'GitHub', icon: <FaGithub /> },
+      { name: 'Firebase', icon: <FaFire /> },
+      { name: 'Postman', icon: <SiPostman /> },
+      { name: 'VS Code', icon: <VscCode /> },
+      { name: 'Autopsy', icon: <FaSearch /> },
+      { name: 'Linux Forensic Tools', icon: <SiLinux /> },
     ],
   },
 ];
 
 /**
- * Individual skill badge with icon and animated progress bar.
+ * Individual skill badge with icon (no level bar).
  */
 const SkillBadge = ({ skill, color, delay }) => {
   const [ref, inView] = useInView({ threshold: 0.1 });
@@ -84,25 +74,10 @@ const SkillBadge = ({ skill, color, delay }) => {
       animate={inView ? { opacity: 1, scale: 1 } : {}}
       transition={{ duration: 0.4, delay }}
       className="skill-badge"
-      style={{ padding: '1rem', display: 'flex', flexDirection: 'column', gap: '8px', cursor: 'default' }}
+      style={{ padding: '0.85rem 1rem', display: 'flex', alignItems: 'center', gap: '10px', cursor: 'default' }}
     >
-      <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-        <span style={{ fontSize: '1.3rem', color }}>{skill.icon}</span>
-        <span style={{ fontWeight: 600, fontSize: '0.88rem', color: '#E2E8F0' }}>{skill.name}</span>
-      </div>
-      {/* Progress bar */}
-      <div style={{ height: '3px', background: 'rgba(255,255,255,0.08)', borderRadius: '2px', overflow: 'hidden' }}>
-        <motion.div
-          initial={{ width: 0 }}
-          animate={inView ? { width: `${skill.level}%` } : { width: 0 }}
-          transition={{ duration: 0.9, delay: delay + 0.2, ease: 'easeOut' }}
-          style={{
-            height: '100%',
-            background: `linear-gradient(90deg, ${color}, ${color}99)`,
-            borderRadius: '2px',
-          }}
-        />
-      </div>
+      <span style={{ fontSize: '1.3rem', color }}>{skill.icon}</span>
+      <span style={{ fontWeight: 600, fontSize: '0.88rem', color: '#E2E8F0' }}>{skill.name}</span>
     </motion.div>
   );
 };

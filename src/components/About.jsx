@@ -5,8 +5,8 @@ import { FiCode, FiDatabase, FiCpu, FiLayers } from 'react-icons/fi';
 const ABOUT_HIGHLIGHTS = [
   {
     icon: <FiCode size={20} />,
-    title: 'Java & DSA',
-    desc: 'Java is my primary language and I enjoy working through Data Structures & Algorithms problems — it helps me think more clearly about code.',
+    title: 'Software Engineering',
+    desc: 'Passionate about software engineering with Java, emphasizing clean architecture, efficient algorithms, and robust application development.'
   },
   {
     icon: <FiLayers size={20} />,
@@ -63,9 +63,7 @@ const About = () => {
         >
           {/* Section Title */}
           <motion.div variants={fadeUp} style={{ textAlign: 'center', marginBottom: '4rem' }}>
-            <p style={{ color: '#06B6D4', fontFamily: "'JetBrains Mono', monospace", fontSize: '0.85rem', fontWeight: 500, marginBottom: '0.75rem', letterSpacing: '0.1em' }}>
-              // about me
-            </p>
+
             <h2 className="section-title" style={{ fontSize: 'clamp(1.8rem, 4vw, 2.5rem)', fontWeight: 800, color: '#F1F5F9' }}>
               Who I Am
             </h2>
@@ -93,15 +91,15 @@ const About = () => {
                 </h3>
 
                 <p style={{ color: '#94A3B8', lineHeight: 1.85, marginBottom: '1.25rem', fontSize: '0.97rem' }}>
-                  I'm a Computer Science student at <span style={{ color: '#F1F5F9', fontWeight: 600 }}>PES University</span>. I enjoy building things with code and have a particular interest in <span style={{ color: '#06B6D4', fontWeight: 500 }}>Java and Data Structures & Algorithms</span>, which I find useful for thinking through problems more carefully.
+                  I'm a Computer Science student at <span style={{ color: '#F1F5F9', fontWeight: 600 }}>PES University</span>. I enjoy building things with code and have a particular interest in <span style={{ color: '#06B6D4', fontWeight: 500 }}>Full Stack Development and Software Engineering.</span>
                 </p>
 
                 <p style={{ color: '#94A3B8', lineHeight: 1.85, marginBottom: '1.25rem', fontSize: '0.97rem' }}>
-                  I build web applications using the <span style={{ color: '#06B6D4', fontWeight: 500 }}>MERN stack</span> — working with Node.js and MongoDB on the backend, and React with Tailwind CSS on the frontend. I have shipped a few real projects and am always looking to improve.
+                  I build web applications using the <span style={{ color: '#06B6D4', fontWeight: 500 }}>MERN stack</span> — working with Node.js and MongoDB on the backend, and React with Tailwind CSS on the frontend.
                 </p>
 
                 <p style={{ color: '#94A3B8', lineHeight: 1.85, fontSize: '0.97rem' }}>
-                  I also have some experience with <span style={{ color: '#06B6D4', fontWeight: 500 }}>Machine Learning</span> — I worked on a project involving environmental data where I applied classification algorithms like Logistic Regression, SVM, and Random Forest.
+                  I also have some experience with <span style={{ color: '#06B6D4', fontWeight: 500 }}>Machine Learning</span> — I worked on ML projects involving data analysis and classification algorithms using Scikit-learn, Pandas, and NumPy.
                 </p>
 
                 {/* Tags */}

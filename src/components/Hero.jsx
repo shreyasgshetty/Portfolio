@@ -1,45 +1,68 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { motion } from 'framer-motion';
 import { FiGithub, FiLinkedin, FiArrowDown, FiDownload } from 'react-icons/fi';
 
 const TYPEWRITER_TEXTS = [
-  'Software Engineer',
+  'Aspiring Software Engineer',
   'Full Stack Developer',
   'AI & ML Enthusiast',
-  'Java Developer',
-  'Problem Solver',
 ];
 
 /**
  * Hero section with typewriter effect, glowing CTA buttons, and gradient background.
  */
 const Hero = () => {
-  const [textIndex, setTextIndex] = useState(0);
   const [displayed, setDisplayed] = useState('');
-  const [isDeleting, setIsDeleting] = useState(false);
+  // phase: 'typing' | 'pausing' | 'deleting'
+  const [phase, setPhase] = useState('typing');
+  const [textIndex, setTextIndex] = useState(0);
 
-  // Typewriter animation
+  // Use refs so the timer callback always has fresh values without re-creating itself
+  const phaseRef = useRef(phase);
+  const textIndexRef = useRef(textIndex);
+  const displayedRef = useRef(displayed);
+
+  useEffect(() => { phaseRef.current = phase; }, [phase]);
+  useEffect(() => { textIndexRef.current = textIndex; }, [textIndex]);
+  useEffect(() => { displayedRef.current = displayed; }, [displayed]);
+
+  // Single flat timer loop — no nested setTimeout, no stale closures
   useEffect(() => {
-    const current = TYPEWRITER_TEXTS[textIndex];
-    const speed = isDeleting ? 50 : 90;
+    const tick = () => {
+      const currentPhase = phaseRef.current;
+      const currentIndex = textIndexRef.current;
+      const currentDisplayed = displayedRef.current;
+      const fullText = TYPEWRITER_TEXTS[currentIndex];
 
-    const timer = setTimeout(() => {
-      if (!isDeleting) {
-        setDisplayed(current.slice(0, displayed.length + 1));
-        if (displayed.length + 1 === current.length) {
-          setTimeout(() => setIsDeleting(true), 1600);
+      if (currentPhase === 'typing') {
+        const next = fullText.slice(0, currentDisplayed.length + 1);
+        setDisplayed(next);
+        if (next.length === fullText.length) {
+          setPhase('pausing');
         }
-      } else {
-        setDisplayed(current.slice(0, displayed.length - 1));
-        if (displayed.length === 0) {
-          setIsDeleting(false);
+      } else if (currentPhase === 'pausing') {
+        // handled by a longer delay — just switch to deleting
+        setPhase('deleting');
+      } else if (currentPhase === 'deleting') {
+        const next = fullText.slice(0, currentDisplayed.length - 1);
+        setDisplayed(next);
+        if (next.length === 0) {
           setTextIndex((prev) => (prev + 1) % TYPEWRITER_TEXTS.length);
+          setPhase('typing');
         }
       }
-    }, speed);
+    };
 
+    const delay =
+      phaseRef.current === 'typing'
+        ? 90
+        : phaseRef.current === 'pausing'
+          ? 1600
+          : 50;
+
+    const timer = setTimeout(tick, delay);
     return () => clearTimeout(timer);
-  }, [displayed, isDeleting, textIndex]);
+  }, [displayed, phase, textIndex]);
 
   const scrollToProjects = () => {
     document.getElementById('projects')?.scrollIntoView({ behavior: 'smooth' });
@@ -185,10 +208,6 @@ const Hero = () => {
           >
             Passionate about building{' '}
             <span style={{ color: '#F1F5F9', fontWeight: 500 }}>scalable full-stack applications</span>,
-            writing{' '}
-            <span style={{ color: '#F1F5F9', fontWeight: 500 }}>clean, efficient Java</span>,
-            mastering{' '}
-            <span style={{ color: '#F1F5F9', fontWeight: 500 }}>Data Structures & Algorithms</span>,
             and exploring the frontiers of{' '}
             <span style={{ color: '#F1F5F9', fontWeight: 500 }}>Machine Learning</span>.
           </motion.p>
@@ -247,7 +266,7 @@ const Hero = () => {
             <motion.a
               whileHover={{ scale: 1.04 }}
               whileTap={{ scale: 0.97 }}
-              href="https://linkedin.com/in/shreyasgshetty"
+              href="https://www.linkedin.com/in/shreyas-g-shetty18/"
               target="_blank"
               rel="noopener noreferrer"
               style={{
