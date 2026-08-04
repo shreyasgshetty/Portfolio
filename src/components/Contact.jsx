@@ -1,14 +1,28 @@
 import { useState, useRef } from 'react';
+import emailjs from '@emailjs/browser';
 import { motion } from 'framer-motion';
 import { useInView } from '../hooks/useInView';
 import { FiMail, FiGithub, FiLinkedin, FiSend, FiMapPin } from 'react-icons/fi';
+
+// ─────────────────────────────────────────────────────────────
+// EmailJS credentials — fill these in after setup:
+//  1. Sign up free at https://www.emailjs.com
+//  2. Add an Email Service (Gmail) → copy the Service ID
+//  3. Create an Email Template → copy the Template ID
+//     Template variables to use: {{from_name}}, {{from_email}}, {{subject}}, {{message}}
+//  4. Go to Account → API Keys → copy your Public Key
+// ─────────────────────────────────────────────────────────────
+const EMAILJS_SERVICE_ID = 'service_esluaq8';
+const EMAILJS_TEMPLATE_ID = 'template_ys5i3oh';
+const EMAILJS_PUBLIC_KEY = 'TxoIlrZoDl6AXGNVS';
+
 
 const CONTACT_INFO = [
   {
     icon: <FiMail size={20} />,
     label: 'Email',
-    value: 'shreyasgshetty@gmail.com',
-    href: 'mailto:shreyasgshetty@gmail.com',
+    value: 'shreyasgshetty18@gmail.com',
+    href: 'mailto:shreyasgshetty18@gmail.com',
   },
   {
     icon: <FiGithub size={20} />,
@@ -19,8 +33,8 @@ const CONTACT_INFO = [
   {
     icon: <FiLinkedin size={20} />,
     label: 'LinkedIn',
-    value: 'linkedin.com/in/shreyasgshetty',
-    href: 'https://linkedin.com/in/shreyasgshetty',
+    value: 'linkedin.com/in/shreyas-g-shetty18',
+    href: 'https://linkedin.com/in/shreyas-g-shetty18',
   },
   {
     icon: <FiMapPin size={20} />,
@@ -35,7 +49,7 @@ const CONTACT_INFO = [
  */
 const Contact = () => {
   const [ref, inView] = useInView({ threshold: 0.1 });
-  const [formData, setFormData] = useState({ name: '', email: '', subject: '', message: '' });
+  const [formData, setFormData] = useState({ from_name: '', from_email: '', subject: '', message: '' });
   const [status, setStatus] = useState('idle'); // idle | sending | sent | error
   const formRef = useRef(null);
 
@@ -46,11 +60,21 @@ const Contact = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setStatus('sending');
-    // Simulate form submission (replace with actual service like EmailJS/Formspree)
-    await new Promise((r) => setTimeout(r, 1500));
-    setStatus('sent');
-    setFormData({ name: '', email: '', subject: '', message: '' });
-    setTimeout(() => setStatus('idle'), 4000);
+    try {
+      await emailjs.sendForm(
+        EMAILJS_SERVICE_ID,
+        EMAILJS_TEMPLATE_ID,
+        formRef.current,
+        EMAILJS_PUBLIC_KEY,
+      );
+      setStatus('sent');
+      setFormData({ from_name: '', from_email: '', subject: '', message: '' });
+      setTimeout(() => setStatus('idle'), 5000);
+    } catch (err) {
+      console.error('EmailJS error:', err);
+      setStatus('error');
+      setTimeout(() => setStatus('idle'), 5000);
+    }
   };
 
   const fadeUp = (delay = 0) => ({
@@ -75,9 +99,6 @@ const Contact = () => {
       <div className="container-custom" ref={ref}>
         {/* Header */}
         <motion.div {...fadeUp()} style={{ textAlign: 'center', marginBottom: '4rem' }}>
-          <p style={{ color: '#06B6D4', fontFamily: "'JetBrains Mono', monospace", fontSize: '0.85rem', fontWeight: 500, marginBottom: '0.75rem', letterSpacing: '0.1em' }}>
-            // get in touch
-          </p>
           <h2 className="section-title" style={{ fontSize: 'clamp(1.8rem, 4vw, 2.5rem)', fontWeight: 800, color: '#F1F5F9' }}>
             Let's Connect
           </h2>
@@ -163,8 +184,8 @@ const Contact = () => {
                 <div>
                   <label style={{ display: 'block', color: '#94A3B8', fontSize: '0.8rem', fontWeight: 500, marginBottom: '0.5rem' }}>Name *</label>
                   <input
-                    name="name"
-                    value={formData.name}
+                    name="from_name"
+                    value={formData.from_name}
                     onChange={handleChange}
                     required
                     placeholder="Your name"
@@ -175,9 +196,9 @@ const Contact = () => {
                 <div>
                   <label style={{ display: 'block', color: '#94A3B8', fontSize: '0.8rem', fontWeight: 500, marginBottom: '0.5rem' }}>Email *</label>
                   <input
-                    name="email"
+                    name="from_email"
                     type="email"
-                    value={formData.email}
+                    value={formData.from_email}
                     onChange={handleChange}
                     required
                     placeholder="your@email.com"
@@ -232,7 +253,7 @@ const Contact = () => {
               >
                 <FiSend size={16} />
                 <span>
-                  {status === 'sending' ? 'Sending...' : status === 'sent' ? '✓ Message Sent!' : 'Send Message'}
+                  {status === 'sending' ? 'Sending...' : status === 'sent' ? '✓ Message Sent!' : status === 'error' ? '✗ Failed — try again' : 'Send Message'}
                 </span>
               </motion.button>
 
@@ -243,6 +264,15 @@ const Contact = () => {
                   style={{ color: '#10B981', textAlign: 'center', fontSize: '0.875rem', fontWeight: 500 }}
                 >
                   Thanks! I'll get back to you soon.
+                </motion.p>
+              )}
+              {status === 'error' && (
+                <motion.p
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  style={{ color: '#F87171', textAlign: 'center', fontSize: '0.875rem', fontWeight: 500 }}
+                >
+                  Something went wrong. Please email me directly at shreyasgshetty18@gmail.com
                 </motion.p>
               )}
             </form>

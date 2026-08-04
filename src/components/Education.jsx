@@ -12,11 +12,11 @@ const EDUCATION = [
     color: '#06B6D4',
     coursework: [
       'Data Structures',
-      'Algorithms',
       'DBMS',
       'Operating Systems',
       'Machine Learning',
       'Computer Networks',
+      'Digital Forensic',
       'OOP with Java',
       'Web Development',
     ],
@@ -68,9 +68,6 @@ const Education = () => {
       <div className="container-custom" ref={ref}>
         {/* Header */}
         <motion.div {...fadeUp()} style={{ textAlign: 'center', marginBottom: '4rem' }}>
-          <p style={{ color: '#06B6D4', fontFamily: "'JetBrains Mono', monospace", fontSize: '0.85rem', fontWeight: 500, marginBottom: '0.75rem', letterSpacing: '0.1em' }}>
-            // background
-          </p>
           <h2 className="section-title" style={{ fontSize: 'clamp(1.8rem, 4vw, 2.5rem)', fontWeight: 800, color: '#F1F5F9' }}>
             Education
           </h2>

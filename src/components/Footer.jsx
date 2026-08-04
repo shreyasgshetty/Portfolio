@@ -3,8 +3,8 @@ import { FiGithub, FiLinkedin, FiMail, FiHeart } from 'react-icons/fi';
 
 const SOCIAL_LINKS = [
   { icon: <FiGithub size={18} />, href: 'https://github.com/shreyasgshetty', label: 'GitHub' },
-  { icon: <FiLinkedin size={18} />, href: 'https://linkedin.com/in/shreyasgshetty', label: 'LinkedIn' },
-  { icon: <FiMail size={18} />, href: 'mailto:shreyasgshetty@gmail.com', label: 'Email' },
+  { icon: <FiLinkedin size={18} />, href: 'https://linkedin.com/in/shreyas-g-shetty18', label: 'LinkedIn' },
+  { icon: <FiMail size={18} />, href: 'mailto:shreyasgshetty18@gmail.com', label: 'Email' },
 ];
 
 const NAV_LINKS = ['Home', 'About', 'Skills', 'Projects', 'Education', 'Contact'];
@@ -126,12 +126,7 @@ const Footer = () => {
           {/* Divider */}
           <div style={{ width: '100%', height: '1px', background: 'rgba(255,255,255,0.05)' }} />
 
-          {/* Copyright */}
-          <div style={{ display: 'flex', alignItems: 'center', gap: '6px', color: '#475569', fontSize: '0.83rem' }}>
-            <span>© {new Date().getFullYear()} Shreyas G Shetty. Built with</span>
-            <FiHeart size={13} style={{ color: '#EF4444' }} />
-            <span>using React & Tailwind CSS.</span>
-          </div>
+
         </div>
       </div>
     </footer>

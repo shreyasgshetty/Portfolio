@@ -20,16 +20,6 @@ const SKILL_CATEGORIES = [
     ],
   },
   {
-    title: 'Frontend',
-    color: '#3B82F6',
-    skills: [
-      { name: 'React', icon: <FaReact /> },
-      { name: 'HTML', icon: <FaHtml5 /> },
-      { name: 'CSS', icon: <FaCss3Alt /> },
-      { name: 'Tailwind CSS', icon: <SiTailwindcss /> },
-    ],
-  },
-  {
     title: 'Backend',
     color: '#8B5CF6',
     skills: [
@@ -47,6 +37,16 @@ const SKILL_CATEGORIES = [
     ],
   },
   {
+    title: 'Frontend',
+    color: '#3B82F6',
+    skills: [
+      { name: 'React', icon: <FaReact /> },
+      { name: 'HTML', icon: <FaHtml5 /> },
+      { name: 'CSS', icon: <FaCss3Alt /> },
+      { name: 'Tailwind CSS', icon: <SiTailwindcss /> },
+    ],
+  },
+  {
     title: 'Tools & Platforms',
     color: '#EF4444',
     skills: [
@@ -54,7 +54,6 @@ const SKILL_CATEGORIES = [
       { name: 'GitHub', icon: <FaGithub /> },
       { name: 'Firebase', icon: <FaFire /> },
       { name: 'Postman', icon: <SiPostman /> },
-      { name: 'VS Code', icon: <VscCode /> },
       { name: 'Autopsy', icon: <FaSearch /> },
       { name: 'Linux Forensic Tools', icon: <SiLinux /> },
     ],
@@ -83,6 +82,43 @@ const SkillBadge = ({ skill, color, delay }) => {
 };
 
 /**
+ * Card for one skill category.
+ */
+const CategoryCard = ({ category, catIdx, inView }) => (
+  <motion.div
+    initial={{ opacity: 0, y: 30 }}
+    animate={inView ? { opacity: 1, y: 0 } : {}}
+    transition={{ duration: 0.5, delay: catIdx * 0.08 }}
+    className="glass-card"
+    style={{ padding: '1.75rem' }}
+  >
+    {/* Category header */}
+    <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '1.25rem' }}>
+      <div style={{
+        width: '10px',
+        height: '10px',
+        borderRadius: '50%',
+        background: category.color,
+        boxShadow: `0 0 10px ${category.color}66`,
+      }} />
+      <h3 style={{ fontWeight: 700, fontSize: '0.95rem', color: '#F1F5F9' }}>{category.title}</h3>
+    </div>
+
+    {/* Skill badges */}
+    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(130px, 1fr))', gap: '0.65rem' }}>
+      {category.skills.map((skill, skillIdx) => (
+        <SkillBadge
+          key={skill.name}
+          skill={skill}
+          color={category.color}
+          delay={catIdx * 0.05 + skillIdx * 0.06}
+        />
+      ))}
+    </div>
+  </motion.div>
+);
+
+/**
  * Skills section with categorized animated skill cards.
  */
 const Skills = () => {
@@ -108,9 +144,6 @@ const Skills = () => {
           transition={{ duration: 0.6 }}
           style={{ textAlign: 'center', marginBottom: '4rem' }}
         >
-          <p style={{ color: '#06B6D4', fontFamily: "'JetBrains Mono', monospace", fontSize: '0.85rem', fontWeight: 500, marginBottom: '0.75rem', letterSpacing: '0.1em' }}>
-            // tech stack
-          </p>
           <h2 className="section-title" style={{ fontSize: 'clamp(1.8rem, 4vw, 2.5rem)', fontWeight: 800, color: '#F1F5F9' }}>
             Skills & Technologies
           </h2>
@@ -119,41 +152,17 @@ const Skills = () => {
           </p>
         </motion.div>
 
-        {/* Category grid */}
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))', gap: '1.5rem' }}>
-          {SKILL_CATEGORIES.map((category, catIdx) => (
-            <motion.div
-              key={category.title}
-              initial={{ opacity: 0, y: 30 }}
-              animate={inView ? { opacity: 1, y: 0 } : {}}
-              transition={{ duration: 0.5, delay: catIdx * 0.08 }}
-              className="glass-card"
-              style={{ padding: '1.75rem' }}
-            >
-              {/* Category header */}
-              <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '1.25rem' }}>
-                <div style={{
-                  width: '10px',
-                  height: '10px',
-                  borderRadius: '50%',
-                  background: category.color,
-                  boxShadow: `0 0 10px ${category.color}66`,
-                }} />
-                <h3 style={{ fontWeight: 700, fontSize: '0.95rem', color: '#F1F5F9' }}>{category.title}</h3>
-              </div>
+        {/* Row 1 — 3 columns: Languages, Frontend, Backend */}
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '1.5rem', marginBottom: '1.5rem' }}>
+          {SKILL_CATEGORIES.slice(0, 3).map((category, catIdx) => (
+            <CategoryCard key={category.title} category={category} catIdx={catIdx} inView={inView} />
+          ))}
+        </div>
 
-              {/* Skill badges */}
-              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(130px, 1fr))', gap: '0.65rem' }}>
-                {category.skills.map((skill, skillIdx) => (
-                  <SkillBadge
-                    key={skill.name}
-                    skill={skill}
-                    color={category.color}
-                    delay={catIdx * 0.05 + skillIdx * 0.06}
-                  />
-                ))}
-              </div>
-            </motion.div>
+        {/* Row 2 — 2 columns: Database, Tools & Platforms */}
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '1.5rem' }}>
+          {SKILL_CATEGORIES.slice(3).map((category, catIdx) => (
+            <CategoryCard key={category.title} category={category} catIdx={catIdx + 3} inView={inView} />
           ))}
         </div>
       </div>
