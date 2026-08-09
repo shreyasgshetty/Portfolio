@@ -230,7 +230,7 @@ const Hero = () => {
             <motion.a
               whileHover={{ scale: 1.04 }}
               whileTap={{ scale: 0.97 }}
-              href="/Resume.pdf"
+              href="/Resume_V2.pdf"
               download="Shreyas_G_Shetty_Resume.pdf"
               className="btn-outline"
               style={{ padding: '0.75rem 1.75rem', fontSize: '0.95rem', display: 'flex', alignItems: 'center', gap: '8px', textDecoration: 'none' }}

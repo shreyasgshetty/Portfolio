@@ -21,8 +21,8 @@ const CONTACT_INFO = [
   {
     icon: <FiMail size={20} />,
     label: 'Email',
-    value: 'shreyasgshetty18@gmail.com',
-    href: 'mailto:shreyasgshetty18@gmail.com',
+    value: 'shreyasgshetty.18@gmail.com',
+    href: 'mailto:shreyasgshetty.18@gmail.com',
   },
   {
     icon: <FiGithub size={20} />,
