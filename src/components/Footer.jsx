@@ -4,7 +4,7 @@ import { FiGithub, FiLinkedin, FiMail, FiHeart } from 'react-icons/fi';
 const SOCIAL_LINKS = [
   { icon: <FiGithub size={18} />, href: 'https://github.com/shreyasgshetty', label: 'GitHub' },
   { icon: <FiLinkedin size={18} />, href: 'https://linkedin.com/in/shreyas-g-shetty18', label: 'LinkedIn' },
-  { icon: <FiMail size={18} />, href: 'mailto:shreyasgshetty18@gmail.com', label: 'Email' },
+  { icon: <FiMail size={18} />, href: 'mailto:shreyasgshetty.18@gmail.com', label: 'Email' },
 ];
 
 const NAV_LINKS = ['Home', 'About', 'Skills', 'Projects', 'Education', 'Contact'];
