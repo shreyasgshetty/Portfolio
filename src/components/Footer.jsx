@@ -1,133 +1,111 @@
 import { motion } from 'framer-motion';
-import { FiGithub, FiLinkedin, FiMail, FiHeart } from 'react-icons/fi';
+import { FiGithub, FiLinkedin, FiMail } from 'react-icons/fi';
 
-const SOCIAL_LINKS = [
-  { icon: <FiGithub size={18} />, href: 'https://github.com/shreyasgshetty', label: 'GitHub' },
-  { icon: <FiLinkedin size={18} />, href: 'https://linkedin.com/in/shreyas-g-shetty18', label: 'LinkedIn' },
-  { icon: <FiMail size={18} />, href: 'mailto:shreyasgshetty.18@gmail.com', label: 'Email' },
+const SOCIALS = [
+  { icon: <FiGithub size={16} />,   href: 'https://github.com/shreyasgshetty',           label: 'GitHub' },
+  { icon: <FiLinkedin size={16} />, href: 'https://linkedin.com/in/shreyas-g-shetty18',   label: 'LinkedIn' },
+  { icon: <FiMail size={16} />,     href: 'mailto:shreyasgshetty.18@gmail.com',            label: 'Email' },
 ];
 
-const NAV_LINKS = ['Home', 'About', 'Skills', 'Projects', 'Education', 'Contact'];
+const NAV = ['Home','About','Skills','Projects','Education','Contact'];
 
-/**
- * Minimal dark footer with social links, nav links, and copyright.
- */
 const Footer = () => {
-  const handleNavClick = (section) => {
-    document.getElementById(section.toLowerCase())?.scrollIntoView({ behavior: 'smooth' });
-  };
+  const go = section => document.getElementById(section.toLowerCase())?.scrollIntoView({ behavior: 'smooth' });
 
   return (
-    <footer style={{
-      borderTop: '1px solid rgba(6, 182, 212, 0.1)',
-      background: 'rgba(11, 15, 25, 0.9)',
-      padding: '3rem 0 2rem',
-      position: 'relative',
-    }}>
-      {/* Top gradient line */}
-      <div style={{
-        position: 'absolute',
-        top: 0,
-        left: '50%',
-        transform: 'translateX(-50%)',
-        width: '200px',
-        height: '1px',
-        background: 'linear-gradient(90deg, transparent, #06B6D4, transparent)',
-      }} />
+    <footer style={{ background: 'var(--bg)', borderTop: '1px solid var(--border)', position: 'relative', overflow: 'hidden' }}>
+      {/* Thin violet cap */}
+      <div style={{ position: 'absolute', top: 0, left: '50%', transform: 'translateX(-50%)', width: '200px', height: '1px', background: 'linear-gradient(90deg, transparent, var(--accent), transparent)' }} />
 
-      <div className="container-custom">
-        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '1.75rem' }}>
+      <div className="wrap" style={{ padding: '5rem 1.25rem 2.5rem' }}>
+        {/* Large statement */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.6 }}
+          style={{ marginBottom: '3.5rem', textAlign: 'center' }}
+        >
+          <p style={{
+            fontFamily: 'var(--font-display)',
+            fontWeight: 900,
+            fontSize: 'clamp(1.8rem, 5vw, 3.5rem)',
+            letterSpacing: '-0.04em',
+            color: 'var(--text-1)',
+            lineHeight: 1.05,
+            marginBottom: '0.75rem',
+          }}>
+            Let's build something{' '}
+            <span style={{ color: 'var(--accent-light)' }}>great</span>
+            <span style={{ color: 'var(--a2)' }}>.</span>
+          </p>
+          <p style={{ color: 'var(--text-3)', fontSize: '0.9rem', fontFamily: 'var(--font-mono)', letterSpacing: '0.04em' }}>
+            shreyasgshetty.18@gmail.com
+          </p>
+        </motion.div>
+
+        {/* Divider */}
+        <div style={{ height: '1px', background: 'var(--border)', marginBottom: '2.5rem' }} />
+
+        {/* Bottom row */}
+        <div style={{
+          display: 'flex', flexWrap: 'wrap', gap: '2rem',
+          alignItems: 'center', justifyContent: 'space-between',
+          marginBottom: '2.5rem',
+        }}>
           {/* Logo */}
           <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-            <div style={{
-              width: '36px',
-              height: '36px',
-              borderRadius: '10px',
-              background: 'linear-gradient(135deg, #06B6D4, #3B82F6)',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              fontFamily: "'JetBrains Mono', monospace",
-              fontWeight: 700,
-              color: '#fff',
-              fontSize: '1rem',
-            }}>
-              S
-            </div>
-            <span style={{ fontWeight: 700, fontSize: '1.1rem', color: '#F1F5F9' }}>
-              Shreyas G Shetty
-            </span>
+            <div style={{ width: '30px', height: '30px', borderRadius: '8px', background: 'var(--accent)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontFamily: 'var(--font-mono)', fontWeight: 700, color: '#fff', fontSize: '0.85rem' }}>S</div>
+            <span style={{ fontFamily: 'var(--font-display)', fontWeight: 700, fontSize: '0.95rem', color: 'var(--text-1)' }}>Shreyas G Shetty</span>
           </div>
 
           {/* Nav links */}
-          <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center', gap: '1.5rem' }}>
-            {NAV_LINKS.map((link) => (
-              <button
-                key={link}
-                onClick={() => handleNavClick(link)}
-                style={{
-                  background: 'none',
-                  border: 'none',
-                  color: '#64748B',
-                  fontSize: '0.875rem',
-                  fontWeight: 500,
-                  cursor: 'pointer',
-                  transition: 'color 0.2s',
-                  padding: 0,
-                }}
-                onMouseEnter={(e) => e.currentTarget.style.color = '#06B6D4'}
-                onMouseLeave={(e) => e.currentTarget.style.color = '#64748B'}
-              >
-                {link}
-              </button>
+          <nav style={{ display: 'flex', flexWrap: 'wrap', gap: '0.2rem 0.75rem' }}>
+            {NAV.map(l => (
+              <button key={l} onClick={() => go(l)} style={{
+                background: 'none', border: 'none',
+                color: 'var(--text-3)', fontSize: '0.8rem',
+                cursor: 'pointer', fontFamily: 'var(--font-sans)',
+                padding: '0.2rem 0', transition: 'color 0.2s',
+              }}
+              onMouseEnter={e => { e.currentTarget.style.color = 'var(--text-2)'; }}
+              onMouseLeave={e => { e.currentTarget.style.color = 'var(--text-3)'; }}
+              >{l}</button>
             ))}
-          </div>
+          </nav>
 
-          {/* Social icons */}
-          <div style={{ display: 'flex', gap: '1rem' }}>
-            {SOCIAL_LINKS.map(({ icon, href, label }) => (
+          {/* Socials */}
+          <div style={{ display: 'flex', gap: '0.5rem' }}>
+            {SOCIALS.map(s => (
               <motion.a
-                key={label}
-                href={href}
-                target={href.startsWith('mailto') ? '_self' : '_blank'}
+                key={s.label}
+                href={s.href}
+                target={s.href.startsWith('mailto') ? '_self' : '_blank'}
                 rel="noopener noreferrer"
-                aria-label={label}
-                whileHover={{ scale: 1.15, y: -3 }}
-                whileTap={{ scale: 0.93 }}
+                aria-label={s.label}
+                whileHover={{ scale: 1.1, y: -2 }}
+                whileTap={{ scale: 0.9 }}
                 style={{
-                  width: '42px',
-                  height: '42px',
-                  borderRadius: '12px',
-                  background: 'rgba(6, 182, 212, 0.07)',
-                  border: '1px solid rgba(6, 182, 212, 0.15)',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  color: '#94A3B8',
-                  textDecoration: 'none',
-                  transition: 'color 0.2s, border-color 0.2s, background 0.2s',
+                  width: '36px', height: '36px', borderRadius: '8px',
+                  background: 'var(--surface)',
+                  border: '1px solid var(--border)',
+                  display: 'flex', alignItems: 'center', justifyContent: 'center',
+                  color: 'var(--text-3)', textDecoration: 'none',
+                  transition: 'all 0.2s',
                 }}
-                onMouseEnter={(e) => {
-                  e.currentTarget.style.color = '#06B6D4';
-                  e.currentTarget.style.borderColor = 'rgba(6, 182, 212, 0.4)';
-                  e.currentTarget.style.background = 'rgba(6, 182, 212, 0.12)';
-                }}
-                onMouseLeave={(e) => {
-                  e.currentTarget.style.color = '#94A3B8';
-                  e.currentTarget.style.borderColor = 'rgba(6, 182, 212, 0.15)';
-                  e.currentTarget.style.background = 'rgba(6, 182, 212, 0.07)';
-                }}
+                onMouseEnter={e => { e.currentTarget.style.color = 'var(--accent-light)'; e.currentTarget.style.borderColor = 'var(--border-accent)'; e.currentTarget.style.background = 'var(--accent-dim)'; }}
+                onMouseLeave={e => { e.currentTarget.style.color = 'var(--text-3)'; e.currentTarget.style.borderColor = 'var(--border)'; e.currentTarget.style.background = 'var(--surface)'; }}
               >
-                {icon}
+                {s.icon}
               </motion.a>
             ))}
           </div>
-
-          {/* Divider */}
-          <div style={{ width: '100%', height: '1px', background: 'rgba(255,255,255,0.05)' }} />
-
-
         </div>
+
+        {/* Copyright */}
+        <p style={{ color: 'var(--text-4)', fontSize: '0.72rem', fontFamily: 'var(--font-mono)', textAlign: 'center' }}>
+          © {new Date().getFullYear()} Shreyas G Shetty. All rights reserved.
+        </p>
       </div>
     </footer>
   );

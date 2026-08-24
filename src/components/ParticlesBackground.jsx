@@ -34,7 +34,8 @@ const ParticlesBackground = () => {
       particles.forEach((p) => {
         ctx.beginPath();
         ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
-        ctx.fillStyle = `rgba(6, 182, 212, ${p.opacity})`;
+        // violet accent to match new design system (#7C3AED = rgba(124, 58, 237))
+        ctx.fillStyle = `rgba(124, 58, 237, ${p.opacity * 0.55})`;
         ctx.fill();
 
         p.y += p.speedY;
