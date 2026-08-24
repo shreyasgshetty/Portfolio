@@ -238,7 +238,7 @@ const About = () => {
                       letterSpacing: '0.08em',
                     }}
                   >
-                    PESU.CS // 2026
+                    PESU.CS // 2027
                   </span>
                 </div>
 
@@ -275,7 +275,7 @@ const About = () => {
                 <div style={{ display: 'flex', flexDirection: 'column', gap: '8px', fontSize: '0.78rem' }}>
                   <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
                     <FiBookOpen size={13} style={{ color: 'var(--accent)', flexShrink: 0 }} />
-                    <span style={{ fontFamily: 'var(--font-mono)', color: 'var(--text-4)', fontSize: '0.66rem', width: '65px' }}>CAMPUS</span>
+                    <span style={{ fontFamily: 'var(--font-mono)', color: 'var(--text-4)', fontSize: '0.66rem', width: '65px' }}>College</span>
                     <span style={{ color: 'var(--text-2)', fontWeight: 500 }}>PES University</span>
                   </div>
                   <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
