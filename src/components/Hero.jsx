@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { FiGithub, FiLinkedin, FiDownload, FiArrowRight } from 'react-icons/fi';
 
@@ -9,339 +9,30 @@ const TYPEWRITER_TEXTS = [
 ];
 
 const CORE_STACK = [
-  { name: 'MERN', category: 'Full Stack', color: '#61DAFB' },
-  { name: 'Java', category: 'Programming', color: '#F89820' },
-  { name: 'Python', category: 'Programming', color: '#3776AB' },
-  { name: 'SQL', category: 'Database', color: '#38BDF8' },
-  { name: 'ML / AI', category: 'Artificial Intelligence', color: '#A78BFA' },
-  { name: 'REST APIs', category: 'Backend', color: '#22C55E' },
+  { name: 'MERN',      category: 'Full Stack',              color: '#61DAFB' },
+  { name: 'Java',      category: 'Programming',             color: '#F89820' },
+  { name: 'Python',    category: 'Programming',             color: '#3776AB' },
+  { name: 'SQL',       category: 'Database',                color: '#38BDF8' },
+  { name: 'ML / AI',   category: 'Artificial Intelligence', color: '#A78BFA' },
+  { name: 'REST APIs', category: 'Backend',                 color: '#22C55E' },
 ];
 
 /**
- * 10-Layer Atmospheric Developer Environment for Hero Section
- * Fully GPU-accelerated, responsive, and non-distracting.
+ * 1. ISOLATED TYPEWRITER COMPONENT
+ * Renders high-frequency typewriter updates locally without causing parent Hero re-renders.
  */
-const HeroAtmosphere = () => {
-  const [mouseOffset, setMouseOffset] = useState({ x: 0, y: 0 });
-
-  useEffect(() => {
-    // Only activate cursor tracking on devices with pointer capability
-    if (window.matchMedia('(pointer: fine)').matches) {
-      let rafId;
-      const handleMouseMove = (e) => {
-        const { innerWidth, innerHeight } = window;
-        const targetX = ((e.clientX / innerWidth) - 0.5) * 28;
-        const targetY = ((e.clientY / innerHeight) - 0.5) * 20;
-
-        cancelAnimationFrame(rafId);
-        rafId = requestAnimationFrame(() => {
-          setMouseOffset({ x: targetX, y: targetY });
-        });
-      };
-
-      window.addEventListener('mousemove', handleMouseMove, { passive: true });
-      return () => {
-        window.removeEventListener('mousemove', handleMouseMove);
-        cancelAnimationFrame(rafId);
-      };
-    }
-  }, []);
-
-  // 14 Sparse Micro Particles positioned safely around peripheral margins
-  const PARTICLES = [
-    { x: '8%', y: '16%', s: 2, d: 0.2, c: 'rgba(124, 58, 237, 0.4)' },
-    { x: '18%', y: '78%', s: 1.5, d: 1.4, c: 'rgba(255, 255, 255, 0.3)' },
-    { x: '88%', y: '18%', s: 2, d: 0.8, c: 'rgba(97, 218, 251, 0.35)' },
-    { x: '92%', y: '72%', s: 1.5, d: 2.1, c: 'rgba(124, 58, 237, 0.4)' },
-    { x: '4%', y: '48%', s: 1.5, d: 1.8, c: 'rgba(245, 158, 11, 0.35)' },
-    { x: '94%', y: '42%', s: 2, d: 0.5, c: 'rgba(255, 255, 255, 0.25)' },
-    { x: '28%', y: '10%', s: 1.5, d: 2.5, c: 'rgba(124, 58, 237, 0.3)' },
-    { x: '72%', y: '12%', s: 2, d: 1.1, c: 'rgba(255, 255, 255, 0.35)' },
-    { x: '82%', y: '88%', s: 1.5, d: 1.9, c: 'rgba(97, 218, 251, 0.3)' },
-    { x: '12%', y: '90%', s: 2, d: 0.7, c: 'rgba(124, 58, 237, 0.35)' },
-    { x: '45%', y: '6%', s: 1.5, d: 2.8, c: 'rgba(255, 255, 255, 0.2)' },
-    { x: '58%', y: '94%', s: 2, d: 1.6, c: 'rgba(245, 158, 11, 0.3)' },
-  ];
-
-  return (
-    <div
-      style={{
-        position: 'absolute',
-        inset: 0,
-        pointerEvents: 'none',
-        overflow: 'hidden',
-        zIndex: 0,
-      }}
-      aria-hidden="true"
-    >
-      {/* ── LAYER 1: Near-Black Base with Cool Violet Undertone ── */}
-      <div
-        style={{
-          position: 'absolute',
-          inset: 0,
-          background: 'radial-gradient(ellipse at 65% 35%, #0B0A12 0%, #08080B 50%, #050507 100%)',
-        }}
-      />
-
-      {/* ── LAYER 2: Subtle Technical Grid with Fade Mask ── */}
-      <div
-        style={{
-          position: 'absolute',
-          inset: 0,
-          backgroundImage: `
-            linear-gradient(to right, rgba(255, 255, 255, 0.035) 1px, transparent 1px),
-            linear-gradient(to bottom, rgba(255, 255, 255, 0.035) 1px, transparent 1px)
-          `,
-          backgroundSize: '48px 48px',
-          maskImage: 'radial-gradient(ellipse 85% 75% at 50% 45%, black 20%, transparent 85%)',
-          WebkitMaskImage: 'radial-gradient(ellipse 85% 75% at 50% 45%, black 20%, transparent 85%)',
-        }}
-      />
-
-      {/* ── LAYER 3: Primary Atmospheric Light (Violet, Diffused & Cursor Reactive) ── */}
-      <motion.div
-        animate={{
-          x: mouseOffset.x * 1.2,
-          y: mouseOffset.y * 1.2,
-          scale: [1, 1.05, 1],
-        }}
-        transition={{
-          scale: { duration: 10, repeat: Infinity, ease: 'easeInOut' },
-          x: { type: 'spring', stiffness: 45, damping: 25 },
-          y: { type: 'spring', stiffness: 45, damping: 25 },
-        }}
-        style={{
-          position: 'absolute',
-          top: '-10%',
-          right: '-5%',
-          width: 'min(75vw, 680px)',
-          height: 'min(75vw, 680px)',
-          background: 'radial-gradient(circle, rgba(124, 58, 237, 0.14) 0%, rgba(124, 58, 237, 0.04) 45%, transparent 70%)',
-          filter: 'blur(45px)',
-          borderRadius: '50%',
-        }}
-      />
-
-      {/* ── LAYER 4: Secondary Ambient Light (Warm Amber Depth, Lower-Left) ── */}
-      <motion.div
-        animate={{
-          x: mouseOffset.x * -0.8,
-          y: mouseOffset.y * -0.8,
-        }}
-        transition={{ type: 'spring', stiffness: 40, damping: 30 }}
-        style={{
-          position: 'absolute',
-          bottom: '-12%',
-          left: '-8%',
-          width: 'min(65vw, 520px)',
-          height: 'min(65vw, 520px)',
-          background: 'radial-gradient(circle, rgba(245, 158, 11, 0.045) 0%, rgba(245, 158, 11, 0.01) 40%, transparent 65%)',
-          filter: 'blur(40px)',
-          borderRadius: '50%',
-        }}
-      />
-
-      {/* ── LAYER 5: Data Flow Circuit Lines & Traveling Signal Packets ── */}
-      <svg
-        style={{
-          position: 'absolute',
-          inset: 0,
-          width: '100%',
-          height: '100%',
-          opacity: 0.85,
-        }}
-        viewBox="0 0 1200 800"
-        preserveAspectRatio="none"
-      >
-        <defs>
-          <linearGradient id="traceGrad1" x1="0%" y1="0%" x2="100%" y2="100%">
-            <stop offset="0%" stopColor="rgba(124, 58, 237, 0)" />
-            <stop offset="40%" stopColor="rgba(124, 58, 237, 0.22)" />
-            <stop offset="80%" stopColor="rgba(97, 218, 251, 0.2)" />
-            <stop offset="100%" stopColor="rgba(97, 218, 251, 0)" />
-          </linearGradient>
-          <linearGradient id="traceGrad2" x1="0%" y1="0%" x2="100%" y2="0%">
-            <stop offset="0%" stopColor="rgba(245, 158, 11, 0)" />
-            <stop offset="50%" stopColor="rgba(245, 158, 11, 0.18)" />
-            <stop offset="100%" stopColor="rgba(124, 58, 237, 0)" />
-          </linearGradient>
-        </defs>
-
-        {/* Top-Right Circuit Trace (Path 1) */}
-        <path
-          d="M 680 80 L 860 80 L 940 160 L 1150 160"
-          fill="none"
-          stroke="url(#traceGrad1)"
-          strokeWidth="1"
-          strokeDasharray="4 6"
-        />
-
-        {/* Bottom-Left Circuit Trace (Path 2) */}
-        <path
-          d="M 60 680 L 260 680 L 340 600 L 580 600"
-          fill="none"
-          stroke="url(#traceGrad2)"
-          strokeWidth="1"
-          strokeDasharray="3 5"
-        />
-      </svg>
-
-      {/* Traveling Data Signal Packets */}
-      <motion.div
-        animate={{
-          x: [680, 860, 940, 1150],
-          y: [80, 80, 160, 160],
-          opacity: [0, 1, 1, 0],
-        }}
-        transition={{
-          duration: 12,
-          repeat: Infinity,
-          ease: 'easeInOut',
-          times: [0, 0.35, 0.65, 1],
-        }}
-        style={{
-          position: 'absolute',
-          top: 0,
-          left: 0,
-          width: '5px',
-          height: '5px',
-          borderRadius: '50%',
-          background: '#61DAFB',
-          boxShadow: '0 0 10px #61DAFB, 0 0 20px #61DAFB',
-        }}
-      />
-
-      <motion.div
-        animate={{
-          x: [60, 260, 340, 580],
-          y: [680, 680, 600, 600],
-          opacity: [0, 1, 1, 0],
-        }}
-        transition={{
-          duration: 14,
-          repeat: Infinity,
-          ease: 'easeInOut',
-          delay: 4,
-          times: [0, 0.4, 0.7, 1],
-        }}
-        style={{
-          position: 'absolute',
-          top: 0,
-          left: 0,
-          width: '4px',
-          height: '4px',
-          borderRadius: '50%',
-          background: '#F59E0B',
-          boxShadow: '0 0 8px #F59E0B',
-        }}
-      />
-
-      {/* ── LAYER 7: Content Focus Field (Enhances Headline Contrast) ── */}
-      <div
-        style={{
-          position: 'absolute',
-          top: '25%',
-          left: '15%',
-          width: 'min(60vw, 550px)',
-          height: 'min(60vw, 450px)',
-          background: 'radial-gradient(circle, rgba(255, 255, 255, 0.02) 0%, transparent 65%)',
-          filter: 'blur(30px)',
-          borderRadius: '50%',
-        }}
-      />
-
-      {/* ── LAYER 8: Sparse Micro Particles (Twinkling in Peripheral Margins) ── */}
-      {PARTICLES.map((p, i) => (
-        <motion.div
-          key={i}
-          animate={{
-            opacity: [0.15, 0.65, 0.15],
-            scale: [0.85, 1.15, 0.85],
-          }}
-          transition={{
-            duration: 4 + (i % 3),
-            repeat: Infinity,
-            ease: 'easeInOut',
-            delay: p.d,
-          }}
-          style={{
-            position: 'absolute',
-            top: p.y,
-            left: p.x,
-            width: `${p.s}px`,
-            height: `${p.s}px`,
-            borderRadius: '50%',
-            background: p.c,
-            boxShadow: `0 0 6px ${p.c}`,
-          }}
-        />
-      ))}
-
-      {/* ── LAYER 9: Micro Film Grain / Noise Overlay ── */}
-      <div
-        style={{
-          position: 'absolute',
-          inset: 0,
-          opacity: 0.025,
-          backgroundImage: "url(\"data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E\")",
-        }}
-      />
-
-      {/* ── LAYER 10: Technical Edge Metadata Labels (Subtle Environmental Details) ── */}
-      <div
-        style={{
-          position: 'absolute',
-          top: '90px',
-          right: '2rem',
-          fontFamily: 'var(--font-mono)',
-          fontSize: '0.58rem',
-          color: 'rgba(255, 255, 255, 0.15)',
-          letterSpacing: '0.14em',
-          textTransform: 'uppercase',
-          display: 'none', // Shown on desktop via media query styling
-        }}
-        className="hero-meta-top-right"
-      >
-        2026 // SHREYAS.DEV
-      </div>
-
-      <div
-        style={{
-          position: 'absolute',
-          bottom: '1.5rem',
-          left: '2rem',
-          fontFamily: 'var(--font-mono)',
-          fontSize: '0.58rem',
-          color: 'rgba(255, 255, 255, 0.15)',
-          letterSpacing: '0.12em',
-          textTransform: 'uppercase',
-          display: 'none',
-        }}
-        className="hero-meta-bottom-left"
-      >
-        SYS.ENV // READY [200 OK]
-      </div>
-    </div>
-  );
-};
-
-/**
- * Mobile-First & Desktop-Refined Hero Section
- * Foreground components remain 100% preserved.
- */
-const Hero = () => {
-  const [displayed, setDisplayed] = useState('');
-  const [phase, setPhase] = useState('typing');
-  const [textIndex, setTextIndex] = useState(0);
-  const phaseRef = useRef(phase);
+const TypewriterRole = React.memo(() => {
+  const [displayed,  setDisplayed]  = useState('');
+  const [phase,      setPhase]      = useState('typing');
+  const [textIndex,  setTextIndex]  = useState(0);
+  const phaseRef     = useRef(phase);
   const textIndexRef = useRef(textIndex);
   const displayedRef = useRef(displayed);
 
-  useEffect(() => { phaseRef.current = phase; }, [phase]);
+  useEffect(() => { phaseRef.current     = phase;     }, [phase]);
   useEffect(() => { textIndexRef.current = textIndex; }, [textIndex]);
   useEffect(() => { displayedRef.current = displayed; }, [displayed]);
 
-  /* ── Smooth Typewriter Effect ── */
   useEffect(() => {
     const tick = () => {
       const p = phaseRef.current;
@@ -369,31 +60,558 @@ const Hero = () => {
     return () => clearTimeout(timer);
   }, [displayed, phase, textIndex]);
 
+  return (
+    <div
+      style={{
+        display: 'flex',
+        alignItems: 'center',
+        gap: '7px',
+        marginBottom: '1.25rem',
+        fontSize: 'clamp(0.88rem, 2.3vw, 1.15rem)',
+        fontFamily: 'var(--font-mono)',
+        color: 'var(--text-3)',
+        minHeight: '1.75rem',
+      }}
+    >
+      <span style={{ color: 'var(--accent)', fontWeight: 700 }}>//</span>
+      <span style={{ color: 'var(--text-2)', fontWeight: 500 }}>{displayed}</span>
+      <span className="typing-cursor" />
+    </div>
+  );
+});
+
+TypewriterRole.displayName = 'TypewriterRole';
+
+/**
+ * 2. ISOLATED ATMOSPHERIC DEVELOPER ENVIRONMENT
+ * Direct GPU transform tracking (Zero React re-renders on mouse move).
+ * Removed expensive SVG feTurbulence filter and continuous particle loops.
+ */
+const HeroAtmosphere = React.memo(() => {
+  const violetLightRef = useRef(null);
+
+  useEffect(() => {
+    // Zero-overhead cursor tracking using direct DOM transform on desktop only
+    if (window.matchMedia('(pointer: fine)').matches) {
+      let mouseX = 0;
+      let mouseY = 0;
+      let currentX = 0;
+      let currentY = 0;
+      let rafId;
+
+      const handleMouseMove = (e) => {
+        mouseX = ((e.clientX / window.innerWidth) - 0.5) * 32;
+        mouseY = ((e.clientY / window.innerHeight) - 0.5) * 24;
+      };
+
+      const animateLoop = () => {
+        currentX += (mouseX - currentX) * 0.08;
+        currentY += (mouseY - currentY) * 0.08;
+
+        if (violetLightRef.current) {
+          violetLightRef.current.style.transform = `translate3d(${currentX}px, ${currentY}px, 0)`;
+        }
+        rafId = requestAnimationFrame(animateLoop);
+      };
+
+      window.addEventListener('mousemove', handleMouseMove, { passive: true });
+      rafId = requestAnimationFrame(animateLoop);
+
+      return () => {
+        window.removeEventListener('mousemove', handleMouseMove);
+        cancelAnimationFrame(rafId);
+      };
+    }
+  }, []);
+
+  // Sparse static decorative micro particles (No continuous React animation loop)
+  const PARTICLES = [
+    { x: '8%',  y: '16%', s: 2,   c: 'rgba(124, 58, 237, 0.4)' },
+    { x: '18%', y: '78%', s: 1.5, c: 'rgba(255, 255, 255, 0.3)' },
+    { x: '88%', y: '18%', s: 2,   c: 'rgba(97, 218, 251, 0.35)' },
+    { x: '92%', y: '72%', s: 1.5, c: 'rgba(124, 58, 237, 0.4)' },
+    { x: '4%',  y: '48%', s: 1.5, c: 'rgba(245, 158, 11, 0.35)' },
+    { x: '94%', y: '42%', s: 2,   c: 'rgba(255, 255, 255, 0.25)' },
+    { x: '28%', y: '10%', s: 1.5, c: 'rgba(124, 58, 237, 0.3)' },
+    { x: '72%', y: '12%', s: 2,   c: 'rgba(255, 255, 255, 0.35)' },
+    { x: '82%', y: '88%', s: 1.5, c: 'rgba(97, 218, 251, 0.3)' },
+    { x: '12%', y: '90%', s: 2,   c: 'rgba(124, 58, 237, 0.35)' },
+  ];
+
+  return (
+    <div
+      style={{
+        position: 'absolute',
+        inset: 0,
+        pointerEvents: 'none',
+        overflow: 'hidden',
+        zIndex: 0,
+      }}
+      aria-hidden="true"
+    >
+      {/* ── Base Near-Black Tone ── */}
+      <div
+        style={{
+          position: 'absolute',
+          inset: 0,
+          background: 'radial-gradient(ellipse at 65% 35%, #0B0A12 0%, #08080B 50%, #050507 100%)',
+        }}
+      />
+
+      {/* ── Technical Grid with Radial Fade Mask ── */}
+      <div
+        style={{
+          position: 'absolute',
+          inset: 0,
+          backgroundImage: `
+            linear-gradient(to right, rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+            linear-gradient(to bottom, rgba(255, 255, 255, 0.03) 1px, transparent 1px)
+          `,
+          backgroundSize: '48px 48px',
+          maskImage: 'radial-gradient(ellipse 85% 75% at 50% 45%, black 20%, transparent 85%)',
+          WebkitMaskImage: 'radial-gradient(ellipse 85% 75% at 50% 45%, black 20%, transparent 85%)',
+        }}
+      />
+
+      {/* ── Primary Atmospheric Light (Violet, Diffused & GPU-translated) ── */}
+      <div
+        ref={violetLightRef}
+        style={{
+          position: 'absolute',
+          top: '-10%',
+          right: '-5%',
+          width: 'min(75vw, 650px)',
+          height: 'min(75vw, 650px)',
+          background: 'radial-gradient(circle, rgba(124, 58, 237, 0.13) 0%, rgba(124, 58, 237, 0.03) 45%, transparent 70%)',
+          borderRadius: '50%',
+          willChange: 'transform',
+        }}
+      />
+
+      {/* ── Secondary Ambient Light (Warm Amber Depth) ── */}
+      <div
+        style={{
+          position: 'absolute',
+          bottom: '-10%',
+          left: '-8%',
+          width: 'min(65vw, 500px)',
+          height: 'min(65vw, 500px)',
+          background: 'radial-gradient(circle, rgba(245, 158, 11, 0.04) 0%, transparent 65%)',
+          borderRadius: '50%',
+        }}
+      />
+
+      {/* ── Data Flow Circuit Lines ── */}
+      <svg
+        style={{
+          position: 'absolute',
+          inset: 0,
+          width: '100%',
+          height: '100%',
+          opacity: 0.7,
+        }}
+        viewBox="0 0 1200 800"
+        preserveAspectRatio="none"
+      >
+        <defs>
+          <linearGradient id="traceGrad1" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stopColor="rgba(124, 58, 237, 0)" />
+            <stop offset="40%" stopColor="rgba(124, 58, 237, 0.2)" />
+            <stop offset="80%" stopColor="rgba(97, 218, 251, 0.18)" />
+            <stop offset="100%" stopColor="rgba(97, 218, 251, 0)" />
+          </linearGradient>
+        </defs>
+
+        <path
+          d="M 680 80 L 860 80 L 940 160 L 1150 160"
+          fill="none"
+          stroke="url(#traceGrad1)"
+          strokeWidth="1"
+          strokeDasharray="4 6"
+        />
+      </svg>
+
+      {/* ── Content Focus Field ── */}
+      <div
+        style={{
+          position: 'absolute',
+          top: '25%',
+          left: '15%',
+          width: 'min(60vw, 550px)',
+          height: 'min(60vw, 450px)',
+          background: 'radial-gradient(circle, rgba(255, 255, 255, 0.02) 0%, transparent 65%)',
+          borderRadius: '50%',
+        }}
+      />
+
+      {/* ── Sparse Static Particles ── */}
+      {PARTICLES.map((p, i) => (
+        <div
+          key={i}
+          style={{
+            position: 'absolute',
+            top: p.y,
+            left: p.x,
+            width: `${p.s}px`,
+            height: `${p.s}px`,
+            borderRadius: '50%',
+            background: p.c,
+          }}
+        />
+      ))}
+
+      {/* ── Desktop Technical Edge Metadata ── */}
+      <div
+        style={{
+          position: 'absolute',
+          top: '90px',
+          right: '2rem',
+          fontFamily: 'var(--font-mono)',
+          fontSize: '0.58rem',
+          color: 'rgba(255, 255, 255, 0.15)',
+          letterSpacing: '0.14em',
+          textTransform: 'uppercase',
+          display: 'none',
+        }}
+        className="hero-meta-top-right"
+      >
+        2026 // SHREYAS.DEV
+      </div>
+
+      <div
+        style={{
+          position: 'absolute',
+          bottom: '1.5rem',
+          left: '2rem',
+          fontFamily: 'var(--font-mono)',
+          fontSize: '0.58rem',
+          color: 'rgba(255, 255, 255, 0.15)',
+          letterSpacing: '0.12em',
+          textTransform: 'uppercase',
+          display: 'none',
+        }}
+        className="hero-meta-bottom-left"
+      >
+        SYS.ENV // READY [200 OK]
+      </div>
+    </div>
+  );
+});
+
+HeroAtmosphere.displayName = 'HeroAtmosphere';
+
+/**
+ * 3. ISOLATED SHREYAS.DEV DEVELOPER IDENTITY PANEL
+ * Memoized, no expensive backdrop-filter stacking, isolated interactive state.
+ */
+const DeveloperIdentityPanel = React.memo(() => {
+  const [initPhase, setInitPhase] = useState(0);
+  const [isInteractiveActive, setIsInteractiveActive] = useState(false);
+
+  useEffect(() => {
+    const t1 = setTimeout(() => setInitPhase(1), 350);
+    const t2 = setTimeout(() => setInitPhase(2), 750);
+    const t3 = setTimeout(() => setInitPhase(3), 1150);
+    return () => {
+      clearTimeout(t1);
+      clearTimeout(t2);
+      clearTimeout(t3);
+    };
+  }, []);
+
+  const handleCardInteraction = () => {
+    setIsInteractiveActive(true);
+    setTimeout(() => setIsInteractiveActive(false), 1200);
+  };
+
+  return (
+    <motion.div
+      whileHover={{ y: -3 }}
+      whileTap={{ scale: 0.98 }}
+      onClick={handleCardInteraction}
+      role="region"
+      aria-label="Shreyas.dev Developer Identity System"
+      style={{
+        position: 'relative',
+        width: 'min(86vw, 300px)',
+        maxWidth: '320px',
+        background: 'rgba(14, 14, 18, 0.94)',
+        border: isInteractiveActive
+          ? '1px solid rgba(124, 58, 237, 0.55)'
+          : '1px solid rgba(124, 58, 237, 0.22)',
+        borderRadius: '16px',
+        overflow: 'hidden',
+        boxShadow: '0 12px 32px rgba(0, 0, 0, 0.5)',
+        transition: 'border-color 0.2s ease',
+        cursor: 'pointer',
+      }}
+    >
+      {/* Top Header Bar */}
+      <div
+        style={{
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'space-between',
+          padding: '0.65rem 0.9rem',
+          background: 'rgba(255, 255, 255, 0.02)',
+          borderBottom: '1px solid rgba(255, 255, 255, 0.05)',
+        }}
+      >
+        <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+          <span
+            style={{
+              width: '7px',
+              height: '7px',
+              borderRadius: '50%',
+              background: isInteractiveActive ? 'var(--accent)' : 'var(--success)',
+              transition: 'background-color 0.2s ease',
+            }}
+          />
+          <span
+            style={{
+              fontFamily: 'var(--font-mono)',
+              fontSize: '0.68rem',
+              fontWeight: 700,
+              color: 'var(--text-1)',
+              letterSpacing: '0.08em',
+              textTransform: 'uppercase',
+            }}
+          >
+            SHREYAS.DEV
+          </span>
+        </div>
+
+        <span
+          style={{
+            fontFamily: 'var(--font-mono)',
+            fontSize: '0.6rem',
+            color: 'var(--text-4)',
+            letterSpacing: '0.06em',
+          }}
+        >
+          {isInteractiveActive ? 'ACTIVE' : 'ID // 2026'}
+        </span>
+      </div>
+
+      {/* Card Body */}
+      <div style={{ padding: '1rem 1rem 0.9rem 1rem' }}>
+        <AnimatePresence mode="wait">
+          {initPhase < 3 ? (
+            <motion.div
+              key="init-screen"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.15 }}
+              style={{
+                fontFamily: 'var(--font-mono)',
+                fontSize: '0.7rem',
+                minHeight: '160px',
+                display: 'flex',
+                flexDirection: 'column',
+                justifyContent: 'center',
+                gap: '8px',
+                color: 'var(--text-3)',
+              }}
+            >
+              <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+                <span style={{ color: 'var(--accent)' }}>&gt;</span>
+                <span>sys.init(&quot;shreyas.dev&quot;)</span>
+              </div>
+              {initPhase >= 1 && (
+                <div style={{ display: 'flex', alignItems: 'center', gap: '6px', color: 'var(--text-2)' }}>
+                  <span style={{ color: 'var(--accent)' }}>&gt;</span>
+                  <span>loading modules...</span>
+                </div>
+              )}
+              {initPhase >= 2 && (
+                <div style={{ display: 'flex', alignItems: 'center', gap: '6px', color: 'var(--success)' }}>
+                  <span style={{ color: 'var(--success)' }}>✔</span>
+                  <span>system ready</span>
+                </div>
+              )}
+            </motion.div>
+          ) : (
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '0.9rem' }}>
+              {/* Identity Monogram */}
+              <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+                <div
+                  style={{
+                    width: '44px',
+                    height: '44px',
+                    borderRadius: '12px',
+                    background: 'linear-gradient(135deg, rgba(124, 58, 237, 0.25), rgba(124, 58, 237, 0.08))',
+                    border: '1px solid rgba(124, 58, 237, 0.4)',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    fontFamily: 'var(--font-mono)',
+                    fontWeight: 800,
+                    fontSize: '1.25rem',
+                    color: '#FFFFFF',
+                    flexShrink: 0,
+                  }}
+                >
+                  S
+                </div>
+                <div style={{ minWidth: 0 }}>
+                  <h2
+                    style={{
+                      fontFamily: 'var(--font-display)',
+                      fontSize: '0.95rem',
+                      fontWeight: 800,
+                      color: 'var(--text-1)',
+                      letterSpacing: '-0.01em',
+                      lineHeight: 1.2,
+                    }}
+                  >
+                    SHREYAS G SHETTY
+                  </h2>
+                  <p
+                    style={{
+                      fontFamily: 'var(--font-mono)',
+                      fontSize: '0.62rem',
+                      color: 'var(--accent-light)',
+                      letterSpacing: '0.04em',
+                      marginTop: '2px',
+                    }}
+                  >
+                    Full Stack & ML
+                  </p>
+                </div>
+              </div>
+
+              {/* Core Stack Grid */}
+              <div>
+                <p
+                  style={{
+                    fontFamily: 'var(--font-mono)',
+                    fontSize: '0.58rem',
+                    color: 'var(--text-4)',
+                    letterSpacing: '0.08em',
+                    textTransform: 'uppercase',
+                    marginBottom: '0.4rem',
+                  }}
+                >
+                  Core Stack
+                </p>
+                <div
+                  style={{
+                    display: 'grid',
+                    gridTemplateColumns: 'repeat(3, 1fr)',
+                    gap: '4px',
+                  }}
+                >
+                  {CORE_STACK.map((tech) => (
+                    <div
+                      key={tech.name}
+                      style={{
+                        display: 'flex',
+                        alignItems: 'center',
+                        gap: '5px',
+                        padding: '4px 6px',
+                        background: 'rgba(255, 255, 255, 0.03)',
+                        border: '1px solid rgba(255, 255, 255, 0.06)',
+                        borderRadius: '6px',
+                      }}
+                    >
+                      <span
+                        style={{
+                          width: '4px',
+                          height: '4px',
+                          borderRadius: '50%',
+                          background: tech.color,
+                          flexShrink: 0,
+                        }}
+                      />
+                      <span
+                        style={{
+                          fontFamily: 'var(--font-mono)',
+                          fontSize: '0.62rem',
+                          fontWeight: 500,
+                          color: 'var(--text-2)',
+                          whiteSpace: 'nowrap',
+                          overflow: 'hidden',
+                          textOverflow: 'ellipsis',
+                        }}
+                      >
+                        {tech.name}
+                      </span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              {/* System Status Footer */}
+              <div
+                style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'space-between',
+                  paddingTop: '0.45rem',
+                  borderTop: '1px solid rgba(255, 255, 255, 0.05)',
+                  fontSize: '0.62rem',
+                  fontFamily: 'var(--font-mono)',
+                }}
+              >
+                <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+                  <span
+                    style={{
+                      width: '6px',
+                      height: '6px',
+                      borderRadius: '50%',
+                      background: isInteractiveActive ? 'var(--accent)' : 'var(--success)',
+                    }}
+                    className="avail-dot"
+                  />
+                  <span style={{ color: isInteractiveActive ? 'var(--accent-light)' : 'var(--success)', fontWeight: 600 }}>
+                    {isInteractiveActive ? 'SYSTEM ACTIVE' : 'SYSTEM READY'}
+                  </span>
+                </div>
+                <span style={{ color: 'var(--text-4)' }}>
+                  BLR // PESU
+                </span>
+              </div>
+            </div>
+          )}
+        </AnimatePresence>
+      </div>
+    </motion.div>
+  );
+});
+
+DeveloperIdentityPanel.displayName = 'DeveloperIdentityPanel';
+
+/**
+ * 4. MAIN HERO COMPONENT
+ * Clean, memoized sub-trees, GPU-accelerated entrance animations.
+ */
+const Hero = () => {
   const containerVariants = {
     hidden: { opacity: 0 },
     visible: {
       opacity: 1,
-      transition: { staggerChildren: 0.12, delayChildren: 0.08 },
+      transition: { staggerChildren: 0.1, delayChildren: 0.05 },
     },
   };
 
   const itemVariants = {
-    hidden: { opacity: 0, y: 22 },
+    hidden: { opacity: 0, y: 16 },
     visible: {
       opacity: 1,
       y: 0,
-      transition: { duration: 0.55, ease: [0.22, 1, 0.36, 1] },
+      transition: { duration: 0.45, ease: [0.22, 1, 0.36, 1] },
     },
   };
 
   return (
     <section id="home" className="hero-section">
-      {/* ── 10-Layer Atmospheric Background System ── */}
+      {/* ── Optimized Atmosphere (Zero-Render Pointer Tracking) ── */}
       <HeroAtmosphere />
 
       <div className="wrap" style={{ position: 'relative', zIndex: 1, width: '100%' }}>
         <div className="hero-grid">
-          {/* ── LEFT / MAIN INTRO: Editorial Introduction ── */}
+          {/* ── LEFT: Main Editorial Introduction ── */}
           <motion.div
             variants={containerVariants}
             initial="hidden"
@@ -449,7 +667,6 @@ const Hero = () => {
                   style={{
                     color: 'var(--accent)',
                     WebkitTextFillColor: 'var(--accent)',
-                    textShadow: '0 0 35px rgba(124, 58, 237, 0.35)',
                   }}
                 >
                   Shetty
@@ -457,23 +674,9 @@ const Hero = () => {
               </h1>
             </motion.div>
 
-            {/* Typewriter Roles Banner */}
-            <motion.div
-              variants={itemVariants}
-              style={{
-                display: 'flex',
-                alignItems: 'center',
-                gap: '7px',
-                marginBottom: '1.25rem',
-                fontSize: 'clamp(0.88rem, 2.3vw, 1.15rem)',
-                fontFamily: 'var(--font-mono)',
-                color: 'var(--text-3)',
-                minHeight: '1.75rem',
-              }}
-            >
-              <span style={{ color: 'var(--accent)', fontWeight: 700 }}>//</span>
-              <span style={{ color: 'var(--text-2)', fontWeight: 500 }}>{displayed}</span>
-              <span className="typing-cursor" />
+            {/* Isolated Typewriter (Updates do not re-render Hero) */}
+            <motion.div variants={itemVariants}>
+              <TypewriterRole />
             </motion.div>
 
             {/* Subtitle Description */}
@@ -493,7 +696,7 @@ const Hero = () => {
               <span style={{ color: 'var(--text-2)', fontWeight: 500 }}>Machine Learning</span>.
             </motion.p>
 
-            {/* ── Mobile-First Symmetrical CTA Buttons ── */}
+            {/* Symmetrical CTA Actions */}
             <motion.div variants={itemVariants} className="hero-cta-container">
               {/* Primary Action Button */}
               <motion.button
@@ -504,16 +707,12 @@ const Hero = () => {
                 aria-label="View featured projects"
               >
                 <span>View Projects</span>
-                <motion.span
-                  animate={{ x: [0, 4, 0] }}
-                  transition={{ duration: 1.8, repeat: Infinity, ease: 'easeInOut' }}
-                  style={{ display: 'inline-flex' }}
-                >
+                <span style={{ display: 'inline-flex' }}>
                   <FiArrowRight size={16} />
-                </motion.span>
+                </span>
               </motion.button>
 
-              {/* Secondary Symmetrical Group: Resume + GitHub + LinkedIn */}
+              {/* Secondary Group: Resume + GitHub + LinkedIn */}
               <div className="hero-cta-secondary-row">
                 <motion.a
                   whileHover={{ scale: 1.03 }}
@@ -556,11 +755,11 @@ const Hero = () => {
             </motion.div>
           </motion.div>
 
-          {/* ── RIGHT / SECONDARY COLUMN: SHREYAS.DEV Developer Identity System ── */}
+          {/* ── RIGHT: SHREYAS.DEV Developer Identity System ── */}
           <motion.div
-            initial={{ opacity: 0, y: 24 }}
+            initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.75, delay: 0.35, ease: [0.22, 1, 0.36, 1] }}
+            transition={{ duration: 0.6, delay: 0.25, ease: [0.22, 1, 0.36, 1] }}
             style={{
               display: 'flex',
               flexDirection: 'column',
@@ -571,10 +770,8 @@ const Hero = () => {
           >
             <DeveloperIdentityPanel />
 
-            {/* Subtle Scroll Cue */}
-            <motion.div
-              animate={{ y: [0, 5, 0] }}
-              transition={{ duration: 2.2, repeat: Infinity, ease: 'easeInOut' }}
+            {/* Scroll Cue */}
+            <div
               onClick={() => document.getElementById('about')?.scrollIntoView({ behavior: 'smooth' })}
               style={{
                 display: 'inline-flex',
@@ -588,326 +785,18 @@ const Hero = () => {
                 letterSpacing: '0.12em',
                 textTransform: 'uppercase',
                 userSelect: 'none',
-                transition: 'color 0.2s',
+                transition: 'color 0.2s ease',
               }}
-              onMouseEnter={(e) => { e.currentTarget.style.color = 'var(--accent-light)'; }}
-              onMouseLeave={(e) => { e.currentTarget.style.color = 'var(--text-4)'; }}
             >
               <span>scroll</span>
               <svg width="11" height="11" viewBox="0 0 12 12" fill="none">
                 <path d="M6 1v10M2 7l4 4 4-4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
               </svg>
-            </motion.div>
+            </div>
           </motion.div>
         </div>
       </div>
     </section>
-  );
-};
-
-/* ─── SHREYAS.DEV Developer Identity System Card ──────────────── */
-const DeveloperIdentityPanel = () => {
-  const [initPhase, setInitPhase] = useState(0);
-  const [isInteractiveActive, setIsInteractiveActive] = useState(false);
-
-  // Smooth brief terminal initialization (~1.1s total)
-  useEffect(() => {
-    const t1 = setTimeout(() => setInitPhase(1), 350);
-    const t2 = setTimeout(() => setInitPhase(2), 750);
-    const t3 = setTimeout(() => setInitPhase(3), 1150);
-    return () => {
-      clearTimeout(t1);
-      clearTimeout(t2);
-      clearTimeout(t3);
-    };
-  }, []);
-
-  const handleCardInteraction = () => {
-    setIsInteractiveActive(true);
-    setTimeout(() => setIsInteractiveActive(false), 1200);
-  };
-
-  return (
-    <motion.div
-      whileHover={{ y: -3, scale: 1.01 }}
-      whileTap={{ scale: 0.98 }}
-      onClick={handleCardInteraction}
-      role="region"
-      aria-label="Shreyas.dev Developer Identity System"
-      style={{
-        position: 'relative',
-        width: 'min(86vw, 300px)',
-        maxWidth: '320px',
-        background: 'rgba(14, 14, 18, 0.88)',
-        backdropFilter: 'blur(20px)',
-        WebkitBackdropFilter: 'blur(20px)',
-        border: isInteractiveActive
-          ? '1px solid rgba(124, 58, 237, 0.55)'
-          : '1px solid rgba(124, 58, 237, 0.22)',
-        borderRadius: '16px',
-        overflow: 'hidden',
-        boxShadow: isInteractiveActive
-          ? '0 20px 50px rgba(0, 0, 0, 0.6), 0 0 35px rgba(124, 58, 237, 0.25)'
-          : '0 16px 40px rgba(0, 0, 0, 0.5), 0 0 25px rgba(124, 58, 237, 0.06)',
-        transition: 'border-color 0.3s ease, box-shadow 0.3s ease',
-        cursor: 'pointer',
-      }}
-    >
-      {/* Top Header Bar */}
-      <div
-        style={{
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'space-between',
-          padding: '0.65rem 0.9rem',
-          background: 'rgba(255, 255, 255, 0.02)',
-          borderBottom: '1px solid rgba(255, 255, 255, 0.05)',
-        }}
-      >
-        <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
-          <span
-            style={{
-              width: '7px',
-              height: '7px',
-              borderRadius: '50%',
-              background: isInteractiveActive ? 'var(--accent)' : 'var(--success)',
-              boxShadow: isInteractiveActive
-                ? '0 0 8px var(--accent)'
-                : '0 0 6px rgba(34, 197, 94, 0.6)',
-              transition: 'background 0.2s',
-            }}
-          />
-          <span
-            style={{
-              fontFamily: 'var(--font-mono)',
-              fontSize: '0.68rem',
-              fontWeight: 700,
-              color: 'var(--text-1)',
-              letterSpacing: '0.08em',
-              textTransform: 'uppercase',
-            }}
-          >
-            SHREYAS.DEV
-          </span>
-        </div>
-
-        <span
-          style={{
-            fontFamily: 'var(--font-mono)',
-            fontSize: '0.6rem',
-            color: 'var(--text-4)',
-            letterSpacing: '0.06em',
-          }}
-        >
-          {isInteractiveActive ? 'ACTIVE' : 'ID // 2026'}
-        </span>
-      </div>
-
-      {/* Card Body with Brief Terminal Init -> Identity Transition */}
-      <div style={{ padding: '1rem 1rem 0.9rem 1rem' }}>
-        <AnimatePresence mode="wait">
-          {initPhase < 3 ? (
-            /* ── Brief Initializing Screen (< 1.2s) ── */
-            <motion.div
-              key="init-screen"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              transition={{ duration: 0.2 }}
-              style={{
-                fontFamily: 'var(--font-mono)',
-                fontSize: '0.7rem',
-                minHeight: '160px',
-                display: 'flex',
-                flexDirection: 'column',
-                justifyContent: 'center',
-                gap: '8px',
-                color: 'var(--text-3)',
-              }}
-            >
-              <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
-                <span style={{ color: 'var(--accent)' }}>&gt;</span>
-                <span>sys.init(&quot;shreyas.dev&quot;)</span>
-              </div>
-              {initPhase >= 1 && (
-                <motion.div
-                  initial={{ opacity: 0, x: -4 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  style={{ display: 'flex', alignItems: 'center', gap: '6px', color: 'var(--text-2)' }}
-                >
-                  <span style={{ color: 'var(--accent)' }}>&gt;</span>
-                  <span>loading modules...</span>
-                </motion.div>
-              )}
-              {initPhase >= 2 && (
-                <motion.div
-                  initial={{ opacity: 0, x: -4 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  style={{ display: 'flex', alignItems: 'center', gap: '6px', color: 'var(--success)' }}
-                >
-                  <span style={{ color: 'var(--success)' }}>✔</span>
-                  <span>system ready</span>
-                </motion.div>
-              )}
-            </motion.div>
-          ) : (
-            /* ── Main Clean Identity System ── */
-            <motion.div
-              key="identity-content"
-              initial={{ opacity: 0, scale: 0.96 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ duration: 0.35, ease: 'easeOut' }}
-              style={{ display: 'flex', flexDirection: 'column', gap: '0.9rem' }}
-            >
-              {/* Central Identity Monogram & Label */}
-              <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-                <div
-                  style={{
-                    width: '44px',
-                    height: '44px',
-                    borderRadius: '12px',
-                    background: 'linear-gradient(135deg, rgba(124, 58, 237, 0.25), rgba(124, 58, 237, 0.08))',
-                    border: '1px solid rgba(124, 58, 237, 0.4)',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    fontFamily: 'var(--font-mono)',
-                    fontWeight: 800,
-                    fontSize: '1.25rem',
-                    color: '#FFFFFF',
-                    boxShadow: isInteractiveActive
-                      ? '0 0 20px rgba(124, 58, 237, 0.5)'
-                      : '0 0 12px rgba(124, 58, 237, 0.25)',
-                    flexShrink: 0,
-                    transition: 'box-shadow 0.3s ease',
-                  }}
-                >
-                  S
-                </div>
-                <div style={{ minWidth: 0 }}>
-                  <h2
-                    style={{
-                      fontFamily: 'var(--font-display)',
-                      fontSize: '0.95rem',
-                      fontWeight: 800,
-                      color: 'var(--text-1)',
-                      letterSpacing: '-0.01em',
-                      lineHeight: 1.2,
-                    }}
-                  >
-                    SHREYAS G SHETTY
-                  </h2>
-                  <p
-                    style={{
-                      fontFamily: 'var(--font-mono)',
-                      fontSize: '0.62rem',
-                      color: 'var(--accent-light)',
-                      letterSpacing: '0.04em',
-                      marginTop: '2px',
-                    }}
-                  >
-                    Full Stack & ML
-                  </p>
-                </div>
-              </div>
-
-              {/* Technical Core Stack Matrix (2x3 compact grid) */}
-              <div>
-                <p
-                  style={{
-                    fontFamily: 'var(--font-mono)',
-                    fontSize: '0.58rem',
-                    color: 'var(--text-4)',
-                    letterSpacing: '0.08em',
-                    textTransform: 'uppercase',
-                    marginBottom: '0.4rem',
-                  }}
-                >
-                  Core Stack
-                </p>
-                <div
-                  style={{
-                    display: 'grid',
-                    gridTemplateColumns: 'repeat(3, 1fr)',
-                    gap: '4px',
-                  }}
-                >
-                  {CORE_STACK.map((tech) => (
-                    <div
-                      key={tech.name}
-                      style={{
-                        display: 'flex',
-                        alignItems: 'center',
-                        gap: '5px',
-                        padding: '4px 6px',
-                        background: 'rgba(255, 255, 255, 0.03)',
-                        border: '1px solid rgba(255, 255, 255, 0.06)',
-                        borderRadius: '6px',
-                      }}
-                    >
-                      <span
-                        style={{
-                          width: '4px',
-                          height: '4px',
-                          borderRadius: '50%',
-                          background: tech.color,
-                          boxShadow: `0 0 4px ${tech.color}`,
-                          flexShrink: 0,
-                        }}
-                      />
-                      <span
-                        style={{
-                          fontFamily: 'var(--font-mono)',
-                          fontSize: '0.62rem',
-                          fontWeight: 500,
-                          color: 'var(--text-2)',
-                          whiteSpace: 'nowrap',
-                          overflow: 'hidden',
-                          textOverflow: 'ellipsis',
-                        }}
-                      >
-                        {tech.name}
-                      </span>
-                    </div>
-                  ))}
-                </div>
-              </div>
-
-              {/* Footer System Status Bar */}
-              <div
-                style={{
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'space-between',
-                  paddingTop: '0.45rem',
-                  borderTop: '1px solid rgba(255, 255, 255, 0.05)',
-                  fontSize: '0.62rem',
-                  fontFamily: 'var(--font-mono)',
-                }}
-              >
-                <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
-                  <span
-                    style={{
-                      width: '6px',
-                      height: '6px',
-                      borderRadius: '50%',
-                      background: isInteractiveActive ? 'var(--accent)' : 'var(--success)',
-                    }}
-                    className="avail-dot"
-                  />
-                  <span style={{ color: isInteractiveActive ? 'var(--accent-light)' : 'var(--success)', fontWeight: 600 }}>
-                    {isInteractiveActive ? 'SYSTEM ACTIVE' : 'SYSTEM READY'}
-                  </span>
-                </div>
-                <span style={{ color: 'var(--text-4)' }}>
-                  BLR // PESU
-                </span>
-              </div>
-            </motion.div>
-          )}
-        </AnimatePresence>
-      </div>
-    </motion.div>
   );
 };
 

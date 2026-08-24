@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { FiMenu, FiX, FiDownload, FiArrowRight } from 'react-icons/fi';
 
@@ -12,56 +12,104 @@ const NAV_LINKS = [
 ];
 
 /**
- * Premium Persistent Morphing Navigation System
- * Stays permanently visible while scrolling.
- * Morphs seamlessly between:
- * - State A (Top of Page): Full-width hero-integrated bar.
- * - State B (Scrolled): Centered floating command capsule.
+ * High-Performance Persistent Morphing Navigation System
+ * - RAF-throttled scroll listener handles lazy-loaded sections flawlessly.
+ * - Bottom-of-page detection ensures Contact is reliably highlighted.
+ * - Instant activeSection update on click for immediate gliding pill animation.
+ * - Zero continuous React re-renders past scroll thresholds.
  */
 const Navbar = () => {
   const [scrolled,         setScrolled]         = useState(false);
   const [activeSection,    setActiveSection]    = useState('home');
   const [menuOpen,         setMenuOpen]         = useState(false);
-  const [isMobile,         setIsMobile]         = useState(window.innerWidth <= 840);
+  const [isMobile,         setIsMobile]         = useState(typeof window !== 'undefined' ? window.innerWidth <= 840 : false);
   const [hoveredLink,      setHoveredLink]      = useState(null);
   const [isLogoHovered,    setIsLogoHovered]    = useState(false);
 
+  const lastScrolledRef = useRef(false);
+  const activeSectionRef = useRef(activeSection);
+  activeSectionRef.current = activeSection;
+
   /* ── Responsive Viewport Listener ── */
   useEffect(() => {
-    const onResize = () => setIsMobile(window.innerWidth <= 840);
-    window.addEventListener('resize', onResize);
-    return () => window.removeEventListener('resize', onResize);
+    let resizeTimer;
+    const onResize = () => {
+      clearTimeout(resizeTimer);
+      resizeTimer = setTimeout(() => {
+        setIsMobile(window.innerWidth <= 840);
+      }, 100);
+    };
+
+    window.addEventListener('resize', onResize, { passive: true });
+    return () => {
+      clearTimeout(resizeTimer);
+      window.removeEventListener('resize', onResize);
+    };
   }, []);
 
   useEffect(() => {
     if (!isMobile) setMenuOpen(false);
   }, [isMobile]);
 
-  /* ── Persistent Scroll State & Active Section Tracking ── */
+  /* ── Robust Scroll & Active Section Tracking (Compatible with Lazy Loading) ── */
   useEffect(() => {
-    const handleScroll = () => {
-      const currentY = window.scrollY;
+    let rafId = null;
+    const sectionIds = NAV_LINKS.map((l) => l.href.slice(1));
 
-      // Morphs into floating capsule when scrolled past 25px
-      setScrolled(currentY > 25);
+    const checkScrollState = () => {
+      const scrollY = window.scrollY;
 
-      // Active Section Detection
-      const ids = NAV_LINKS.map((l) => l.href.slice(1));
-      for (let i = ids.length - 1; i >= 0; i--) {
-        const el = document.getElementById(ids[i]);
-        if (el) {
-          const rect = el.getBoundingClientRect();
-          if (rect.top <= 140) {
-            setActiveSection(ids[i]);
-            break;
+      // 1. Update scrolled morphing state
+      const isPastThreshold = scrollY > 25;
+      if (isPastThreshold !== lastScrolledRef.current) {
+        lastScrolledRef.current = isPastThreshold;
+        setScrolled(isPastThreshold);
+      }
+
+      // 2. Check if at the bottom of the page (Contact section)
+      if (window.innerHeight + scrollY >= document.documentElement.scrollHeight - 80) {
+        if (activeSectionRef.current !== 'contact') {
+          setActiveSection('contact');
+        }
+        return;
+      }
+
+      // 3. Scan section offsets from bottom to top
+      const scrollPosition = scrollY + 180;
+      for (let i = sectionIds.length - 1; i >= 0; i--) {
+        const el = document.getElementById(sectionIds[i]);
+        if (el && el.offsetTop <= scrollPosition) {
+          if (activeSectionRef.current !== sectionIds[i]) {
+            setActiveSection(sectionIds[i]);
           }
+          break;
         }
       }
     };
 
+    const handleScroll = () => {
+      if (!rafId) {
+        rafId = requestAnimationFrame(() => {
+          rafId = null;
+          checkScrollState();
+        });
+      }
+    };
+
     window.addEventListener('scroll', handleScroll, { passive: true });
-    handleScroll(); // Initial check
-    return () => window.removeEventListener('scroll', handleScroll);
+    
+    // Initial and periodic checks to catch lazy-loaded components
+    const t1 = setTimeout(checkScrollState, 100);
+    const t2 = setTimeout(checkScrollState, 500);
+    const t3 = setTimeout(checkScrollState, 1200);
+
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+      if (rafId) cancelAnimationFrame(rafId);
+      clearTimeout(t1);
+      clearTimeout(t2);
+      clearTimeout(t3);
+    };
   }, []);
 
   /* ── Lock Body Scroll & Keyboard Escape Handler ── */
@@ -82,6 +130,8 @@ const Navbar = () => {
   }, [menuOpen]);
 
   const handleNavClick = (href) => {
+    const id = href.slice(1);
+    setActiveSection(id);
     setMenuOpen(false);
     const target = document.querySelector(href);
     if (target) {
@@ -91,11 +141,11 @@ const Navbar = () => {
 
   return (
     <>
-      {/* ── DESKTOP & MOBILE NAVIGATION HEADER (ALWAYS VISIBLE) ── */}
+      {/* ── DESKTOP & MOBILE NAVIGATION HEADER ── */}
       <motion.header
         initial={{ y: -70, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
-        transition={{ duration: 0.45, ease: [0.22, 1, 0.36, 1] }}
+        transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
         style={{
           position: 'fixed',
           top: 0,
@@ -106,7 +156,7 @@ const Navbar = () => {
           justifyContent: 'center',
           pointerEvents: 'none',
           padding: scrolled && !isMobile ? '12px 1.25rem' : '0',
-          transition: 'padding 0.35s cubic-bezier(0.22, 1, 0.36, 1)',
+          transition: 'padding 0.3s cubic-bezier(0.22, 1, 0.36, 1)',
         }}
       >
         <motion.div
@@ -118,10 +168,10 @@ const Navbar = () => {
             height: scrolled && !isMobile ? '52px' : '68px',
             borderRadius: scrolled && !isMobile ? '100px' : '0px',
             background: scrolled
-              ? 'rgba(12, 12, 15, 0.88)'
+              ? 'rgba(12, 12, 15, 0.92)'
               : 'transparent',
-            backdropFilter: scrolled ? 'blur(20px)' : 'none',
-            WebkitBackdropFilter: scrolled ? 'blur(20px)' : 'none',
+            backdropFilter: scrolled ? 'blur(8px)' : 'none',
+            WebkitBackdropFilter: scrolled ? 'blur(8px)' : 'none',
             borderBottom: scrolled
               ? '1px solid rgba(124, 58, 237, 0.22)'
               : '1px solid transparent',
@@ -135,17 +185,17 @@ const Navbar = () => {
               ? '1px solid rgba(124, 58, 237, 0.22)'
               : '1px solid transparent',
             boxShadow: scrolled
-              ? '0 16px 36px rgba(0, 0, 0, 0.5), 0 0 20px rgba(124, 58, 237, 0.08)'
+              ? '0 12px 30px rgba(0, 0, 0, 0.45)'
               : 'none',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'space-between',
             padding: scrolled && !isMobile ? '0 1.25rem' : '0 1.5rem',
             margin: '0 auto',
-            transition: 'all 0.35s cubic-bezier(0.22, 1, 0.36, 1)',
+            transition: 'max-width 0.3s ease, height 0.3s ease, border-radius 0.3s ease, background-color 0.2s ease, border-color 0.2s ease',
           }}
         >
-          {/* ── Logo with Micro-Interaction ── */}
+          {/* ── Logo ── */}
           <motion.a
             href="#home"
             onClick={(e) => {
@@ -165,15 +215,7 @@ const Navbar = () => {
             }}
           >
             {/* Monogram S Icon */}
-            <motion.div
-              animate={{
-                scale: isLogoHovered ? 1.08 : 1,
-                rotate: isLogoHovered ? -3 : 0,
-                boxShadow: isLogoHovered
-                  ? '0 0 20px rgba(124, 58, 237, 0.65)'
-                  : '0 0 12px rgba(124, 58, 237, 0.3)',
-              }}
-              transition={{ duration: 0.2 }}
+            <div
               style={{
                 width: '32px',
                 height: '32px',
@@ -187,10 +229,13 @@ const Navbar = () => {
                 fontSize: '0.92rem',
                 color: '#FFFFFF',
                 flexShrink: 0,
+                transform: isLogoHovered ? 'scale(1.06)' : 'scale(1)',
+                transition: 'transform 0.2s ease, box-shadow 0.2s ease',
+                boxShadow: isLogoHovered ? '0 0 16px rgba(124, 58, 237, 0.6)' : 'none',
               }}
             >
               S
-            </motion.div>
+            </div>
 
             {/* Logo Wordmark */}
             <span
@@ -205,16 +250,15 @@ const Navbar = () => {
               }}
             >
               Shreyas
-              <motion.span
-                animate={{
-                  y: isLogoHovered ? [0, -3, 0] : 0,
+              <span
+                style={{
                   color: isLogoHovered ? '#FFFFFF' : 'var(--accent-light)',
+                  display: 'inline-block',
+                  transition: 'color 0.2s ease',
                 }}
-                transition={{ duration: 0.3 }}
-                style={{ color: 'var(--accent-light)', display: 'inline-block' }}
               >
                 .
-              </motion.span>
+              </span>
             </span>
           </motion.a>
 
@@ -254,14 +298,14 @@ const Navbar = () => {
                       fontWeight: isActive ? 600 : 500,
                       textDecoration: 'none',
                       color: isActive ? 'var(--text-1)' : isHovered ? 'var(--text-1)' : 'var(--text-3)',
-                      transition: 'color 0.18s ease',
+                      transition: 'color 0.15s ease',
                       letterSpacing: '0.01em',
                       display: 'inline-flex',
                       alignItems: 'center',
                       justifyContent: 'center',
                     }}
                   >
-                    {/* Animated Sliding Active Capsule */}
+                    {/* Sliding Active Pill */}
                     {isActive && (
                       <motion.div
                         layoutId="nav-active-pill"
@@ -276,16 +320,13 @@ const Navbar = () => {
                           borderRadius: '100px',
                           background: 'rgba(124, 58, 237, 0.14)',
                           border: '1px solid rgba(124, 58, 237, 0.32)',
-                          boxShadow: '0 0 14px rgba(124, 58, 237, 0.15)',
                         }}
                       />
                     )}
 
                     {/* Active Accent Dot */}
                     {isActive && (
-                      <motion.span
-                        layoutId="nav-active-dot"
-                        transition={{ type: 'spring', stiffness: 380, damping: 30 }}
+                      <span
                         style={{
                           position: 'absolute',
                           bottom: '3px',
@@ -293,7 +334,6 @@ const Navbar = () => {
                           height: '3px',
                           borderRadius: '50%',
                           background: 'var(--accent-light)',
-                          boxShadow: '0 0 6px var(--accent)',
                         }}
                       />
                     )}
@@ -310,7 +350,7 @@ const Navbar = () => {
             <motion.a
               href="/Resume_V2.pdf"
               download="Shreyas_G_Shetty_Resume.pdf"
-              whileHover={{ scale: 1.04, y: -1 }}
+              whileHover={{ scale: 1.03 }}
               whileTap={{ scale: 0.96 }}
               aria-label="Download Resume"
               style={{
@@ -326,35 +366,17 @@ const Navbar = () => {
                 fontSize: '0.78rem',
                 textDecoration: 'none',
                 letterSpacing: '0.02em',
-                transition: 'all 0.2s ease',
-                boxShadow: '0 2px 10px rgba(124, 58, 237, 0.15)',
-              }}
-              onMouseEnter={(e) => {
-                e.currentTarget.style.background = 'var(--accent)';
-                e.currentTarget.style.color = '#FFFFFF';
-                e.currentTarget.style.boxShadow = '0 0 16px rgba(124, 58, 237, 0.4)';
-              }}
-              onMouseLeave={(e) => {
-                e.currentTarget.style.background = 'rgba(124, 58, 237, 0.1)';
-                e.currentTarget.style.color = 'var(--accent-light)';
-                e.currentTarget.style.boxShadow = '0 2px 10px rgba(124, 58, 237, 0.15)';
+                transition: 'background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease',
               }}
             >
-              <motion.span
-                whileHover={{ y: 2 }}
-                transition={{ duration: 0.2 }}
-                style={{ display: 'inline-flex' }}
-              >
-                <FiDownload size={13} />
-              </motion.span>
+              <FiDownload size={13} />
               <span>Resume</span>
             </motion.a>
           )}
 
           {/* ── Mobile Hamburger Button ── */}
           {isMobile && (
-            <motion.button
-              whileTap={{ scale: 0.9 }}
+            <button
               onClick={() => setMenuOpen(!menuOpen)}
               aria-label={menuOpen ? 'Close navigation menu' : 'Open navigation menu'}
               aria-expanded={menuOpen}
@@ -371,22 +393,11 @@ const Navbar = () => {
                 justifyContent: 'center',
                 minWidth: '40px',
                 minHeight: '40px',
-                transition: 'border-color 0.2s',
+                transition: 'border-color 0.2s ease',
               }}
             >
-              <AnimatePresence mode="wait" initial={false}>
-                <motion.span
-                  key={menuOpen ? 'close' : 'menu'}
-                  initial={{ rotate: -90, opacity: 0 }}
-                  animate={{ rotate: 0, opacity: 1 }}
-                  exit={{ rotate: 90, opacity: 0 }}
-                  transition={{ duration: 0.18 }}
-                  style={{ display: 'flex' }}
-                >
-                  {menuOpen ? <FiX size={19} /> : <FiMenu size={19} />}
-                </motion.span>
-              </AnimatePresence>
-            </motion.button>
+              {menuOpen ? <FiX size={19} /> : <FiMenu size={19} />}
+            </button>
           )}
         </motion.div>
       </motion.header>
@@ -399,14 +410,14 @@ const Navbar = () => {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            transition={{ duration: 0.25 }}
+            transition={{ duration: 0.2 }}
             onClick={() => setMenuOpen(false)}
             style={{
               position: 'fixed',
               inset: 0,
-              background: 'rgba(0, 0, 0, 0.82)',
-              backdropFilter: 'blur(10px)',
-              WebkitBackdropFilter: 'blur(10px)',
+              background: 'rgba(0, 0, 0, 0.8)',
+              backdropFilter: 'blur(4px)',
+              WebkitBackdropFilter: 'blur(4px)',
               zIndex: 1001,
             }}
           />
@@ -421,10 +432,10 @@ const Navbar = () => {
             key="mobile-drawer"
             role="dialog"
             aria-label="Navigation Menu"
-            initial={{ x: '100%', opacity: 0.5 }}
-            animate={{ x: 0, opacity: 1 }}
-            exit={{ x: '100%', opacity: 0 }}
-            transition={{ duration: 0.32, ease: [0.22, 1, 0.36, 1] }}
+            initial={{ x: '100%' }}
+            animate={{ x: 0 }}
+            exit={{ x: '100%' }}
+            transition={{ duration: 0.25, ease: [0.22, 1, 0.36, 1] }}
             style={{
               position: 'fixed',
               top: 0,
@@ -432,11 +443,9 @@ const Navbar = () => {
               bottom: 0,
               zIndex: 1002,
               width: 'min(78vw, 300px)',
-              background: 'rgba(11, 11, 14, 0.96)',
-              backdropFilter: 'blur(24px)',
-              WebkitBackdropFilter: 'blur(24px)',
+              background: 'rgba(11, 11, 14, 0.97)',
               borderLeft: '1px solid rgba(124, 58, 237, 0.2)',
-              boxShadow: '-10px 0 40px rgba(0, 0, 0, 0.8)',
+              boxShadow: '-8px 0 30px rgba(0, 0, 0, 0.7)',
               display: 'flex',
               flexDirection: 'column',
               justifyContent: 'space-between',
@@ -483,8 +492,7 @@ const Navbar = () => {
                   </span>
                 </div>
 
-                <motion.button
-                  whileTap={{ scale: 0.9, rotate: 90 }}
+                <button
                   onClick={() => setMenuOpen(false)}
                   aria-label="Close menu"
                   style={{
@@ -500,10 +508,10 @@ const Navbar = () => {
                   }}
                 >
                   <FiX size={16} />
-                </motion.button>
+                </button>
               </div>
 
-              {/* ── Staggered Numbered Nav Items ── */}
+              {/* ── Numbered Nav Items ── */}
               <nav
                 style={{
                   padding: '1.25rem 1rem',
@@ -512,21 +520,17 @@ const Navbar = () => {
                   gap: '4px',
                 }}
               >
-                {NAV_LINKS.map((link, i) => {
+                {NAV_LINKS.map((link) => {
                   const isActive = activeSection === link.href.slice(1);
 
                   return (
-                    <motion.a
+                    <a
                       key={link.href}
                       href={link.href}
                       onClick={(e) => {
                         e.preventDefault();
                         handleNavClick(link.href);
                       }}
-                      initial={{ opacity: 0, x: 20 }}
-                      animate={{ opacity: 1, x: 0 }}
-                      transition={{ delay: 0.04 + i * 0.04, duration: 0.3 }}
-                      whileTap={{ scale: 0.97 }}
                       aria-current={isActive ? 'page' : undefined}
                       style={{
                         display: 'flex',
@@ -542,7 +546,7 @@ const Navbar = () => {
                         border: isActive
                           ? '1px solid rgba(124, 58, 237, 0.3)'
                           : '1px solid transparent',
-                        transition: 'all 0.18s ease',
+                        transition: 'background-color 0.15s ease, color 0.15s ease',
                       }}
                     >
                       <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
@@ -573,7 +577,7 @@ const Navbar = () => {
                           <FiArrowRight size={14} />
                         </span>
                       )}
-                    </motion.a>
+                    </a>
                   );
                 })}
               </nav>
@@ -609,10 +613,9 @@ const Navbar = () => {
               </div>
 
               {/* Full-Width Mobile Resume Button */}
-              <motion.a
+              <a
                 href="/Resume_V2.pdf"
                 download="Shreyas_G_Shetty_Resume.pdf"
-                whileTap={{ scale: 0.97 }}
                 style={{
                   display: 'flex',
                   alignItems: 'center',
@@ -625,12 +628,12 @@ const Navbar = () => {
                   fontWeight: 600,
                   fontSize: '0.88rem',
                   textDecoration: 'none',
-                  boxShadow: '0 4px 16px rgba(124, 58, 237, 0.35)',
+                  boxShadow: '0 4px 14px rgba(124, 58, 237, 0.3)',
                 }}
               >
                 <FiDownload size={15} />
                 <span>Download Resume</span>
-              </motion.a>
+              </a>
             </div>
           </motion.div>
         )}
