@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion } from 'framer-motion';
 import { useInView } from '../hooks/useInView';
 import { FiCode, FiDatabase, FiCpu, FiLayers, FiArrowRight, FiTerminal, FiMapPin, FiBookOpen } from 'react-icons/fi';
 
@@ -49,7 +49,7 @@ const CAPABILITIES = [
 /**
  * About Section — Developer Profile / Identity Dossier
  * Editorial layout featuring asymmetric profile dossier, personal narrative,
- * and an interactive Capability Explorer with spotlight focus.
+ * interactive Capability Explorer, and a cohesive layered technical workspace background.
  */
 const About = () => {
   const [ref, inView] = useInView({ threshold: 0.08 });
@@ -78,61 +78,100 @@ const About = () => {
       ref={ref}
       style={{
         position: 'relative',
-        padding: 'clamp(5rem, 12vh, 8rem) 0',
-        background: 'var(--bg-alt)',
+        padding: 'clamp(5rem, 12vh, 8.5rem) 0',
+        background: 'linear-gradient(135deg, #08080B 0%, #0B0A11 48%, #07080B 100%)',
         overflow: 'hidden',
       }}
     >
-      {/* ── ATMOSPHERIC BACKGROUND SYSTEM ── */}
-      {/* Subtle Vertical Technical Grid */}
+      {/* ── 1. LAYERED TECHNICAL WORKSPACE BACKGROUND ── */}
+      {/* Visible 56px Technical Grid with Spatial Masking */}
       <div
         style={{
           position: 'absolute',
           inset: 0,
           pointerEvents: 'none',
           backgroundImage: `
-            linear-gradient(to right, rgba(255, 255, 255, 0.025) 1px, transparent 1px),
-            linear-gradient(to bottom, rgba(255, 255, 255, 0.02) 1px, transparent 1px)
+            linear-gradient(to right, rgba(255, 255, 255, 0.032) 1px, transparent 1px),
+            linear-gradient(to bottom, rgba(255, 255, 255, 0.032) 1px, transparent 1px)
           `,
-          backgroundSize: '64px 64px',
-          maskImage: 'radial-gradient(ellipse 90% 80% at 75% 50%, black 20%, transparent 85%)',
-          WebkitMaskImage: 'radial-gradient(ellipse 90% 80% at 75% 50%, black 20%, transparent 85%)',
-          opacity: 0.7,
+          backgroundSize: '56px 56px',
+          maskImage: 'radial-gradient(ellipse 90% 85% at 65% 45%, black 25%, transparent 88%)',
+          WebkitMaskImage: 'radial-gradient(ellipse 90% 85% at 65% 45%, black 25%, transparent 88%)',
+          opacity: 0.85,
         }}
       />
 
-      {/* Atmospheric Violet Glow behind Capability Column */}
+      {/* SVG Architectural Vector Lines & Micro Node Constellation */}
+      <svg
+        style={{
+          position: 'absolute',
+          inset: 0,
+          width: '100%',
+          height: '100%',
+          pointerEvents: 'none',
+          opacity: 0.38,
+        }}
+        viewBox="0 0 1200 900"
+        preserveAspectRatio="none"
+      >
+        <path
+          d="M 120 180 L 520 180 L 520 480 M 680 180 L 1100 180 M 820 180 L 820 780 M 700 420 L 1100 420 M 700 660 L 1100 660"
+          fill="none"
+          stroke="rgba(124, 58, 237, 0.18)"
+          strokeWidth="1"
+          strokeDasharray="4 8"
+        />
+        {/* Subtle Architectural Nodes */}
+        <circle cx="120" cy="180" r="2.5" fill="#7C3AED" opacity="0.6" />
+        <circle cx="520" cy="180" r="2.5" fill="#61DAFB" opacity="0.6" />
+        <circle cx="520" cy="480" r="2.5" fill="#7C3AED" opacity="0.6" />
+        <circle cx="680" cy="180" r="2.5" fill="#7C3AED" opacity="0.6" />
+        <circle cx="1100" cy="180" r="2.5" fill="#61DAFB" opacity="0.6" />
+        <circle cx="820" cy="420" r="3" fill="#A78BFA" opacity="0.7" />
+        <circle cx="820" cy="660" r="3" fill="#10B981" opacity="0.6" />
+        <circle cx="820" cy="780" r="2.5" fill="#F59E0B" opacity="0.6" />
+      </svg>
+
+      {/* 3 Layered Ambient Light Sources */}
       <div
         style={{
           position: 'absolute',
-          top: '20%',
-          right: '-5%',
+          top: '18%',
+          right: '-6%',
           width: 'min(65vw, 600px)',
           height: 'min(65vw, 600px)',
-          background: 'radial-gradient(circle, rgba(124, 58, 237, 0.08) 0%, transparent 65%)',
+          background: 'radial-gradient(circle, rgba(124, 58, 237, 0.075) 0%, transparent 65%)',
+          borderRadius: '50%',
+          filter: 'blur(50px)',
+          pointerEvents: 'none',
+        }}
+      />
+      <div
+        style={{
+          position: 'absolute',
+          top: '40%',
+          left: '-8%',
+          width: 'min(55vw, 500px)',
+          height: 'min(55vw, 500px)',
+          background: 'radial-gradient(circle, rgba(97, 218, 251, 0.035) 0%, transparent 65%)',
           borderRadius: '50%',
           filter: 'blur(45px)',
           pointerEvents: 'none',
         }}
       />
-
-      {/* One-Time Section Entry Scanline */}
-      {inView && (
-        <motion.div
-          initial={{ y: '-100%', opacity: 0.6 }}
-          animate={{ y: '200%', opacity: 0 }}
-          transition={{ duration: 1.6, ease: 'easeInOut' }}
-          style={{
-            position: 'absolute',
-            left: 0,
-            right: 0,
-            height: '2px',
-            background: 'linear-gradient(90deg, transparent, rgba(124, 58, 237, 0.4), transparent)',
-            pointerEvents: 'none',
-            zIndex: 0,
-          }}
-        />
-      )}
+      <div
+        style={{
+          position: 'absolute',
+          bottom: '8%',
+          right: '25%',
+          width: 'min(50vw, 450px)',
+          height: 'min(50vw, 450px)',
+          background: 'radial-gradient(circle, rgba(16, 185, 129, 0.03) 0%, transparent 65%)',
+          borderRadius: '50%',
+          filter: 'blur(45px)',
+          pointerEvents: 'none',
+        }}
+      />
 
       <div className="wrap" style={{ position: 'relative', zIndex: 1 }}>
         <motion.div
@@ -509,7 +548,6 @@ const About = () => {
               })}
             </motion.div>
           </div>
-
         </motion.div>
       </div>
     </section>

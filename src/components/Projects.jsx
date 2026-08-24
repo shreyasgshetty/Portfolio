@@ -1,7 +1,7 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { useInView } from '../hooks/useInView';
-import { FiGithub, FiArrowRight, FiTerminal, FiLayers, FiDatabase, FiActivity, FiCpu, FiTrendingUp } from 'react-icons/fi';
+import { FiGithub, FiArrowRight } from 'react-icons/fi';
 
 /* ── 1. REAL PROJECT DATA (Preserved with Refined Engineering Terminology) ── */
 const FEATURED_PROJECT = {
@@ -73,7 +73,7 @@ const GRID_PROJECTS = [
   },
 ];
 
-/* ── 2. SOPHISTICATED TECHNICAL MOTIFS (100% Deterministic & GPU-Accelerated) ── */
+/* ── 2. SOPHISTICATED TECHNICAL MOTIFS (Zero Overlap & 100% Deterministic) ── */
 const ProjectMotifVisual = ({ motif, accent }) => {
   if (motif === 'commerce-pipeline') {
     const STAGES = [
@@ -90,14 +90,13 @@ const ProjectMotifVisual = ({ motif, accent }) => {
           position: 'relative',
           width: '100%',
           height: '100%',
-          minHeight: '220px',
           display: 'flex',
           flexDirection: 'column',
           justifyContent: 'center',
-          padding: '1.5rem',
+          padding: 'clamp(1rem, 2.5vw, 1.5rem)',
         }}
       >
-        {/* Ambient Glow Spot */}
+        {/* Ambient Glow */}
         <div
           style={{
             position: 'absolute',
@@ -108,13 +107,13 @@ const ProjectMotifVisual = ({ motif, accent }) => {
         />
 
         {/* Workflow Nodes Grid */}
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '10px', position: 'relative', zIndex: 1 }}>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '8px', position: 'relative', zIndex: 1 }}>
           <div
             style={{
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'space-between',
-              marginBottom: '4px',
+              marginBottom: '2px',
             }}
           >
             <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.62rem', color: 'var(--text-4)', letterSpacing: '0.08em' }}>
@@ -125,59 +124,69 @@ const ProjectMotifVisual = ({ motif, accent }) => {
             </span>
           </div>
 
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(5, 1fr)', gap: '6px' }}>
-            {STAGES.map((st, i) => (
+          <div
+            style={{
+              display: 'grid',
+              gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 75px), 1fr))',
+              gap: '6px',
+            }}
+          >
+            {STAGES.map((st) => (
               <div
                 key={st.label}
                 style={{
                   background: 'rgba(255, 255, 255, 0.035)',
                   border: `1px solid ${accent}30`,
                   borderRadius: '8px',
-                  padding: '8px 6px',
+                  padding: '6px 4px',
                   textAlign: 'center',
                   display: 'flex',
                   flexDirection: 'column',
                   gap: '2px',
+                  minWidth: 0,
                 }}
               >
-                <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.58rem', fontWeight: 700, color: 'var(--text-1)', letterSpacing: '0.02em' }}>
+                <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.58rem', fontWeight: 700, color: 'var(--text-1)', letterSpacing: '0.02em', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
                   {st.label}
                 </span>
-                <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.52rem', color: accent }}>
+                <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.52rem', color: accent, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
                   {st.sub}
                 </span>
               </div>
             ))}
           </div>
 
-          {/* Connected SVG bus trace */}
-          <svg width="100%" height="16" viewBox="0 0 320 16" style={{ marginTop: '2px' }}>
-            <line x1="16" y1="8" x2="304" y2="8" stroke={`${accent}40`} strokeWidth="1.5" strokeDasharray="3 4" />
-            <circle cx="32" cy="8" r="3" fill={accent} />
-            <circle cx="96" cy="8" r="3" fill={accent} />
-            <circle cx="160" cy="8" r="3.5" fill="#61DAFB" />
-            <circle cx="224" cy="8" r="3" fill={accent} />
-            <circle cx="288" cy="8" r="3" fill="#22C55E" />
-          </svg>
+          {/* Connected Vector Bus Trace */}
+          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '0 12px', marginTop: '2px' }}>
+            <span style={{ width: '6px', height: '6px', borderRadius: '50%', background: accent }} />
+            <div style={{ flex: 1, height: '1px', background: `${accent}35`, margin: '0 4px' }} />
+            <span style={{ width: '6px', height: '6px', borderRadius: '50%', background: accent }} />
+            <div style={{ flex: 1, height: '1px', background: `${accent}35`, margin: '0 4px' }} />
+            <span style={{ width: '7px', height: '7px', borderRadius: '50%', background: '#61DAFB' }} />
+            <div style={{ flex: 1, height: '1px', background: `${accent}35`, margin: '0 4px' }} />
+            <span style={{ width: '6px', height: '6px', borderRadius: '50%', background: accent }} />
+            <div style={{ flex: 1, height: '1px', background: `${accent}35`, margin: '0 4px' }} />
+            <span style={{ width: '6px', height: '6px', borderRadius: '50%', background: '#22C55E' }} />
+          </div>
         </div>
       </div>
     );
   }
 
   if (motif === 'crm-telemetry') {
-    const BARS = [45, 65, 38, 85, 52, 92, 70];
+    const BARS = [40, 65, 35, 85, 50, 90, 68];
     return (
-      <div style={{ position: 'relative', width: '100%', height: '90px', display: 'flex', alignItems: 'flex-end', justifyContent: 'center', gap: '8px', padding: '0 1rem 0.75rem 1rem' }}>
+      <div style={{ position: 'relative', width: '100%', height: '80px', display: 'flex', alignItems: 'flex-end', justifyContent: 'center', gap: '8px', padding: '0.5rem 1rem' }}>
         <div style={{ position: 'absolute', inset: 0, background: `radial-gradient(circle at 75% 25%, ${accent}12, transparent 60%)`, pointerEvents: 'none' }} />
         {BARS.map((h, i) => (
           <div
             key={i}
             style={{
-              width: '14px',
+              width: '12px',
               height: `${h}%`,
-              borderRadius: '4px 4px 1px 1px',
+              borderRadius: '3px 3px 1px 1px',
               background: `linear-gradient(to top, ${accent}30, ${accent}80)`,
-              border: `1px solid ${accent}40`,
+              border: `1px solid ${accent}45`,
             }}
           />
         ))}
@@ -187,18 +196,18 @@ const ProjectMotifVisual = ({ motif, accent }) => {
 
   if (motif === 'marketplace-auction') {
     return (
-      <div style={{ position: 'relative', width: '100%', height: '90px', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '0.75rem' }}>
+      <div style={{ position: 'relative', width: '100%', height: '80px', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '0.5rem 1rem' }}>
         <div style={{ position: 'absolute', inset: 0, background: `radial-gradient(circle at 70% 30%, ${accent}12, transparent 60%)`, pointerEvents: 'none' }} />
-        <div style={{ display: 'flex', alignItems: 'center', gap: '8px', position: 'relative', zIndex: 1 }}>
-          <div style={{ padding: '4px 8px', borderRadius: '6px', background: 'rgba(255,255,255,0.04)', border: `1px solid ${accent}35`, fontSize: '0.62rem', fontFamily: 'var(--font-mono)', color: 'var(--text-2)' }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '6px', flexWrap: 'wrap', justifyContent: 'center', position: 'relative', zIndex: 1 }}>
+          <div style={{ padding: '3px 7px', borderRadius: '6px', background: 'rgba(255,255,255,0.04)', border: `1px solid ${accent}35`, fontSize: '0.6rem', fontFamily: 'var(--font-mono)', color: 'var(--text-2)' }}>
             BID.ENGINE
           </div>
-          <span style={{ color: accent, fontSize: '0.75rem' }}>⇄</span>
-          <div style={{ padding: '4px 8px', borderRadius: '6px', background: `${accent}15`, border: `1px solid ${accent}50`, fontSize: '0.62rem', fontFamily: 'var(--font-mono)', color: accent, fontWeight: 700 }}>
+          <span style={{ color: accent, fontSize: '0.7rem' }}>⇄</span>
+          <div style={{ padding: '3px 7px', borderRadius: '6px', background: `${accent}15`, border: `1px solid ${accent}50`, fontSize: '0.6rem', fontFamily: 'var(--font-mono)', color: accent, fontWeight: 700 }}>
             AUCTION // MATCH
           </div>
-          <span style={{ color: accent, fontSize: '0.75rem' }}>⇄</span>
-          <div style={{ padding: '4px 8px', borderRadius: '6px', background: 'rgba(255,255,255,0.04)', border: `1px solid ${accent}35`, fontSize: '0.62rem', fontFamily: 'var(--font-mono)', color: 'var(--text-2)' }}>
+          <span style={{ color: accent, fontSize: '0.7rem' }}>⇄</span>
+          <div style={{ padding: '3px 7px', borderRadius: '6px', background: 'rgba(255,255,255,0.04)', border: `1px solid ${accent}35`, fontSize: '0.6rem', fontFamily: 'var(--font-mono)', color: 'var(--text-2)' }}>
             SETTLE
           </div>
         </div>
@@ -208,13 +217,13 @@ const ProjectMotifVisual = ({ motif, accent }) => {
 
   if (motif === 'sports-telemetry') {
     return (
-      <div style={{ position: 'relative', width: '100%', height: '90px', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '0.5rem 1rem' }}>
+      <div style={{ position: 'relative', width: '100%', height: '80px', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '0.5rem 1rem' }}>
         <div style={{ position: 'absolute', inset: 0, background: `radial-gradient(circle at 70% 30%, ${accent}12, transparent 60%)`, pointerEvents: 'none' }} />
-        <svg viewBox="0 0 200 60" style={{ width: '85%', height: '80%', position: 'relative', zIndex: 1 }}>
-          <polyline points="10,50 35,35 65,42 95,18 125,28 155,12 185,22" fill="none" stroke={`${accent}70`} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-          <circle cx="95" cy="18" r="3.5" fill={accent} />
-          <circle cx="155" cy="12" r="3.5" fill="#FFFFFF" />
-          <circle cx="185" cy="22" r="3" fill={accent} />
+        <svg viewBox="0 0 200 50" style={{ width: '85%', height: '75%', position: 'relative', zIndex: 1 }}>
+          <polyline points="10,42 35,28 65,35 95,14 125,22 155,8 185,18" fill="none" stroke={`${accent}70`} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+          <circle cx="95" cy="14" r="3.5" fill={accent} />
+          <circle cx="155" cy="8" r="3.5" fill="#FFFFFF" />
+          <circle cx="185" cy="18" r="3" fill={accent} />
         </svg>
       </div>
     );
@@ -222,20 +231,20 @@ const ProjectMotifVisual = ({ motif, accent }) => {
 
   if (motif === 'ml-pipeline') {
     return (
-      <div style={{ position: 'relative', width: '100%', height: '90px', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '0.5rem 1rem' }}>
+      <div style={{ position: 'relative', width: '100%', height: '80px', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '0.5rem 1rem' }}>
         <div style={{ position: 'absolute', inset: 0, background: `radial-gradient(circle at 70% 30%, ${accent}12, transparent 60%)`, pointerEvents: 'none' }} />
-        <div style={{ display: 'flex', alignItems: 'center', gap: '14px', position: 'relative', zIndex: 1 }}>
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '5px' }}>
-            <span style={{ width: '8px', height: '8px', borderRadius: '50%', background: `${accent}70` }} />
-            <span style={{ width: '8px', height: '8px', borderRadius: '50%', background: `${accent}70` }} />
-            <span style={{ width: '8px', height: '8px', borderRadius: '50%', background: `${accent}70` }} />
+        <div style={{ display: 'flex', alignItems: 'center', gap: '12px', position: 'relative', zIndex: 1 }}>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
+            <span style={{ width: '7px', height: '7px', borderRadius: '50%', background: `${accent}70` }} />
+            <span style={{ width: '7px', height: '7px', borderRadius: '50%', background: `${accent}70` }} />
+            <span style={{ width: '7px', height: '7px', borderRadius: '50%', background: `${accent}70` }} />
           </div>
-          <div style={{ height: '36px', width: '1px', background: `${accent}30` }} />
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '5px' }}>
-            <span style={{ width: '8px', height: '8px', borderRadius: '50%', background: '#61DAFB' }} />
-            <span style={{ width: '8px', height: '8px', borderRadius: '50%', background: '#61DAFB' }} />
+          <div style={{ height: '30px', width: '1px', background: `${accent}30` }} />
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
+            <span style={{ width: '7px', height: '7px', borderRadius: '50%', background: '#61DAFB' }} />
+            <span style={{ width: '7px', height: '7px', borderRadius: '50%', background: '#61DAFB' }} />
           </div>
-          <div style={{ height: '36px', width: '1px', background: `${accent}30` }} />
+          <div style={{ height: '30px', width: '1px', background: `${accent}30` }} />
           <div style={{ padding: '3px 7px', borderRadius: '5px', background: `${accent}20`, border: `1px solid ${accent}45`, fontSize: '0.58rem', fontFamily: 'var(--font-mono)', color: accent, fontWeight: 700 }}>
             CLASSIFIER
           </div>
@@ -249,8 +258,8 @@ const ProjectMotifVisual = ({ motif, accent }) => {
 
 /**
  * Projects Section — Engineering Laboratory & Project Portfolio
- * Features prominent UrbanVault featured system, symmetrical 2x2 grid,
- * deterministic system motifs, and clean monospace metadata.
+ * Non-overlapping responsive layout with clear visual hierarchy,
+ * structured metadata headers, and deterministic motifs.
  */
 const Projects = () => {
   const [ref, inView] = useInView({ threshold: 0.04 });
@@ -378,7 +387,7 @@ const Projects = () => {
             </p>
           </motion.div>
 
-          {/* ── 1. FEATURED SYSTEM CARD: URBANVAULT (Full-Width Asymmetric Card) ── */}
+          {/* ── 1. FEATURED SYSTEM CARD: URBANVAULT (Clean Asymmetrical Structure) ── */}
           <motion.div
             variants={itemVariants}
             style={{
@@ -440,71 +449,73 @@ const Projects = () => {
               </span>
             </div>
 
-            {/* Split Content: Left Information / Right System Motif */}
+            {/* Content Body */}
             <div
               style={{
                 display: 'grid',
-                gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 320px), 1fr))',
-                alignItems: 'center',
+                gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 340px), 1fr))',
+                alignItems: 'stretch',
               }}
             >
               {/* Left Details */}
-              <div style={{ padding: 'clamp(1.4rem, 3vw, 2.2rem)', display: 'flex', flexDirection: 'column', gap: '1.1rem' }}>
-                <div>
-                  <h3
-                    style={{
-                      fontFamily: 'var(--font-display)',
-                      fontSize: 'clamp(1.6rem, 3.5vw, 2.2rem)',
-                      fontWeight: 800,
-                      color: 'var(--text-1)',
-                      letterSpacing: '-0.02em',
-                      lineHeight: 1.15,
-                    }}
-                  >
-                    {FEATURED_PROJECT.title}
-                  </h3>
-                  <p
-                    style={{
-                      fontFamily: 'var(--font-mono)',
-                      fontSize: '0.75rem',
-                      color: 'var(--accent-light)',
-                      marginTop: '3px',
-                      fontWeight: 500,
-                    }}
-                  >
-                    {FEATURED_PROJECT.subtitle}
-                  </p>
-                </div>
-
-                <p style={{ color: 'var(--text-3)', fontSize: '0.88rem', lineHeight: 1.75 }}>
-                  {FEATURED_PROJECT.description}
-                </p>
-
-                {/* Key System Capabilities */}
-                <div style={{ display: 'flex', flexWrap: 'wrap', gap: '6px' }}>
-                  {FEATURED_PROJECT.features.map((feat) => (
-                    <span
-                      key={feat}
+              <div style={{ padding: 'clamp(1.4rem, 3vw, 2.2rem)', display: 'flex', flexDirection: 'column', justifyContent: 'space-between', gap: '1.25rem' }}>
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '0.9rem' }}>
+                  <div>
+                    <h3
                       style={{
-                        padding: '3px 10px',
-                        borderRadius: '6px',
-                        background: 'rgba(124, 58, 237, 0.08)',
-                        border: '1px solid rgba(124, 58, 237, 0.25)',
-                        fontSize: '0.68rem',
-                        fontFamily: 'var(--font-mono)',
-                        color: 'var(--accent-light)',
-                        fontWeight: 600,
+                        fontFamily: 'var(--font-display)',
+                        fontSize: 'clamp(1.6rem, 3.5vw, 2.2rem)',
+                        fontWeight: 800,
+                        color: 'var(--text-1)',
+                        letterSpacing: '-0.02em',
+                        lineHeight: 1.15,
                       }}
                     >
-                      {feat}
-                    </span>
-                  ))}
+                      {FEATURED_PROJECT.title}
+                    </h3>
+                    <p
+                      style={{
+                        fontFamily: 'var(--font-mono)',
+                        fontSize: '0.75rem',
+                        color: 'var(--accent-light)',
+                        marginTop: '3px',
+                        fontWeight: 500,
+                      }}
+                    >
+                      {FEATURED_PROJECT.subtitle}
+                    </p>
+                  </div>
+
+                  <p style={{ color: 'var(--text-3)', fontSize: '0.88rem', lineHeight: 1.75 }}>
+                    {FEATURED_PROJECT.description}
+                  </p>
+
+                  {/* Key System Capabilities */}
+                  <div style={{ display: 'flex', flexWrap: 'wrap', gap: '6px' }}>
+                    {FEATURED_PROJECT.features.map((feat) => (
+                      <span
+                        key={feat}
+                        style={{
+                          padding: '3px 10px',
+                          borderRadius: '6px',
+                          background: 'rgba(124, 58, 237, 0.08)',
+                          border: '1px solid rgba(124, 58, 237, 0.25)',
+                          fontSize: '0.68rem',
+                          fontFamily: 'var(--font-mono)',
+                          color: 'var(--accent-light)',
+                          fontWeight: 600,
+                        }}
+                      >
+                        {feat}
+                      </span>
+                    ))}
+                  </div>
                 </div>
 
-                {/* Tech Stack Signature */}
+                {/* Tech Stack + GitHub Button Footer */}
                 <div
                   style={{
-                    paddingTop: '0.85rem',
+                    paddingTop: '1rem',
                     borderTop: '1px solid rgba(255, 255, 255, 0.06)',
                     display: 'flex',
                     flexWrap: 'wrap',
@@ -540,7 +551,7 @@ const Projects = () => {
                       display: 'inline-flex',
                       alignItems: 'center',
                       gap: '7px',
-                      padding: '0.5rem 1.1rem',
+                      padding: '0.55rem 1.15rem',
                       borderRadius: '8px',
                       background: 'rgba(124, 58, 237, 0.15)',
                       border: '1px solid rgba(124, 58, 237, 0.45)',
@@ -568,9 +579,8 @@ const Projects = () => {
               {/* Right System Motif Interface */}
               <div
                 style={{
-                  height: '100%',
-                  minHeight: '220px',
-                  background: 'rgba(0, 0, 0, 0.3)',
+                  minHeight: '180px',
+                  background: 'rgba(0, 0, 0, 0.25)',
                   borderLeft: '1px solid rgba(255, 255, 255, 0.06)',
                   display: 'flex',
                   alignItems: 'center',
@@ -582,7 +592,7 @@ const Projects = () => {
             </div>
           </motion.div>
 
-          {/* ── 2. SYMMETRICAL 2x2 CONTROLLED PROJECT GRID ── */}
+          {/* ── 2. SYMMETRICAL 2x2 CONTROLLED PROJECT GRID (Zero Overlapping) ── */}
           <div className="projects-2col-grid">
             {GRID_PROJECTS.map((project) => (
               <motion.article
@@ -610,36 +620,57 @@ const Projects = () => {
                   e.currentTarget.style.boxShadow = '0 10px 30px rgba(0, 0, 0, 0.4)';
                 }}
               >
-                {/* Visual Motif Top Strip */}
-                <div
-                  style={{
-                    background: 'rgba(0, 0, 0, 0.3)',
-                    borderBottom: '1px solid rgba(255, 255, 255, 0.05)',
-                    position: 'relative',
-                    overflow: 'hidden',
-                  }}
-                >
+                <div>
+                  {/* Card Header Strip (Clean in-flow header - NEVER overlaps visual) */}
                   <div
                     style={{
-                      position: 'absolute',
-                      top: '0.65rem',
-                      left: '0.9rem',
-                      fontFamily: 'var(--font-mono)',
-                      fontSize: '0.62rem',
-                      fontWeight: 700,
-                      color: project.accent,
-                      letterSpacing: '0.06em',
-                      zIndex: 2,
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'space-between',
+                      padding: '0.65rem 1.1rem',
+                      background: 'rgba(255, 255, 255, 0.02)',
+                      borderBottom: '1px solid rgba(255, 255, 255, 0.04)',
                     }}
                   >
-                    {project.tag}
+                    <span
+                      style={{
+                        fontFamily: 'var(--font-mono)',
+                        fontSize: '0.64rem',
+                        fontWeight: 700,
+                        color: project.accent,
+                        letterSpacing: '0.06em',
+                      }}
+                    >
+                      {project.tag}
+                    </span>
+                    <span
+                      style={{
+                        width: '5px',
+                        height: '5px',
+                        borderRadius: '50%',
+                        background: project.accent,
+                      }}
+                    />
                   </div>
-                  <ProjectMotifVisual motif={project.motif} accent={project.accent} />
-                </div>
 
-                {/* Card Content Body */}
-                <div style={{ padding: '1.25rem 1.4rem', display: 'flex', flexDirection: 'column', gap: '0.85rem', flex: 1, justifyContent: 'space-between' }}>
-                  <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
+                  {/* Dedicated Visual Motif Area */}
+                  <div
+                    style={{
+                      background: 'rgba(0, 0, 0, 0.25)',
+                      borderBottom: '1px solid rgba(255, 255, 255, 0.05)',
+                      position: 'relative',
+                      overflow: 'hidden',
+                      minHeight: '80px',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                    }}
+                  >
+                    <ProjectMotifVisual motif={project.motif} accent={project.accent} />
+                  </div>
+
+                  {/* Card Content Body */}
+                  <div style={{ padding: '1.25rem 1.4rem', display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
                     <div>
                       <h4
                         style={{
@@ -670,7 +701,7 @@ const Projects = () => {
                     </p>
 
                     {/* Key Technical Features */}
-                    <div style={{ display: 'flex', flexWrap: 'wrap', gap: '4px', marginTop: '4px' }}>
+                    <div style={{ display: 'flex', flexWrap: 'wrap', gap: '4px', marginTop: '2px' }}>
                       {project.features.map((feat) => (
                         <span
                           key={feat}
@@ -689,66 +720,67 @@ const Projects = () => {
                       ))}
                     </div>
                   </div>
+                </div>
 
-                  {/* Card Footer: Tech Stack + Source Code CTA */}
-                  <div
+                {/* Card Footer: Tech Stack + Source Code CTA */}
+                <div
+                  style={{
+                    margin: '0 1.4rem 1.25rem 1.4rem',
+                    paddingTop: '0.75rem',
+                    borderTop: '1px solid rgba(255, 255, 255, 0.05)',
+                    display: 'flex',
+                    flexWrap: 'wrap',
+                    alignItems: 'center',
+                    justifyContent: 'space-between',
+                    gap: '0.75rem',
+                  }}
+                >
+                  <div style={{ display: 'flex', flexWrap: 'wrap', gap: '4px' }}>
+                    {project.tech.map((t) => (
+                      <span
+                        key={t}
+                        style={{
+                          fontSize: '0.62rem',
+                          fontFamily: 'var(--font-mono)',
+                          color: 'var(--text-4)',
+                        }}
+                      >
+                        {t}
+                      </span>
+                    ))}
+                  </div>
+
+                  <a
+                    href={project.github}
+                    target="_blank"
+                    rel="noopener noreferrer"
                     style={{
-                      paddingTop: '0.75rem',
-                      borderTop: '1px solid rgba(255, 255, 255, 0.05)',
-                      display: 'flex',
-                      flexWrap: 'wrap',
+                      display: 'inline-flex',
                       alignItems: 'center',
-                      justifyContent: 'space-between',
-                      gap: '0.75rem',
+                      gap: '6px',
+                      padding: '0.4rem 0.85rem',
+                      borderRadius: '6px',
+                      background: 'rgba(255, 255, 255, 0.04)',
+                      border: `1px solid ${project.accent}35`,
+                      color: project.accent,
+                      fontSize: '0.72rem',
+                      fontWeight: 600,
+                      textDecoration: 'none',
+                      transition: 'background-color 0.18s ease, color 0.18s ease',
+                    }}
+                    onMouseEnter={(e) => {
+                      e.currentTarget.style.background = `${project.accent}20`;
+                      e.currentTarget.style.color = '#FFFFFF';
+                    }}
+                    onMouseLeave={(e) => {
+                      e.currentTarget.style.background = 'rgba(255, 255, 255, 0.04)';
+                      e.currentTarget.style.color = project.accent;
                     }}
                   >
-                    <div style={{ display: 'flex', flexWrap: 'wrap', gap: '4px' }}>
-                      {project.tech.map((t) => (
-                        <span
-                          key={t}
-                          style={{
-                            fontSize: '0.62rem',
-                            fontFamily: 'var(--font-mono)',
-                            color: 'var(--text-4)',
-                          }}
-                        >
-                          {t}
-                        </span>
-                      ))}
-                    </div>
-
-                    <a
-                      href={project.github}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      style={{
-                        display: 'inline-flex',
-                        alignItems: 'center',
-                        gap: '6px',
-                        padding: '0.4rem 0.85rem',
-                        borderRadius: '6px',
-                        background: 'rgba(255, 255, 255, 0.04)',
-                        border: `1px solid ${project.accent}35`,
-                        color: project.accent,
-                        fontSize: '0.72rem',
-                        fontWeight: 600,
-                        textDecoration: 'none',
-                        transition: 'background-color 0.18s ease, color 0.18s ease',
-                      }}
-                      onMouseEnter={(e) => {
-                        e.currentTarget.style.background = `${project.accent}20`;
-                        e.currentTarget.style.color = '#FFFFFF';
-                      }}
-                      onMouseLeave={(e) => {
-                        e.currentTarget.style.background = 'rgba(255, 255, 255, 0.04)';
-                        e.currentTarget.style.color = project.accent;
-                      }}
-                    >
-                      <FiGithub size={13} />
-                      <span>SOURCE CODE</span>
-                      <FiArrowRight size={12} />
-                    </a>
-                  </div>
+                    <FiGithub size={13} />
+                    <span>SOURCE CODE</span>
+                    <FiArrowRight size={12} />
+                  </a>
                 </div>
               </motion.article>
             ))}

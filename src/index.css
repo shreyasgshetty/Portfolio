@@ -643,3 +643,47 @@ body {
     grid-template-columns: repeat(2, 1fr);
   }
 }
+
+/* ═══════════════════════════════════════════════════════════════════
+   EDUCATION SECTION TIMELINE & BEACON PULSE
+═══════════════════════════════════════════════════════════════════ */
+@keyframes beaconPulse {
+  0% {
+    transform: scale(0.95);
+    box-shadow: 0 0 0 0 rgba(124, 58, 237, 0.7);
+  }
+  70% {
+    transform: scale(1);
+    box-shadow: 0 0 0 10px rgba(124, 58, 237, 0);
+  }
+  100% {
+    transform: scale(0.95);
+    box-shadow: 0 0 0 0 rgba(124, 58, 237, 0);
+  }
+}
+
+.beacon-pulse {
+  animation: beaconPulse 2.4s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+.edu-desktop-timeline {
+  display: flex;
+  flex-direction: column;
+  position: relative;
+}
+@media (max-width: 840px) {
+  .edu-desktop-timeline {
+    display: none;
+  }
+}
+
+.edu-mobile-timeline {
+  display: none;
+  flex-direction: column;
+  position: relative;
+}
+@media (max-width: 840px) {
+  .edu-mobile-timeline {
+    display: flex;
+  }
+}
