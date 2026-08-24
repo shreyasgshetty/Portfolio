@@ -1,403 +1,826 @@
+import React from 'react';
 import { motion } from 'framer-motion';
 import { useInView } from '../hooks/useInView';
-import { FiGithub, FiExternalLink, FiArrowRight } from 'react-icons/fi';
-import { FiShoppingCart, FiUsers, FiPackage, FiActivity, FiBarChart2 } from 'react-icons/fi';
+import { FiGithub, FiArrowRight, FiTerminal, FiLayers, FiDatabase, FiActivity, FiCpu, FiTrendingUp } from 'react-icons/fi';
 
-/* ── Project data — unchanged ────────────────────────────────── */
-const PROJECTS = [
+/* ── 1. REAL PROJECT DATA (Preserved with Refined Engineering Terminology) ── */
+const FEATURED_PROJECT = {
+  id: 'urban-vault',
+  num: '01',
+  tag: '01 / FULL-STACK COMMERCE SYSTEM',
+  title: 'UrbanVault',
+  subtitle: 'Full-Stack E-Commerce System',
+  description: 'Full-stack commerce application implementing authenticated user flows, product lifecycle management, cart and checkout workflows, order processing, administrative controls, seller and delivery management, and Razorpay payment integration.',
+  tech: ['React', 'Node.js', 'Express.js', 'MongoDB', 'Firebase Auth', 'Razorpay', 'Tailwind CSS'],
+  github: 'https://github.com/shreyasgshetty/urban_vault',
+  features: ['Authentication System', 'Product Lifecycle Management', 'Order Processing & Razorpay', 'Admin & Seller Controls'],
+  accent: '#7C3AED', // Electric Violet
+  motif: 'commerce-pipeline',
+};
+
+const GRID_PROJECTS = [
   {
-    id: 'urban-vault', num: '01',
-    title: 'UrbanVault',
-    subtitle: 'E-Commerce Platform',
-    description: 'A full-stack e-commerce platform featuring secure Firebase authentication, admin dashboard, product management, wishlist, shopping cart, seamless checkout flow, order management, and Razorpay payment integration, also delivery management and seller management in single platform.',
-    tech: ['React', 'Node.js', 'Express.js', 'MongoDB', 'Firebase Auth', 'Razorpay', 'Tailwind CSS'],
-    github: 'https://github.com/shreyasgshetty/urban_vault',
-    live: null,
-    icon: FiShoppingCart,
-    features: ['Admin Dashboard', 'Razorpay Payments', 'Firebase Auth', 'Order Management'],
-    accent: '#7C3AED',
-    motif: 'e-commerce',
-  },
-  {
-    id: 'crm-system', num: '02',
+    id: 'crm-system',
+    num: '02',
+    tag: '02 / FULL-STACK WEB APPLICATION',
     title: 'CRM System',
-    subtitle: 'Customer Relationship Management',
-    description: 'A comprehensive CRM platform for managing customers, leads, and business workflows. Includes full authentication, CRUD operations across all modules, dashboard analytics, and interaction history tracking.',
-    tech: ['React', 'Node.js', 'Express.js', 'MongoDB'],
+    subtitle: 'Customer & Workflow Management System',
+    description: 'Full-stack CRM application for centralized customer and lead management, authenticated workflows, modular CRUD operations, dashboard analytics, and interaction-history tracking.',
+    tech: ['React', 'Node.js', 'Express.js', 'MongoDB', 'Tailwind CSS'],
     github: 'https://github.com/shreyasgshetty/crm',
-    live: null,
-    icon: FiUsers,
-    features: ['Lead Management', 'Analytics Dashboard', 'Customer Tracking', 'Auth System'],
-    accent: '#F59E0B',
-    motif: 'dashboard',
+    features: ['Lead Lifecycle', 'CRUD Workflows', 'Analytics Dashboard', 'Interaction History'],
+    accent: '#F59E0B', // Amber
+    motif: 'crm-telemetry',
   },
   {
-    id: 'online-marketplace', num: '03',
+    id: 'online-marketplace',
+    num: '03',
+    tag: '03 / JAVA & SPRING BOOT SYSTEM',
     title: 'Trade Nest',
-    subtitle: 'Buy & Sell Platform',
-    description: 'A buy-and-sell marketplace application with auction based system and secure payment system using Razorpay, secure authentication, structured product listings, categories, advanced search functionality, a responsive UI, and a scalable backend architecture.',
-    tech: ['Java', 'Spring Boot', 'RazorPay', 'MongoDB'],
+    subtitle: 'Auction-Enabled Transactional Marketplace',
+    description: 'Java Spring Boot marketplace system implementing authenticated listing workflows, auction-based transactions, category-driven discovery, search functionality, MongoDB persistence, and Razorpay payment integration.',
+    tech: ['Java', 'Spring Boot', 'Razorpay', 'MongoDB'],
     github: 'https://github.com/shreyasgshetty/online-marketplace',
-    live: null,
-    icon: FiPackage,
-    features: ['Product Listings', 'Category Filters', 'Search Functionality', 'Responsive UI'],
-    accent: '#10B981',
-    motif: 'marketplace',
+    features: ['Auction Workflows', 'Listing Taxonomy', 'Search & Discovery', 'Razorpay Integration'],
+    accent: '#10B981', // Emerald
+    motif: 'marketplace-auction',
   },
   {
-    id: 'cricpulz', num: '04',
+    id: 'cricpulz',
+    num: '04',
+    tag: '04 / REAL-TIME SPORTS ANALYTICS',
     title: 'CricPulz',
-    subtitle: 'Live Cricket Analytics',
-    description: 'A live cricket analytics platform displaying real-time scores, upcoming fixtures, player statistics, points tables, and detailed match insights powered by REST APIs.',
-    tech: ['MongoDB', 'React', 'REST APIs', 'Node.js'],
+    subtitle: 'Real-Time Sports Analytics Platform',
+    description: 'Real-time cricket analytics application consuming REST APIs to surface live match data, upcoming fixtures, player statistics, points tables, and match-level insights through a responsive React interface.',
+    tech: ['React', 'REST APIs', 'Tailwind CSS', 'JavaScript'],
     github: 'https://github.com/shreyasgshetty/cricpulz',
-    live: null,
-    icon: FiActivity,
-    features: ['Live Scores', 'Player Stats', 'Points Table', 'Match Insights'],
-    accent: '#60A5FA',
-    motif: 'analytics',
+    features: ['Real-Time Data Feeds', 'REST API Consumption', 'Match Insights', 'Player Statistics'],
+    accent: '#61DAFB', // Cyan
+    motif: 'sports-telemetry',
   },
   {
-    id: 'coral-predictor', num: '05',
+    id: 'coral-predictor',
+    num: '05',
+    tag: '05 / MACHINE LEARNING PIPELINE',
     title: 'Coral Regime Predictor',
-    subtitle: 'Data Science & ML',
-    description: 'A machine learning project predicting coral reef bleaching severity using environmental and oceanographic data. Implemented Logistic Regression, SVM, and Random Forest with full preprocessing, evaluation metrics, confusion matrices, and feature importance visualization.',
+    subtitle: 'Environmental ML Classification System',
+    description: 'Machine learning classification pipeline for predicting coral reef bleaching severity from environmental and oceanographic variables, including preprocessing, model training, evaluation, confusion-matrix analysis, and feature-importance visualization.',
     tech: ['Python', 'Scikit-learn', 'Pandas', 'NumPy', 'Matplotlib'],
     github: 'https://github.com/shreyasgshetty/Coral-Regime-Predictor',
-    live: null,
-    icon: FiBarChart2,
-    features: ['Logistic Regression', 'SVM & Random Forest', 'Feature Importance', 'Data Visualization'],
-    accent: '#A78BFA',
-    motif: 'ml',
+    features: ['Data Preprocessing', 'Logistic Regression & SVM', 'Random Forest Classifier', 'Confusion Matrix Analysis'],
+    accent: '#A78BFA', // Light Violet
+    motif: 'ml-pipeline',
   },
 ];
 
-const rgba = (hex, a) => {
-  const r = parseInt(hex.replace('#','').slice(0,2),16);
-  const g = parseInt(hex.replace('#','').slice(2,4),16);
-  const b = parseInt(hex.replace('#','').slice(4,6),16);
-  return `rgba(${r},${g},${b},${a})`;
-};
+/* ── 2. SOPHISTICATED TECHNICAL MOTIFS (100% Deterministic & GPU-Accelerated) ── */
+const ProjectMotifVisual = ({ motif, accent }) => {
+  if (motif === 'commerce-pipeline') {
+    const STAGES = [
+      { label: 'AUTH', sub: 'Firebase' },
+      { label: 'CATALOG', sub: 'MongoDB' },
+      { label: 'CHECKOUT', sub: 'Workflow' },
+      { label: 'PAYMENT', sub: 'Razorpay' },
+      { label: 'ORDER', sub: 'Fulfilled' },
+    ];
 
-/* ─── Abstract visual motif per project ─────────────────────── */
-const ProjectMotif = ({ motif, accent }) => {
-  if (motif === 'e-commerce') return (
-    <div style={{ position: 'relative', height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-      {/* Shopping grid pattern */}
-      {[0,1,2].map(row => (
-        <div key={row} style={{ position: 'absolute', display: 'flex', gap: '6px', top: `${20 + row * 26}%`, left: '50%', transform: 'translateX(-50%)' }}>
-          {[0,1,2,3].map(col => (
-            <div key={col} style={{ width: '18px', height: '22px', borderRadius: '3px', background: rgba(accent, 0.06 + Math.random()*0.08), border: `1px solid ${rgba(accent,0.15)}` }} />
-          ))}
+    return (
+      <div
+        style={{
+          position: 'relative',
+          width: '100%',
+          height: '100%',
+          minHeight: '220px',
+          display: 'flex',
+          flexDirection: 'column',
+          justifyContent: 'center',
+          padding: '1.5rem',
+        }}
+      >
+        {/* Ambient Glow Spot */}
+        <div
+          style={{
+            position: 'absolute',
+            inset: 0,
+            background: `radial-gradient(circle at 60% 40%, ${accent}18, transparent 65%)`,
+            pointerEvents: 'none',
+          }}
+        />
+
+        {/* Workflow Nodes Grid */}
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '10px', position: 'relative', zIndex: 1 }}>
+          <div
+            style={{
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'space-between',
+              marginBottom: '4px',
+            }}
+          >
+            <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.62rem', color: 'var(--text-4)', letterSpacing: '0.08em' }}>
+              TRANSACTION PIPELINE // ARCHITECTURE
+            </span>
+            <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.58rem', color: '#22C55E', fontWeight: 600 }}>
+              SYS.ACTIVE [200 OK]
+            </span>
+          </div>
+
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(5, 1fr)', gap: '6px' }}>
+            {STAGES.map((st, i) => (
+              <div
+                key={st.label}
+                style={{
+                  background: 'rgba(255, 255, 255, 0.035)',
+                  border: `1px solid ${accent}30`,
+                  borderRadius: '8px',
+                  padding: '8px 6px',
+                  textAlign: 'center',
+                  display: 'flex',
+                  flexDirection: 'column',
+                  gap: '2px',
+                }}
+              >
+                <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.58rem', fontWeight: 700, color: 'var(--text-1)', letterSpacing: '0.02em' }}>
+                  {st.label}
+                </span>
+                <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.52rem', color: accent }}>
+                  {st.sub}
+                </span>
+              </div>
+            ))}
+          </div>
+
+          {/* Connected SVG bus trace */}
+          <svg width="100%" height="16" viewBox="0 0 320 16" style={{ marginTop: '2px' }}>
+            <line x1="16" y1="8" x2="304" y2="8" stroke={`${accent}40`} strokeWidth="1.5" strokeDasharray="3 4" />
+            <circle cx="32" cy="8" r="3" fill={accent} />
+            <circle cx="96" cy="8" r="3" fill={accent} />
+            <circle cx="160" cy="8" r="3.5" fill="#61DAFB" />
+            <circle cx="224" cy="8" r="3" fill={accent} />
+            <circle cx="288" cy="8" r="3" fill="#22C55E" />
+          </svg>
         </div>
-      ))}
-      <div style={{ position: 'absolute', bottom: '15%', right: '20%', width: '32px', height: '32px', borderRadius: '50%', background: rgba(accent,0.12), border: `2px solid ${rgba(accent,0.3)}`, display: 'flex', alignItems: 'center', justifyContent: 'center', color: accent, fontSize: '0.9rem' }}>$</div>
-    </div>
-  );
+      </div>
+    );
+  }
 
-  if (motif === 'dashboard') return (
-    <div style={{ position: 'relative', height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '16px' }}>
-      {/* Bar chart */}
-      <div style={{ display: 'flex', alignItems: 'flex-end', gap: '5px', height: '70%' }}>
-        {[65,40,80,55,70,45,90].map((h, i) => (
-          <div key={i} style={{ width: '10px', height: `${h}%`, borderRadius: '3px 3px 0 0', background: rgba(accent, 0.1 + i*0.06), border: `1px solid ${rgba(accent,0.2)}` }} />
+  if (motif === 'crm-telemetry') {
+    const BARS = [45, 65, 38, 85, 52, 92, 70];
+    return (
+      <div style={{ position: 'relative', width: '100%', height: '90px', display: 'flex', alignItems: 'flex-end', justifyContent: 'center', gap: '8px', padding: '0 1rem 0.75rem 1rem' }}>
+        <div style={{ position: 'absolute', inset: 0, background: `radial-gradient(circle at 75% 25%, ${accent}12, transparent 60%)`, pointerEvents: 'none' }} />
+        {BARS.map((h, i) => (
+          <div
+            key={i}
+            style={{
+              width: '14px',
+              height: `${h}%`,
+              borderRadius: '4px 4px 1px 1px',
+              background: `linear-gradient(to top, ${accent}30, ${accent}80)`,
+              border: `1px solid ${accent}40`,
+            }}
+          />
         ))}
       </div>
-    </div>
-  );
+    );
+  }
 
-  if (motif === 'marketplace') return (
-    <div style={{ position: 'relative', height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-      {[{x:30,y:30,s:22},{x:60,y:50,s:18},{x:40,y:65,s:20},{x:70,y:25,s:16}].map((n,i) => (
-        <div key={i} style={{ position: 'absolute', left:`${n.x}%`, top:`${n.y}%`, width:`${n.s}px`, height:`${n.s}px`, borderRadius:'4px', background:rgba(accent,0.08), border:`1px solid ${rgba(accent,0.2)}`, display:'flex', alignItems:'center', justifyContent:'center', fontSize:'0.5rem', color:accent }}>↕</div>
-      ))}
-    </div>
-  );
+  if (motif === 'marketplace-auction') {
+    return (
+      <div style={{ position: 'relative', width: '100%', height: '90px', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '0.75rem' }}>
+        <div style={{ position: 'absolute', inset: 0, background: `radial-gradient(circle at 70% 30%, ${accent}12, transparent 60%)`, pointerEvents: 'none' }} />
+        <div style={{ display: 'flex', alignItems: 'center', gap: '8px', position: 'relative', zIndex: 1 }}>
+          <div style={{ padding: '4px 8px', borderRadius: '6px', background: 'rgba(255,255,255,0.04)', border: `1px solid ${accent}35`, fontSize: '0.62rem', fontFamily: 'var(--font-mono)', color: 'var(--text-2)' }}>
+            BID.ENGINE
+          </div>
+          <span style={{ color: accent, fontSize: '0.75rem' }}>⇄</span>
+          <div style={{ padding: '4px 8px', borderRadius: '6px', background: `${accent}15`, border: `1px solid ${accent}50`, fontSize: '0.62rem', fontFamily: 'var(--font-mono)', color: accent, fontWeight: 700 }}>
+            AUCTION // MATCH
+          </div>
+          <span style={{ color: accent, fontSize: '0.75rem' }}>⇄</span>
+          <div style={{ padding: '4px 8px', borderRadius: '6px', background: 'rgba(255,255,255,0.04)', border: `1px solid ${accent}35`, fontSize: '0.62rem', fontFamily: 'var(--font-mono)', color: 'var(--text-2)' }}>
+            SETTLE
+          </div>
+        </div>
+      </div>
+    );
+  }
 
-  if (motif === 'analytics') return (
-    <div style={{ position: 'relative', height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '16px' }}>
-      {/* Line graph */}
-      <svg viewBox="0 0 100 60" style={{ width: '80%', height: '60%' }}>
-        <polyline points="5,55 20,35 35,45 50,15 65,30 80,10 95,20" fill="none" stroke={rgba(accent,0.5)} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-        <polyline points="5,55 20,35 35,45 50,15 65,30 80,10 95,20" fill={rgba(accent,0.06)} strokeWidth="0" />
-        {[20,35,50,65,80].map((x,i) => (
-          <circle key={i} cx={x} cy={[35,45,15,30,10][i]} r="3" fill={accent} opacity="0.7" />
-        ))}
-      </svg>
-    </div>
-  );
+  if (motif === 'sports-telemetry') {
+    return (
+      <div style={{ position: 'relative', width: '100%', height: '90px', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '0.5rem 1rem' }}>
+        <div style={{ position: 'absolute', inset: 0, background: `radial-gradient(circle at 70% 30%, ${accent}12, transparent 60%)`, pointerEvents: 'none' }} />
+        <svg viewBox="0 0 200 60" style={{ width: '85%', height: '80%', position: 'relative', zIndex: 1 }}>
+          <polyline points="10,50 35,35 65,42 95,18 125,28 155,12 185,22" fill="none" stroke={`${accent}70`} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+          <circle cx="95" cy="18" r="3.5" fill={accent} />
+          <circle cx="155" cy="12" r="3.5" fill="#FFFFFF" />
+          <circle cx="185" cy="22" r="3" fill={accent} />
+        </svg>
+      </div>
+    );
+  }
 
-  if (motif === 'ml') return (
-    <div style={{ position: 'relative', height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-      {/* Neural net */}
-      {[{x:20,ys:[25,50,75]},{x:50,ys:[15,35,55,75]},{x:80,ys:[30,60]}].map((col,ci) => (
-        col.ys.map((y,ri) => (
-          <div key={`${ci}-${ri}`} style={{ position:'absolute', left:`${col.x}%`, top:`${y}%`, width:'10px', height:'10px', borderRadius:'50%', background:rgba(accent,0.12), border:`1px solid ${rgba(accent,0.35)}`, transform:'translate(-50%,-50%)' }} />
-        ))
-      ))}
-      {/* Connection lines via svg */}
-      <svg style={{ position:'absolute', inset:0, width:'100%', height:'100%' }}>
-        {[
-          [20,25,50,15],[20,25,50,35],[20,50,50,35],[20,50,50,55],[20,75,50,55],[20,75,50,75],
-          [50,15,80,30],[50,35,80,30],[50,55,80,60],[50,75,80,60],
-        ].map(([x1,y1,x2,y2],i) => (
-          <line key={i} x1={`${x1}%`} y1={`${y1}%`} x2={`${x2}%`} y2={`${y2}%`} stroke={rgba(accent,0.18)} strokeWidth="1" />
-        ))}
-      </svg>
-    </div>
-  );
+  if (motif === 'ml-pipeline') {
+    return (
+      <div style={{ position: 'relative', width: '100%', height: '90px', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '0.5rem 1rem' }}>
+        <div style={{ position: 'absolute', inset: 0, background: `radial-gradient(circle at 70% 30%, ${accent}12, transparent 60%)`, pointerEvents: 'none' }} />
+        <div style={{ display: 'flex', alignItems: 'center', gap: '14px', position: 'relative', zIndex: 1 }}>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '5px' }}>
+            <span style={{ width: '8px', height: '8px', borderRadius: '50%', background: `${accent}70` }} />
+            <span style={{ width: '8px', height: '8px', borderRadius: '50%', background: `${accent}70` }} />
+            <span style={{ width: '8px', height: '8px', borderRadius: '50%', background: `${accent}70` }} />
+          </div>
+          <div style={{ height: '36px', width: '1px', background: `${accent}30` }} />
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '5px' }}>
+            <span style={{ width: '8px', height: '8px', borderRadius: '50%', background: '#61DAFB' }} />
+            <span style={{ width: '8px', height: '8px', borderRadius: '50%', background: '#61DAFB' }} />
+          </div>
+          <div style={{ height: '36px', width: '1px', background: `${accent}30` }} />
+          <div style={{ padding: '3px 7px', borderRadius: '5px', background: `${accent}20`, border: `1px solid ${accent}45`, fontSize: '0.58rem', fontFamily: 'var(--font-mono)', color: accent, fontWeight: 700 }}>
+            CLASSIFIER
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   return null;
 };
 
-/* ─── Featured card (UrbanVault) ─────────────────────────────── */
-const FeaturedCard = ({ project }) => {
-  const [ref, inView] = useInView({ threshold: 0.06 });
-  const { accent } = project;
-  const Icon = project.icon;
-
-  return (
-    <motion.article
-      ref={ref}
-      id={`project-${project.id}`}
-      initial={{ opacity: 0, y: 32 }}
-      animate={inView ? { opacity: 1, y: 0 } : {}}
-      transition={{ duration: 0.65, ease: 'easeOut' }}
-      style={{
-        background: 'var(--surface)',
-        border: `1px solid ${rgba(accent, 0.2)}`,
-        borderRadius: 'var(--r-xl)',
-        overflow: 'hidden',
-        position: 'relative',
-        marginBottom: '1rem',
-        transition: 'all 0.3s ease',
-      }}
-      onMouseEnter={e => {
-        e.currentTarget.style.borderColor = rgba(accent, 0.4);
-        e.currentTarget.style.boxShadow = `0 0 60px ${rgba(accent, 0.08)}`;
-      }}
-      onMouseLeave={e => {
-        e.currentTarget.style.borderColor = rgba(accent, 0.2);
-        e.currentTarget.style.boxShadow = 'none';
-      }}
-    >
-      {/* Top accent bar */}
-      <div style={{ height: '3px', background: `linear-gradient(90deg, ${accent}, ${rgba(accent, 0.2)}, transparent)` }} />
-
-      <div style={{
-        display: 'grid',
-        gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))',
-        minHeight: '260px',
-      }}>
-        {/* Content */}
-        <div style={{ padding: '2.25rem 2.5rem', display: 'flex', flexDirection: 'column', justifyContent: 'space-between', gap: '1.5rem' }}>
-          <div>
-            <div style={{ display: 'flex', alignItems: 'flex-start', gap: '0.85rem', marginBottom: '1.25rem' }}>
-              <div style={{ width: '44px', height: '44px', borderRadius: '11px', background: rgba(accent, 0.1), border: `1px solid ${rgba(accent, 0.25)}`, display: 'flex', alignItems: 'center', justifyContent: 'center', color: accent, flexShrink: 0 }}>
-                <Icon size={20} />
-              </div>
-              <div>
-                <span style={{ fontSize: '0.62rem', fontFamily: 'var(--font-mono)', color: rgba(accent, 0.7), fontWeight: 700, letterSpacing: '0.12em', display: 'block', marginBottom: '4px' }}>
-                  {project.num} / FEATURED
-                </span>
-                <h3 style={{ fontFamily: 'var(--font-display)', fontSize: '1.45rem', fontWeight: 800, color: 'var(--text-1)', letterSpacing: '-0.02em', lineHeight: 1.1 }}>
-                  {project.title}
-                </h3>
-                <span style={{ fontSize: '0.73rem', color: accent, fontWeight: 500 }}>{project.subtitle}</span>
-              </div>
-            </div>
-
-            <p style={{ color: 'var(--text-3)', fontSize: '0.875rem', lineHeight: 1.8, marginBottom: '1.25rem' }}>
-              {project.description}
-            </p>
-
-            <div style={{ display: 'flex', flexWrap: 'wrap', gap: '6px', marginBottom: '1.25rem' }}>
-              {project.features.map(f => (
-                <span key={f} style={{ fontSize: '0.7rem', padding: '3px 10px', borderRadius: '100px', background: rgba(accent, 0.06), border: `1px solid ${rgba(accent, 0.18)}`, color: accent, fontWeight: 500 }}>{f}</span>
-              ))}
-            </div>
-          </div>
-
-          <div style={{ display: 'flex', flexWrap: 'wrap', alignItems: 'center', justifyContent: 'space-between', gap: '0.75rem' }}>
-            <div style={{ display: 'flex', flexWrap: 'wrap', gap: '4px' }}>
-              {project.tech.map(t => (
-                <span key={t} style={{ fontSize: '0.66rem', padding: '2px 8px', borderRadius: 'var(--r-sm)', background: 'var(--surface-up)', border: '1px solid var(--border)', color: 'var(--text-3)', fontFamily: 'var(--font-mono)', fontWeight: 600 }}>{t}</span>
-              ))}
-            </div>
-            <div style={{ display: 'flex', gap: '8px' }}>
-              <ActionBtn href={project.github} icon={<FiGithub size={14} />} label="GitHub" accent={accent} />
-              {project.live && <ActionBtn href={project.live} icon={<FiExternalLink size={14} />} label="Live" accent={accent} filled />}
-            </div>
-          </div>
-        </div>
-
-        {/* Visual motif panel */}
-        <div style={{
-          background: rgba(accent, 0.03),
-          borderLeft: `1px solid ${rgba(accent, 0.1)}`,
-          position: 'relative',
-          minHeight: '200px',
-          overflow: 'hidden',
-        }}>
-          {/* Glow */}
-          <div style={{ position: 'absolute', inset: 0, background: `radial-gradient(circle at 70% 30%, ${rgba(accent, 0.1)}, transparent 60%)`, pointerEvents: 'none' }} />
-          <ProjectMotif motif={project.motif} accent={accent} />
-          {/* Large faded number */}
-          <div style={{
-            position: 'absolute', bottom: '0.5rem', right: '1.25rem',
-            fontFamily: 'var(--font-display)', fontWeight: 900,
-            fontSize: '5rem', lineHeight: 1,
-            color: rgba(accent, 0.06),
-            userSelect: 'none',
-          }}>{project.num}</div>
-        </div>
-      </div>
-    </motion.article>
-  );
-};
-
-/* ─── Grid card ──────────────────────────────────────────────── */
-const GridCard = ({ project, index }) => {
-  const [ref, inView] = useInView({ threshold: 0.06 });
-  const { accent } = project;
-  const Icon = project.icon;
-
-  return (
-    <motion.article
-      ref={ref}
-      id={`project-${project.id}`}
-      initial={{ opacity: 0, y: 24 }}
-      animate={inView ? { opacity: 1, y: 0 } : {}}
-      transition={{ duration: 0.55, delay: (index % 2) * 0.1, ease: 'easeOut' }}
-      style={{
-        background: 'var(--surface)',
-        border: '1px solid var(--border)',
-        borderRadius: 'var(--r-lg)',
-        overflow: 'hidden',
-        display: 'flex',
-        flexDirection: 'column',
-        position: 'relative',
-        transition: 'all 0.25s ease',
-      }}
-      onMouseEnter={e => {
-        e.currentTarget.style.borderColor = rgba(accent, 0.35);
-        e.currentTarget.style.transform = 'translateY(-4px)';
-        e.currentTarget.style.boxShadow = `0 16px 48px ${rgba(accent, 0.08)}`;
-      }}
-      onMouseLeave={e => {
-        e.currentTarget.style.borderColor = 'var(--border)';
-        e.currentTarget.style.transform = 'translateY(0)';
-        e.currentTarget.style.boxShadow = 'none';
-      }}
-    >
-      {/* Motif strip */}
-      <div style={{ height: '80px', background: rgba(accent, 0.04), borderBottom: `1px solid ${rgba(accent, 0.1)}`, position: 'relative', overflow: 'hidden' }}>
-        <div style={{ position: 'absolute', inset: 0, background: `radial-gradient(circle at 80% 20%, ${rgba(accent, 0.12)}, transparent 60%)` }} />
-        <ProjectMotif motif={project.motif} accent={accent} />
-        {/* Number */}
-        <div style={{ position: 'absolute', top: '0.6rem', left: '0.85rem', fontFamily: 'var(--font-mono)', fontSize: '0.62rem', fontWeight: 700, color: rgba(accent, 0.6), letterSpacing: '0.08em' }}>{project.num}</div>
-      </div>
-
-      <div style={{ padding: '1.5rem', flex: 1, display: 'flex', flexDirection: 'column', gap: '0.9rem' }}>
-        {/* Title row */}
-        <div style={{ display: 'flex', gap: '10px', alignItems: 'flex-start' }}>
-          <div style={{ width: '34px', height: '34px', borderRadius: '8px', background: rgba(accent, 0.1), border: `1px solid ${rgba(accent, 0.22)}`, display: 'flex', alignItems: 'center', justifyContent: 'center', color: accent, flexShrink: 0 }}>
-            <Icon size={16} />
-          </div>
-          <div>
-            <h3 style={{ fontFamily: 'var(--font-display)', fontSize: '1.05rem', fontWeight: 700, color: 'var(--text-1)', letterSpacing: '-0.01em', lineHeight: 1.2 }}>{project.title}</h3>
-            <span style={{ fontSize: '0.7rem', color: accent, fontWeight: 500 }}>{project.subtitle}</span>
-          </div>
-        </div>
-
-        <p style={{ color: 'var(--text-3)', fontSize: '0.81rem', lineHeight: 1.75, flex: 1 }}>{project.description}</p>
-
-        {/* Features */}
-        <div style={{ display: 'flex', flexWrap: 'wrap', gap: '4px' }}>
-          {project.features.map(f => (
-            <span key={f} style={{ fontSize: '0.67rem', padding: '2px 8px', borderRadius: '100px', background: rgba(accent, 0.06), border: `1px solid ${rgba(accent, 0.15)}`, color: accent, fontWeight: 500 }}>{f}</span>
-          ))}
-        </div>
-
-        {/* Tech */}
-        <div style={{ display: 'flex', flexWrap: 'wrap', gap: '4px' }}>
-          {project.tech.map(t => (
-            <span key={t} style={{ fontSize: '0.64rem', padding: '2px 7px', borderRadius: 'var(--r-sm)', background: 'var(--surface-up)', border: '1px solid var(--border)', color: 'var(--text-3)', fontFamily: 'var(--font-mono)', fontWeight: 600 }}>{t}</span>
-          ))}
-        </div>
-
-        {/* Actions */}
-        <div style={{ display: 'flex', gap: '7px', paddingTop: '0.25rem' }}>
-          <ActionBtn href={project.github} icon={<FiGithub size={13} />} label="GitHub" accent={accent} />
-          {project.live && <ActionBtn href={project.live} icon={<FiExternalLink size={13} />} label="Live" accent={accent} filled />}
-        </div>
-      </div>
-    </motion.article>
-  );
-};
-
-const ActionBtn = ({ href, icon, label, accent, filled }) => {
-  const bg = filled ? accent : 'transparent';
-  const border = rgba(accent, filled ? 1 : 0.3);
-  const color = filled ? '#fff' : accent;
-  return (
-    <motion.a
-      href={href} target="_blank" rel="noopener noreferrer"
-      whileHover={{ scale: 1.04 }} whileTap={{ scale: 0.96 }}
-      style={{
-        display: 'flex', alignItems: 'center', gap: '5px',
-        padding: '0.4rem 0.9rem', borderRadius: '7px',
-        background: filled ? rgba(accent, 0.9) : rgba(accent, 0.06),
-        border: `1px solid ${border}`, color, fontWeight: 600,
-        fontSize: '0.76rem', textDecoration: 'none', transition: 'all 0.18s',
-      }}
-      onMouseEnter={e => { e.currentTarget.style.background = rgba(accent, filled ? 1 : 0.14); }}
-      onMouseLeave={e => { e.currentTarget.style.background = rgba(accent, filled ? 0.9 : 0.06); }}
-    >
-      {icon} {label}
-    </motion.a>
-  );
-};
-
+/**
+ * Projects Section — Engineering Laboratory & Project Portfolio
+ * Features prominent UrbanVault featured system, symmetrical 2x2 grid,
+ * deterministic system motifs, and clean monospace metadata.
+ */
 const Projects = () => {
   const [ref, inView] = useInView({ threshold: 0.04 });
-  const [featured, ...rest] = PROJECTS;
+
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: { staggerChildren: 0.1, delayChildren: 0.05 },
+    },
+  };
+
+  const itemVariants = {
+    hidden: { opacity: 0, y: 22 },
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: { duration: 0.5, ease: [0.22, 1, 0.36, 1] },
+    },
+  };
 
   return (
-    <section id="projects" ref={ref} style={{ position: 'relative', padding: '8rem 0', background: 'var(--bg-alt)' }}>
-      {/* Right glow */}
-      <div style={{
-        position: 'absolute', top: '10%', right: '-8%',
-        width: '40vw', height: '40vw', maxWidth: '500px',
-        background: 'radial-gradient(circle, rgba(124,58,237,0.07) 0%, transparent 65%)',
-        pointerEvents: 'none',
-      }} />
+    <section
+      id="projects"
+      ref={ref}
+      style={{
+        position: 'relative',
+        padding: 'clamp(5rem, 12vh, 8rem) 0',
+        background: 'linear-gradient(135deg, #08080B 0%, #0A0910 50%, #07080B 100%)',
+        overflow: 'hidden',
+      }}
+    >
+      {/* ── TECHNICAL WORKSPACE BACKGROUND ── */}
+      <div
+        style={{
+          position: 'absolute',
+          inset: 0,
+          pointerEvents: 'none',
+          backgroundImage: `
+            linear-gradient(to right, rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+            linear-gradient(to bottom, rgba(255, 255, 255, 0.03) 1px, transparent 1px)
+          `,
+          backgroundSize: '56px 56px',
+          maskImage: 'radial-gradient(ellipse 90% 85% at 50% 40%, black 25%, transparent 88%)',
+          WebkitMaskImage: 'radial-gradient(ellipse 90% 85% at 50% 40%, black 25%, transparent 88%)',
+          opacity: 0.85,
+        }}
+      />
+
+      {/* Atmospheric Accent Glows */}
+      <div
+        style={{
+          position: 'absolute',
+          top: '15%',
+          right: '-5%',
+          width: 'min(65vw, 600px)',
+          height: 'min(65vw, 600px)',
+          background: 'radial-gradient(circle, rgba(124, 58, 237, 0.08) 0%, transparent 65%)',
+          borderRadius: '50%',
+          filter: 'blur(45px)',
+          pointerEvents: 'none',
+        }}
+      />
+      <div
+        style={{
+          position: 'absolute',
+          bottom: '10%',
+          left: '-5%',
+          width: 'min(55vw, 500px)',
+          height: 'min(55vw, 500px)',
+          background: 'radial-gradient(circle, rgba(97, 218, 251, 0.05) 0%, transparent 65%)',
+          borderRadius: '50%',
+          filter: 'blur(45px)',
+          pointerEvents: 'none',
+        }}
+      />
 
       <div className="wrap" style={{ position: 'relative', zIndex: 1 }}>
         <motion.div
-          initial={{ opacity: 0, y: 28 }}
-          animate={inView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.6 }}
-          style={{ marginBottom: '3.5rem' }}
+          variants={containerVariants}
+          initial="hidden"
+          animate={inView ? 'visible' : 'hidden'}
         >
-          <div className="eyebrow">Work</div>
-          <h2 className="section-title" style={{ fontSize: 'clamp(2rem, 5vw, 3.2rem)', marginBottom: '0.75rem' }}>
-            Featured Projects
-          </h2>
-          <p style={{ color: 'var(--text-3)', maxWidth: '460px', fontSize: '0.9rem', lineHeight: 1.7 }}>
-            A selection of projects demonstrating full-stack development and data science skills.
-          </p>
+          {/* ── SECTION HEADER ── */}
+          <motion.div variants={itemVariants} style={{ marginBottom: '3.25rem' }}>
+            <div
+              style={{
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: '8px',
+                fontFamily: 'var(--font-mono)',
+                fontSize: '0.72rem',
+                color: 'var(--accent-light)',
+                letterSpacing: '0.14em',
+                textTransform: 'uppercase',
+                fontWeight: 600,
+                marginBottom: '0.8rem',
+              }}
+            >
+              <span style={{ width: '18px', height: '1px', background: 'var(--accent)' }} />
+              03 / SELECTED WORK
+            </div>
+            <h2
+              style={{
+                fontFamily: 'var(--font-display)',
+                fontSize: 'clamp(2.2rem, 5.5vw, 3.8rem)',
+                fontWeight: 900,
+                color: 'var(--text-1)',
+                letterSpacing: '-0.03em',
+                lineHeight: 1.08,
+                marginBottom: '0.75rem',
+              }}
+            >
+              Engineering in practice.
+            </h2>
+            <p
+              style={{
+                color: 'var(--text-3)',
+                maxWidth: '560px',
+                fontSize: '0.92rem',
+                lineHeight: 1.75,
+              }}
+            >
+              Systems, applications, and machine learning pipelines designed and implemented across full-stack engineering and data science.
+            </p>
+          </motion.div>
+
+          {/* ── 1. FEATURED SYSTEM CARD: URBANVAULT (Full-Width Asymmetric Card) ── */}
+          <motion.div
+            variants={itemVariants}
+            style={{
+              marginBottom: '1.5rem',
+              background: 'rgba(14, 14, 19, 0.94)',
+              border: `1px solid ${FEATURED_PROJECT.accent}40`,
+              borderRadius: '16px',
+              boxShadow: '0 16px 45px rgba(0, 0, 0, 0.55), 0 0 30px rgba(124, 58, 237, 0.1)',
+              overflow: 'hidden',
+              position: 'relative',
+            }}
+          >
+            {/* Top Header Strip */}
+            <div
+              style={{
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'space-between',
+                padding: '0.85rem 1.4rem',
+                background: 'rgba(255, 255, 255, 0.025)',
+                borderBottom: '1px solid rgba(255, 255, 255, 0.06)',
+                flexWrap: 'wrap',
+                gap: '8px',
+              }}
+            >
+              <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                <span
+                  style={{
+                    width: '7px',
+                    height: '7px',
+                    borderRadius: '50%',
+                    background: FEATURED_PROJECT.accent,
+                    boxShadow: `0 0 8px ${FEATURED_PROJECT.accent}`,
+                  }}
+                />
+                <span
+                  style={{
+                    fontFamily: 'var(--font-mono)',
+                    fontSize: '0.7rem',
+                    fontWeight: 700,
+                    color: 'var(--text-1)',
+                    letterSpacing: '0.08em',
+                    textTransform: 'uppercase',
+                  }}
+                >
+                  {FEATURED_PROJECT.tag}
+                </span>
+              </div>
+
+              <span
+                style={{
+                  fontFamily: 'var(--font-mono)',
+                  fontSize: '0.62rem',
+                  color: 'var(--accent-light)',
+                  letterSpacing: '0.06em',
+                }}
+              >
+                FLAGSHIP IMPLEMENTATION
+              </span>
+            </div>
+
+            {/* Split Content: Left Information / Right System Motif */}
+            <div
+              style={{
+                display: 'grid',
+                gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 320px), 1fr))',
+                alignItems: 'center',
+              }}
+            >
+              {/* Left Details */}
+              <div style={{ padding: 'clamp(1.4rem, 3vw, 2.2rem)', display: 'flex', flexDirection: 'column', gap: '1.1rem' }}>
+                <div>
+                  <h3
+                    style={{
+                      fontFamily: 'var(--font-display)',
+                      fontSize: 'clamp(1.6rem, 3.5vw, 2.2rem)',
+                      fontWeight: 800,
+                      color: 'var(--text-1)',
+                      letterSpacing: '-0.02em',
+                      lineHeight: 1.15,
+                    }}
+                  >
+                    {FEATURED_PROJECT.title}
+                  </h3>
+                  <p
+                    style={{
+                      fontFamily: 'var(--font-mono)',
+                      fontSize: '0.75rem',
+                      color: 'var(--accent-light)',
+                      marginTop: '3px',
+                      fontWeight: 500,
+                    }}
+                  >
+                    {FEATURED_PROJECT.subtitle}
+                  </p>
+                </div>
+
+                <p style={{ color: 'var(--text-3)', fontSize: '0.88rem', lineHeight: 1.75 }}>
+                  {FEATURED_PROJECT.description}
+                </p>
+
+                {/* Key System Capabilities */}
+                <div style={{ display: 'flex', flexWrap: 'wrap', gap: '6px' }}>
+                  {FEATURED_PROJECT.features.map((feat) => (
+                    <span
+                      key={feat}
+                      style={{
+                        padding: '3px 10px',
+                        borderRadius: '6px',
+                        background: 'rgba(124, 58, 237, 0.08)',
+                        border: '1px solid rgba(124, 58, 237, 0.25)',
+                        fontSize: '0.68rem',
+                        fontFamily: 'var(--font-mono)',
+                        color: 'var(--accent-light)',
+                        fontWeight: 600,
+                      }}
+                    >
+                      {feat}
+                    </span>
+                  ))}
+                </div>
+
+                {/* Tech Stack Signature */}
+                <div
+                  style={{
+                    paddingTop: '0.85rem',
+                    borderTop: '1px solid rgba(255, 255, 255, 0.06)',
+                    display: 'flex',
+                    flexWrap: 'wrap',
+                    alignItems: 'center',
+                    justifyContent: 'space-between',
+                    gap: '1rem',
+                  }}
+                >
+                  <div style={{ display: 'flex', flexWrap: 'wrap', gap: '6px' }}>
+                    {FEATURED_PROJECT.tech.map((t) => (
+                      <span
+                        key={t}
+                        style={{
+                          padding: '2px 8px',
+                          borderRadius: '4px',
+                          background: 'rgba(255, 255, 255, 0.03)',
+                          border: '1px solid rgba(255, 255, 255, 0.07)',
+                          fontSize: '0.64rem',
+                          fontFamily: 'var(--font-mono)',
+                          color: 'var(--text-2)',
+                        }}
+                      >
+                        {t}
+                      </span>
+                    ))}
+                  </div>
+
+                  <a
+                    href={FEATURED_PROJECT.github}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    style={{
+                      display: 'inline-flex',
+                      alignItems: 'center',
+                      gap: '7px',
+                      padding: '0.5rem 1.1rem',
+                      borderRadius: '8px',
+                      background: 'rgba(124, 58, 237, 0.15)',
+                      border: '1px solid rgba(124, 58, 237, 0.45)',
+                      color: '#FFFFFF',
+                      fontSize: '0.78rem',
+                      fontWeight: 600,
+                      textDecoration: 'none',
+                      transition: 'background-color 0.2s ease, border-color 0.2s ease',
+                      flexShrink: 0,
+                    }}
+                    onMouseEnter={(e) => {
+                      e.currentTarget.style.background = 'var(--accent)';
+                    }}
+                    onMouseLeave={(e) => {
+                      e.currentTarget.style.background = 'rgba(124, 58, 237, 0.15)';
+                    }}
+                  >
+                    <FiGithub size={14} />
+                    <span>SOURCE CODE</span>
+                    <FiArrowRight size={13} />
+                  </a>
+                </div>
+              </div>
+
+              {/* Right System Motif Interface */}
+              <div
+                style={{
+                  height: '100%',
+                  minHeight: '220px',
+                  background: 'rgba(0, 0, 0, 0.3)',
+                  borderLeft: '1px solid rgba(255, 255, 255, 0.06)',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                }}
+              >
+                <ProjectMotifVisual motif={FEATURED_PROJECT.motif} accent={FEATURED_PROJECT.accent} />
+              </div>
+            </div>
+          </motion.div>
+
+          {/* ── 2. SYMMETRICAL 2x2 CONTROLLED PROJECT GRID ── */}
+          <div className="projects-2col-grid">
+            {GRID_PROJECTS.map((project) => (
+              <motion.article
+                key={project.id}
+                variants={itemVariants}
+                style={{
+                  background: 'rgba(12, 12, 16, 0.88)',
+                  border: '1px solid rgba(255, 255, 255, 0.06)',
+                  borderRadius: '14px',
+                  overflow: 'hidden',
+                  display: 'flex',
+                  flexDirection: 'column',
+                  justifyContent: 'space-between',
+                  boxShadow: '0 10px 30px rgba(0, 0, 0, 0.4)',
+                  transition: 'border-color 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease',
+                }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.borderColor = `${project.accent}55`;
+                  e.currentTarget.style.transform = 'translateY(-3px)';
+                  e.currentTarget.style.boxShadow = `0 14px 40px ${project.accent}15`;
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.borderColor = 'rgba(255, 255, 255, 0.06)';
+                  e.currentTarget.style.transform = 'translateY(0)';
+                  e.currentTarget.style.boxShadow = '0 10px 30px rgba(0, 0, 0, 0.4)';
+                }}
+              >
+                {/* Visual Motif Top Strip */}
+                <div
+                  style={{
+                    background: 'rgba(0, 0, 0, 0.3)',
+                    borderBottom: '1px solid rgba(255, 255, 255, 0.05)',
+                    position: 'relative',
+                    overflow: 'hidden',
+                  }}
+                >
+                  <div
+                    style={{
+                      position: 'absolute',
+                      top: '0.65rem',
+                      left: '0.9rem',
+                      fontFamily: 'var(--font-mono)',
+                      fontSize: '0.62rem',
+                      fontWeight: 700,
+                      color: project.accent,
+                      letterSpacing: '0.06em',
+                      zIndex: 2,
+                    }}
+                  >
+                    {project.tag}
+                  </div>
+                  <ProjectMotifVisual motif={project.motif} accent={project.accent} />
+                </div>
+
+                {/* Card Content Body */}
+                <div style={{ padding: '1.25rem 1.4rem', display: 'flex', flexDirection: 'column', gap: '0.85rem', flex: 1, justifyContent: 'space-between' }}>
+                  <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
+                    <div>
+                      <h4
+                        style={{
+                          fontFamily: 'var(--font-display)',
+                          fontSize: '1.2rem',
+                          fontWeight: 800,
+                          color: 'var(--text-1)',
+                          letterSpacing: '-0.015em',
+                          lineHeight: 1.2,
+                        }}
+                      >
+                        {project.title}
+                      </h4>
+                      <span
+                        style={{
+                          fontFamily: 'var(--font-mono)',
+                          fontSize: '0.68rem',
+                          color: project.accent,
+                          fontWeight: 500,
+                        }}
+                      >
+                        {project.subtitle}
+                      </span>
+                    </div>
+
+                    <p style={{ color: 'var(--text-3)', fontSize: '0.82rem', lineHeight: 1.7 }}>
+                      {project.description}
+                    </p>
+
+                    {/* Key Technical Features */}
+                    <div style={{ display: 'flex', flexWrap: 'wrap', gap: '4px', marginTop: '4px' }}>
+                      {project.features.map((feat) => (
+                        <span
+                          key={feat}
+                          style={{
+                            padding: '2px 7px',
+                            borderRadius: '4px',
+                            background: 'rgba(255, 255, 255, 0.03)',
+                            border: `1px solid ${project.accent}25`,
+                            fontSize: '0.64rem',
+                            fontFamily: 'var(--font-mono)',
+                            color: 'var(--text-2)',
+                          }}
+                        >
+                          {feat}
+                        </span>
+                      ))}
+                    </div>
+                  </div>
+
+                  {/* Card Footer: Tech Stack + Source Code CTA */}
+                  <div
+                    style={{
+                      paddingTop: '0.75rem',
+                      borderTop: '1px solid rgba(255, 255, 255, 0.05)',
+                      display: 'flex',
+                      flexWrap: 'wrap',
+                      alignItems: 'center',
+                      justifyContent: 'space-between',
+                      gap: '0.75rem',
+                    }}
+                  >
+                    <div style={{ display: 'flex', flexWrap: 'wrap', gap: '4px' }}>
+                      {project.tech.map((t) => (
+                        <span
+                          key={t}
+                          style={{
+                            fontSize: '0.62rem',
+                            fontFamily: 'var(--font-mono)',
+                            color: 'var(--text-4)',
+                          }}
+                        >
+                          {t}
+                        </span>
+                      ))}
+                    </div>
+
+                    <a
+                      href={project.github}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      style={{
+                        display: 'inline-flex',
+                        alignItems: 'center',
+                        gap: '6px',
+                        padding: '0.4rem 0.85rem',
+                        borderRadius: '6px',
+                        background: 'rgba(255, 255, 255, 0.04)',
+                        border: `1px solid ${project.accent}35`,
+                        color: project.accent,
+                        fontSize: '0.72rem',
+                        fontWeight: 600,
+                        textDecoration: 'none',
+                        transition: 'background-color 0.18s ease, color 0.18s ease',
+                      }}
+                      onMouseEnter={(e) => {
+                        e.currentTarget.style.background = `${project.accent}20`;
+                        e.currentTarget.style.color = '#FFFFFF';
+                      }}
+                      onMouseLeave={(e) => {
+                        e.currentTarget.style.background = 'rgba(255, 255, 255, 0.04)';
+                        e.currentTarget.style.color = project.accent;
+                      }}
+                    >
+                      <FiGithub size={13} />
+                      <span>SOURCE CODE</span>
+                      <FiArrowRight size={12} />
+                    </a>
+                  </div>
+                </div>
+              </motion.article>
+            ))}
+          </div>
+
+          {/* ── 3. TRANSITION FOOTER BANNER ── */}
+          <motion.div
+            variants={itemVariants}
+            style={{
+              marginTop: '2.5rem',
+              padding: '1rem 1.4rem',
+              background: 'rgba(14, 14, 18, 0.75)',
+              border: '1px solid rgba(124, 58, 237, 0.2)',
+              borderRadius: '12px',
+              display: 'flex',
+              flexWrap: 'wrap',
+              alignItems: 'center',
+              justifyContent: 'space-between',
+              gap: '1rem',
+            }}
+          >
+            <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+              <span
+                style={{
+                  width: '6px',
+                  height: '6px',
+                  borderRadius: '50%',
+                  background: 'var(--accent)',
+                }}
+              />
+              <span
+                style={{
+                  fontFamily: 'var(--font-mono)',
+                  fontSize: '0.68rem',
+                  fontWeight: 700,
+                  color: 'var(--accent-light)',
+                  letterSpacing: '0.08em',
+                  textTransform: 'uppercase',
+                }}
+              >
+                MORE SYSTEMS & CODEBASES IN ACTIVE DEVELOPMENT
+              </span>
+            </div>
+
+            <a
+              href="#contact"
+              onClick={(e) => {
+                e.preventDefault();
+                document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' });
+              }}
+              style={{
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: '6px',
+                fontFamily: 'var(--font-mono)',
+                fontSize: '0.7rem',
+                color: 'var(--text-3)',
+                textDecoration: 'none',
+                transition: 'color 0.2s ease',
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.color = 'var(--accent-light)';
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.color = 'var(--text-3)';
+              }}
+            >
+              <span>Get in touch for collaborations</span>
+              <FiArrowRight size={13} />
+            </a>
+          </motion.div>
         </motion.div>
-
-        {/* Featured */}
-        <FeaturedCard project={featured} />
-
-        {/* Grid */}
-        <div className="projects-grid">
-          {rest.map((p, i) => (
-            <GridCard key={p.id} project={p} index={i} />
-          ))}
-        </div>
       </div>
     </section>
   );

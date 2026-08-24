@@ -631,3 +631,15 @@ body {
     display: inline-block !important;
   }
 }
+
+/* projects controlled 2-column grid layout */
+.projects-2col-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1.25rem;
+}
+@media (min-width: 768px) {
+  .projects-2col-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}

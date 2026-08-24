@@ -9,12 +9,12 @@ const TYPEWRITER_TEXTS = [
 ];
 
 const CORE_STACK = [
-  { name: 'MERN',      category: 'Full Stack',              color: '#61DAFB' },
-  { name: 'Java',      category: 'Programming',             color: '#F89820' },
-  { name: 'Python',    category: 'Programming',             color: '#3776AB' },
-  { name: 'SQL',       category: 'Database',                color: '#38BDF8' },
-  { name: 'ML / AI',   category: 'Artificial Intelligence', color: '#A78BFA' },
-  { name: 'REST APIs', category: 'Backend',                 color: '#22C55E' },
+  { name: 'MERN', category: 'Full Stack', color: '#61DAFB' },
+  { name: 'Java', category: 'Programming', color: '#F89820' },
+  { name: 'Python', category: 'Programming', color: '#3776AB' },
+  { name: 'SQL', category: 'Database', color: '#38BDF8' },
+  { name: 'ML / AI', category: 'Artificial Intelligence', color: '#A78BFA' },
+  { name: 'Spring Boot', category: 'Frame Work', color: '#22C55E' },
 ];
 
 /**
@@ -22,14 +22,14 @@ const CORE_STACK = [
  * Renders high-frequency typewriter updates locally without causing parent Hero re-renders.
  */
 const TypewriterRole = React.memo(() => {
-  const [displayed,  setDisplayed]  = useState('');
-  const [phase,      setPhase]      = useState('typing');
-  const [textIndex,  setTextIndex]  = useState(0);
-  const phaseRef     = useRef(phase);
+  const [displayed, setDisplayed] = useState('');
+  const [phase, setPhase] = useState('typing');
+  const [textIndex, setTextIndex] = useState(0);
+  const phaseRef = useRef(phase);
   const textIndexRef = useRef(textIndex);
   const displayedRef = useRef(displayed);
 
-  useEffect(() => { phaseRef.current     = phase;     }, [phase]);
+  useEffect(() => { phaseRef.current = phase; }, [phase]);
   useEffect(() => { textIndexRef.current = textIndex; }, [textIndex]);
   useEffect(() => { displayedRef.current = displayed; }, [displayed]);
 
@@ -126,16 +126,16 @@ const HeroAtmosphere = React.memo(() => {
 
   // Sparse static decorative micro particles (No continuous React animation loop)
   const PARTICLES = [
-    { x: '8%',  y: '16%', s: 2,   c: 'rgba(124, 58, 237, 0.4)' },
+    { x: '8%', y: '16%', s: 2, c: 'rgba(124, 58, 237, 0.4)' },
     { x: '18%', y: '78%', s: 1.5, c: 'rgba(255, 255, 255, 0.3)' },
-    { x: '88%', y: '18%', s: 2,   c: 'rgba(97, 218, 251, 0.35)' },
+    { x: '88%', y: '18%', s: 2, c: 'rgba(97, 218, 251, 0.35)' },
     { x: '92%', y: '72%', s: 1.5, c: 'rgba(124, 58, 237, 0.4)' },
-    { x: '4%',  y: '48%', s: 1.5, c: 'rgba(245, 158, 11, 0.35)' },
-    { x: '94%', y: '42%', s: 2,   c: 'rgba(255, 255, 255, 0.25)' },
+    { x: '4%', y: '48%', s: 1.5, c: 'rgba(245, 158, 11, 0.35)' },
+    { x: '94%', y: '42%', s: 2, c: 'rgba(255, 255, 255, 0.25)' },
     { x: '28%', y: '10%', s: 1.5, c: 'rgba(124, 58, 237, 0.3)' },
-    { x: '72%', y: '12%', s: 2,   c: 'rgba(255, 255, 255, 0.35)' },
+    { x: '72%', y: '12%', s: 2, c: 'rgba(255, 255, 255, 0.35)' },
     { x: '82%', y: '88%', s: 1.5, c: 'rgba(97, 218, 251, 0.3)' },
-    { x: '12%', y: '90%', s: 2,   c: 'rgba(124, 58, 237, 0.35)' },
+    { x: '12%', y: '90%', s: 2, c: 'rgba(124, 58, 237, 0.35)' },
   ];
 
   return (
