@@ -597,8 +597,37 @@ body {
 .about-grid { display: grid; grid-template-columns: 1fr; gap: 2rem; align-items: start; }
 @media (min-width: 900px) { .about-grid { grid-template-columns: 1fr 1fr; gap: 3rem; } }
 
-/* skills rows compat */
-.skills-row-top    { display: grid; grid-template-columns: 1fr; gap: 1rem; margin-bottom: 1rem; }
-.skills-row-bottom { display: grid; grid-template-columns: 1fr; gap: 1rem; }
-@media (min-width: 600px) { .skills-row-top { grid-template-columns: repeat(2, 1fr); } .skills-row-bottom { grid-template-columns: repeat(2, 1fr); } }
-@media (min-width: 1024px) { .skills-row-top { grid-template-columns: repeat(3, 1fr); } }
+/* skills controlled 12-column grid layout */
+.skills-tri-row {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1.25rem;
+  margin-bottom: 1.25rem;
+}
+@media (min-width: 640px) {
+  .skills-tri-row {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+@media (min-width: 1024px) {
+  .skills-tri-row {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+.skills-dual-row {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1.25rem;
+}
+@media (min-width: 768px) {
+  .skills-dual-row {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (min-width: 1100px) {
+  .desktop-db-desc {
+    display: inline-block !important;
+  }
+}
