@@ -12,6 +12,7 @@ import {
   FiAlertCircle,
   FiArrowRight,
   FiRotateCcw,
+  FiCopy,
 } from 'react-icons/fi';
 
 /* ── 1. EmailJS CONFIGURATION (PRESERVED EXACTLY — NON-NEGOTIABLE) ── */
@@ -29,6 +30,7 @@ const CONTACT_CHANNELS = [
     icon: FiMail,
     color: '#7C3AED',
     sub: 'Direct Dispatch',
+    canCopy: true,
   },
   {
     id: 'github',
@@ -38,6 +40,7 @@ const CONTACT_CHANNELS = [
     icon: FiGithub,
     color: '#E5E7EB',
     sub: 'Code Repositories',
+    canCopy: false,
   },
   {
     id: 'linkedin',
@@ -47,6 +50,7 @@ const CONTACT_CHANNELS = [
     icon: FiLinkedin,
     color: '#60A5FA',
     sub: 'Professional Network',
+    canCopy: false,
   },
   {
     id: 'location',
@@ -56,13 +60,15 @@ const CONTACT_CHANNELS = [
     icon: FiMapPin,
     color: '#F59E0B',
     sub: 'IST / UTC +5:30',
+    canCopy: false,
   },
 ];
 
 /**
  * Contact Section — Interactive Developer Communication Terminal
+ * Fully responsive across mobile, tablet, and desktop viewports.
  * Preserves 100% of EmailJS logic and credentials while introducing rich interactive focus states,
- * character counting, animated transmission feedback, and unified communication channels.
+ * character counting, animated transmission feedback, tap-to-copy, and unified communication channels.
  */
 const Contact = () => {
   const [ref, inView] = useInView({ threshold: 0.05 });
@@ -77,10 +83,21 @@ const Contact = () => {
 
   const [status, setStatus] = useState('idle'); // 'idle' | 'sending' | 'sent' | 'error'
   const [focusedField, setFocusedField] = useState(null);
+  const [copiedEmail, setCopiedEmail] = useState(false);
 
   const onChange = (e) => {
     const { name, value } = e.target;
     setForm((prev) => ({ ...prev, [name]: value }));
+  };
+
+  const handleCopyEmail = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    if (navigator.clipboard) {
+      navigator.clipboard.writeText('shreyasgshetty.18@gmail.com');
+      setCopiedEmail(true);
+      setTimeout(() => setCopiedEmail(false), 2400);
+    }
   };
 
   const onSubmit = async (e) => {
@@ -119,11 +136,11 @@ const Contact = () => {
   };
 
   const itemVariants = {
-    hidden: { opacity: 0, y: 22 },
+    hidden: { opacity: 0, y: 18 },
     visible: {
       opacity: 1,
       y: 0,
-      transition: { duration: 0.5, ease: [0.22, 1, 0.36, 1] },
+      transition: { duration: 0.45, ease: [0.22, 1, 0.36, 1] },
     },
   };
 
@@ -131,12 +148,7 @@ const Contact = () => {
     <section
       id="contact"
       ref={ref}
-      style={{
-        position: 'relative',
-        padding: 'clamp(5rem, 12vh, 8.5rem) 0',
-        background: 'linear-gradient(135deg, #08080B 0%, #0A0910 50%, #07080B 100%)',
-        overflow: 'hidden',
-      }}
+      className="contact-section"
     >
       {/* ── 1. LAYERED TECHNICAL BACKGROUND ── */}
       <div
@@ -145,13 +157,13 @@ const Contact = () => {
           inset: 0,
           pointerEvents: 'none',
           backgroundImage: `
-            linear-gradient(to right, rgba(255, 255, 255, 0.03) 1px, transparent 1px),
-            linear-gradient(to bottom, rgba(255, 255, 255, 0.03) 1px, transparent 1px)
+            linear-gradient(to right, rgba(255, 255, 255, 0.025) 1px, transparent 1px),
+            linear-gradient(to bottom, rgba(255, 255, 255, 0.025) 1px, transparent 1px)
           `,
-          backgroundSize: '56px 56px',
+          backgroundSize: '48px 48px',
           maskImage: 'radial-gradient(ellipse 90% 85% at 50% 45%, black 25%, transparent 88%)',
           WebkitMaskImage: 'radial-gradient(ellipse 90% 85% at 50% 45%, black 25%, transparent 88%)',
-          opacity: 0.85,
+          opacity: 0.75,
         }}
       />
 
@@ -163,15 +175,16 @@ const Contact = () => {
           width: '100%',
           height: '100%',
           pointerEvents: 'none',
-          opacity: 0.35,
+          opacity: 0.22,
         }}
         viewBox="0 0 1200 900"
         preserveAspectRatio="none"
+        aria-hidden="true"
       >
         <path
           d="M 120 200 L 450 200 L 600 450 L 1080 450 M 200 700 L 700 700 L 950 500"
           fill="none"
-          stroke="rgba(124, 58, 237, 0.2)"
+          stroke="rgba(124, 58, 237, 0.25)"
           strokeWidth="1"
           strokeDasharray="4 8"
         />
@@ -185,13 +198,14 @@ const Contact = () => {
       <div
         style={{
           position: 'absolute',
-          top: '30%',
+          top: '25%',
           right: '-5%',
-          width: 'min(65vw, 600px)',
-          height: 'min(65vw, 600px)',
+          width: 'min(65vw, 550px)',
+          height: 'min(65vw, 550px)',
+          maxWidth: '100vw',
           background: focusedField
             ? 'radial-gradient(circle, rgba(124, 58, 237, 0.12) 0%, transparent 65%)'
-            : 'radial-gradient(circle, rgba(124, 58, 237, 0.07) 0%, transparent 65%)',
+            : 'radial-gradient(circle, rgba(124, 58, 237, 0.06) 0%, transparent 65%)',
           borderRadius: '50%',
           filter: 'blur(50px)',
           pointerEvents: 'none',
@@ -203,9 +217,10 @@ const Contact = () => {
           position: 'absolute',
           bottom: '10%',
           left: '-5%',
-          width: 'min(55vw, 500px)',
-          height: 'min(55vw, 500px)',
-          background: 'radial-gradient(circle, rgba(97, 218, 251, 0.05) 0%, transparent 65%)',
+          width: 'min(55vw, 450px)',
+          height: 'min(55vw, 450px)',
+          maxWidth: '100vw',
+          background: 'radial-gradient(circle, rgba(97, 218, 251, 0.04) 0%, transparent 65%)',
           borderRadius: '50%',
           filter: 'blur(45px)',
           pointerEvents: 'none',
@@ -219,7 +234,10 @@ const Contact = () => {
           animate={inView ? 'visible' : 'hidden'}
         >
           {/* ── SECTION HEADER ── */}
-          <motion.div variants={itemVariants} style={{ marginBottom: '3.25rem' }}>
+          <motion.div
+            variants={itemVariants}
+            style={{ marginBottom: 'clamp(1.75rem, 4vw, 3rem)' }}
+          >
             <div
               style={{
                 display: 'inline-flex',
@@ -231,7 +249,7 @@ const Contact = () => {
                 letterSpacing: '0.14em',
                 textTransform: 'uppercase',
                 fontWeight: 600,
-                marginBottom: '0.8rem',
+                marginBottom: '0.65rem',
               }}
             >
               <span style={{ width: '18px', height: '1px', background: 'var(--accent)' }} />
@@ -240,12 +258,13 @@ const Contact = () => {
             <h2
               style={{
                 fontFamily: 'var(--font-display)',
-                fontSize: 'clamp(2.2rem, 5.5vw, 3.8rem)',
+                fontSize: 'clamp(1.9rem, 5.2vw, 3.6rem)',
                 fontWeight: 900,
                 color: 'var(--text-1)',
                 letterSpacing: '-0.03em',
-                lineHeight: 1.08,
-                marginBottom: '0.75rem',
+                lineHeight: 1.1,
+                marginBottom: '0.6rem',
+                wordBreak: 'break-word',
               }}
             >
               Let's connect.
@@ -254,8 +273,8 @@ const Contact = () => {
               style={{
                 color: 'var(--text-3)',
                 maxWidth: '560px',
-                fontSize: '0.92rem',
-                lineHeight: 1.75,
+                fontSize: 'clamp(0.85rem, 2vw, 0.94rem)',
+                lineHeight: 1.65,
               }}
             >
               Have a project, opportunity, or idea? Open a communication channel.
@@ -267,17 +286,7 @@ const Contact = () => {
             {/* ── LEFT COLUMN: UNIFIED COMMUNICATION CHANNELS ── */}
             <motion.div
               variants={itemVariants}
-              style={{
-                background: 'rgba(12, 12, 16, 0.88)',
-                border: '1px solid rgba(255, 255, 255, 0.07)',
-                borderRadius: '16px',
-                padding: 'clamp(1.25rem, 3vw, 1.75rem)',
-                display: 'flex',
-                flexDirection: 'column',
-                justifyContent: 'space-between',
-                gap: '1.25rem',
-                boxShadow: '0 12px 35px rgba(0, 0, 0, 0.45)',
-              }}
+              className="contact-card-left"
             >
               <div>
                 {/* Panel Header */}
@@ -286,12 +295,14 @@ const Contact = () => {
                     display: 'flex',
                     alignItems: 'center',
                     justifyContent: 'space-between',
+                    flexWrap: 'wrap',
+                    gap: '6px 12px',
                     paddingBottom: '0.85rem',
-                    marginBottom: '1.25rem',
+                    marginBottom: '1.2rem',
                     borderBottom: '1px solid rgba(255, 255, 255, 0.06)',
                   }}
                 >
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '8px', minWidth: 0 }}>
                     <span
                       style={{
                         width: '7px',
@@ -299,6 +310,7 @@ const Contact = () => {
                         borderRadius: '50%',
                         background: '#22C55E',
                         boxShadow: '0 0 8px #22C55E',
+                        flexShrink: 0,
                       }}
                     />
                     <span
@@ -309,6 +321,9 @@ const Contact = () => {
                         color: 'var(--text-1)',
                         letterSpacing: '0.08em',
                         textTransform: 'uppercase',
+                        overflow: 'hidden',
+                        textOverflow: 'ellipsis',
+                        whiteSpace: 'nowrap',
                       }}
                     >
                       COMMUNICATION CHANNELS
@@ -321,6 +336,11 @@ const Contact = () => {
                       fontSize: '0.62rem',
                       color: 'var(--accent-light)',
                       letterSpacing: '0.04em',
+                      background: 'rgba(124, 58, 237, 0.1)',
+                      padding: '2px 6px',
+                      borderRadius: '4px',
+                      border: '1px solid rgba(124, 58, 237, 0.2)',
+                      whiteSpace: 'nowrap',
                     }}
                   >
                     DIRECT DISPATCH
@@ -333,50 +353,13 @@ const Contact = () => {
                     const Icon = item.icon;
                     const isLink = !!item.href;
 
-                    return (
-                      <div
-                        key={item.id}
-                        onClick={() => {
-                          if (item.href) {
-                            if (item.href.startsWith('mailto:')) {
-                              window.location.href = item.href;
-                            } else {
-                              window.open(item.href, '_blank', 'noopener,noreferrer');
-                            }
-                          }
-                        }}
-                        style={{
-                          display: 'flex',
-                          alignItems: 'center',
-                          justifyContent: 'space-between',
-                          padding: '0.85rem 1rem',
-                          borderRadius: '10px',
-                          background: 'rgba(255, 255, 255, 0.025)',
-                          border: '1px solid rgba(255, 255, 255, 0.06)',
-                          cursor: isLink ? 'pointer' : 'default',
-                          transition: 'background-color 0.2s ease, border-color 0.2s ease, transform 0.2s ease',
-                          minHeight: '44px',
-                        }}
-                        onMouseEnter={(e) => {
-                          if (isLink) {
-                            e.currentTarget.style.borderColor = `${item.color}45`;
-                            e.currentTarget.style.background = 'rgba(255, 255, 255, 0.05)';
-                            e.currentTarget.style.transform = 'translateX(3px)';
-                          }
-                        }}
-                        onMouseLeave={(e) => {
-                          if (isLink) {
-                            e.currentTarget.style.borderColor = 'rgba(255, 255, 255, 0.06)';
-                            e.currentTarget.style.background = 'rgba(255, 255, 255, 0.025)';
-                            e.currentTarget.style.transform = 'translateX(0)';
-                          }
-                        }}
-                      >
-                        <div style={{ display: 'flex', alignItems: 'center', gap: '12px', minWidth: 0 }}>
+                    const ChannelContent = (
+                      <>
+                        <div style={{ display: 'flex', alignItems: 'center', gap: '12px', minWidth: 0, flex: 1 }}>
                           <div
                             style={{
-                              width: '36px',
-                              height: '36px',
+                              width: '38px',
+                              height: '38px',
                               borderRadius: '8px',
                               background: `${item.color}15`,
                               border: `1px solid ${item.color}35`,
@@ -387,11 +370,11 @@ const Contact = () => {
                               flexShrink: 0,
                             }}
                           >
-                            <Icon size={16} />
+                            <Icon size={17} />
                           </div>
 
-                          <div style={{ minWidth: 0 }}>
-                            <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+                          <div style={{ minWidth: 0, flex: 1 }}>
+                            <div style={{ display: 'flex', alignItems: 'center', gap: '6px', flexWrap: 'wrap' }}>
                               <span
                                 style={{
                                   fontFamily: 'var(--font-mono)',
@@ -403,7 +386,14 @@ const Contact = () => {
                               >
                                 {item.label}
                               </span>
-                              <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.55rem', color: 'var(--text-4)' }}>
+                              <span
+                                style={{
+                                  fontFamily: 'var(--font-mono)',
+                                  fontSize: '0.55rem',
+                                  color: 'var(--text-4)',
+                                  whiteSpace: 'nowrap',
+                                }}
+                              >
                                 // {item.sub}
                               </span>
                             </div>
@@ -423,11 +413,64 @@ const Contact = () => {
                           </div>
                         </div>
 
-                        {isLink && (
-                          <span style={{ color: 'var(--text-4)', display: 'flex', alignItems: 'center', flexShrink: 0, marginLeft: '8px' }}>
-                            <FiArrowRight size={14} />
-                          </span>
-                        )}
+                        <div style={{ display: 'flex', alignItems: 'center', gap: '6px', flexShrink: 0, marginLeft: '8px' }}>
+                          {item.canCopy && (
+                            <button
+                              type="button"
+                              onClick={handleCopyEmail}
+                              title="Copy email to clipboard"
+                              aria-label="Copy email to clipboard"
+                              style={{
+                                display: 'inline-flex',
+                                alignItems: 'center',
+                                gap: '4px',
+                                background: copiedEmail ? 'rgba(34, 197, 94, 0.15)' : 'rgba(255, 255, 255, 0.06)',
+                                border: `1px solid ${copiedEmail ? '#22C55E' : 'rgba(255, 255, 255, 0.12)'}`,
+                                color: copiedEmail ? '#22C55E' : 'var(--text-2)',
+                                borderRadius: '6px',
+                                padding: '4px 8px',
+                                fontSize: '0.65rem',
+                                fontFamily: 'var(--font-mono)',
+                                fontWeight: 600,
+                                cursor: 'pointer',
+                                transition: 'all 0.2s ease',
+                              }}
+                            >
+                              {copiedEmail ? <FiCheck size={11} /> : <FiCopy size={11} />}
+                              <span>{copiedEmail ? 'Copied' : 'Copy'}</span>
+                            </button>
+                          )}
+
+                          {isLink && (
+                            <span style={{ color: 'var(--text-4)', display: 'flex', alignItems: 'center' }}>
+                              <FiArrowRight size={15} />
+                            </span>
+                          )}
+                        </div>
+                      </>
+                    );
+
+                    return isLink ? (
+                      <a
+                        key={item.id}
+                        href={item.href}
+                        target={item.href.startsWith('mailto:') ? '_self' : '_blank'}
+                        rel={item.href.startsWith('mailto:') ? undefined : 'noopener noreferrer'}
+                        className="contact-channel-row"
+                        style={{
+                          cursor: 'pointer',
+                          touchAction: 'manipulation',
+                        }}
+                      >
+                        {ChannelContent}
+                      </a>
+                    ) : (
+                      <div
+                        key={item.id}
+                        className="contact-channel-row"
+                        style={{ cursor: 'default' }}
+                      >
+                        {ChannelContent}
                       </div>
                     );
                   })}
@@ -437,17 +480,18 @@ const Contact = () => {
               {/* Channel Availability Callout */}
               <div
                 style={{
-                  padding: '1rem',
+                  padding: '0.9rem 1rem',
                   borderRadius: '10px',
                   background: 'rgba(34, 197, 94, 0.05)',
                   border: '1px solid rgba(34, 197, 94, 0.2)',
                   display: 'flex',
                   alignItems: 'center',
                   gap: '10px',
+                  marginTop: '0.5rem',
                 }}
               >
                 <span className="avail-dot" style={{ flexShrink: 0 }} />
-                <div>
+                <div style={{ minWidth: 0 }}>
                   <span
                     style={{
                       display: 'block',
@@ -460,7 +504,15 @@ const Contact = () => {
                   >
                     CHANNEL STATUS: ONLINE
                   </span>
-                  <p style={{ color: 'var(--text-2)', fontSize: '0.8rem', fontWeight: 500, marginTop: '2px' }}>
+                  <p
+                    style={{
+                      color: 'var(--text-2)',
+                      fontSize: '0.78rem',
+                      fontWeight: 500,
+                      marginTop: '2px',
+                      lineHeight: 1.4,
+                    }}
+                  >
                     Available for internships and opportunities
                   </p>
                 </div>
@@ -470,15 +522,7 @@ const Contact = () => {
             {/* ── RIGHT COLUMN: INTERACTIVE MESSAGE COMPOSER ── */}
             <motion.div
               variants={itemVariants}
-              style={{
-                background: 'rgba(14, 14, 19, 0.94)',
-                border: '1px solid rgba(124, 58, 237, 0.3)',
-                borderRadius: '16px',
-                padding: 'clamp(1.5rem, 3.5vw, 2.2rem)',
-                boxShadow: '0 16px 45px rgba(0, 0, 0, 0.55), 0 0 25px rgba(124, 58, 237, 0.08)',
-                position: 'relative',
-                overflow: 'hidden',
-              }}
+              className="contact-card-right"
             >
               {/* Form Header */}
               <div
@@ -486,12 +530,14 @@ const Contact = () => {
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'space-between',
+                  flexWrap: 'wrap',
+                  gap: '6px 12px',
                   paddingBottom: '0.85rem',
-                  marginBottom: '1.4rem',
+                  marginBottom: '1.2rem',
                   borderBottom: '1px solid rgba(255, 255, 255, 0.06)',
                 }}
               >
-                <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '8px', minWidth: 0 }}>
                   <span
                     style={{
                       width: '7px',
@@ -499,6 +545,7 @@ const Contact = () => {
                       borderRadius: '50%',
                       background: '#7C3AED',
                       boxShadow: '0 0 8px #7C3AED',
+                      flexShrink: 0,
                     }}
                   />
                   <span
@@ -509,9 +556,12 @@ const Contact = () => {
                       color: 'var(--text-1)',
                       letterSpacing: '0.08em',
                       textTransform: 'uppercase',
+                      overflow: 'hidden',
+                      textOverflow: 'ellipsis',
+                      whiteSpace: 'nowrap',
                     }}
                   >
-                    DIRECT TRANSMISSION // COMPOSER
+                    MESSAGE TRANSMISSION // COMPOSER
                   </span>
                 </div>
 
@@ -521,6 +571,11 @@ const Contact = () => {
                     fontSize: '0.62rem',
                     color: 'var(--accent-light)',
                     letterSpacing: '0.04em',
+                    background: 'rgba(124, 58, 237, 0.1)',
+                    padding: '2px 6px',
+                    borderRadius: '4px',
+                    border: '1px solid rgba(124, 58, 237, 0.2)',
+                    whiteSpace: 'nowrap',
                   }}
                 >
                   SECURE DISPATCH
@@ -538,20 +593,20 @@ const Contact = () => {
                     exit={{ opacity: 0, scale: 0.96 }}
                     transition={{ duration: 0.4 }}
                     style={{
-                      padding: '2rem 1.5rem',
+                      padding: 'clamp(1.5rem, 4vw, 2.5rem) 1rem',
                       textAlign: 'center',
                       display: 'flex',
                       flexDirection: 'column',
                       alignItems: 'center',
                       justifyContent: 'center',
                       gap: '1.25rem',
-                      minHeight: '320px',
+                      minHeight: '280px',
                     }}
                   >
                     <div
                       style={{
-                        width: '56px',
-                        height: '56px',
+                        width: '54px',
+                        height: '54px',
                         borderRadius: '50%',
                         background: 'rgba(34, 197, 94, 0.12)',
                         border: '2px solid #22C55E',
@@ -581,7 +636,7 @@ const Contact = () => {
                       <h3
                         style={{
                           fontFamily: 'var(--font-display)',
-                          fontSize: '1.6rem',
+                          fontSize: 'clamp(1.3rem, 4vw, 1.6rem)',
                           fontWeight: 800,
                           color: 'var(--text-1)',
                           marginTop: '4px',
@@ -593,7 +648,7 @@ const Contact = () => {
                       <p
                         style={{
                           color: 'var(--text-3)',
-                          fontSize: '0.9rem',
+                          fontSize: '0.86rem',
                           maxWidth: '400px',
                           margin: '8px auto 0 auto',
                           lineHeight: 1.6,
@@ -610,16 +665,17 @@ const Contact = () => {
                         display: 'inline-flex',
                         alignItems: 'center',
                         gap: '7px',
-                        padding: '0.55rem 1.2rem',
+                        padding: '0.65rem 1.25rem',
                         borderRadius: '8px',
                         background: 'rgba(255, 255, 255, 0.05)',
                         border: '1px solid rgba(255, 255, 255, 0.12)',
                         color: 'var(--text-2)',
-                        fontSize: '0.78rem',
+                        fontSize: '0.8rem',
                         fontFamily: 'var(--font-mono)',
                         fontWeight: 600,
                         cursor: 'pointer',
                         transition: 'background-color 0.2s ease, color 0.2s ease',
+                        touchAction: 'manipulation',
                       }}
                       onMouseEnter={(e) => {
                         e.currentTarget.style.background = 'rgba(255, 255, 255, 0.1)';
@@ -795,7 +851,7 @@ const Contact = () => {
                         name="message"
                         required
                         maxLength={1000}
-                        rows={5}
+                        rows={4}
                         value={form.message}
                         onChange={onChange}
                         onFocus={() => setFocusedField('message')}
@@ -805,7 +861,7 @@ const Contact = () => {
                         style={{
                           padding: '0.85rem 1rem',
                           fontSize: '1rem',
-                          minHeight: '150px',
+                          minHeight: '130px',
                           resize: 'vertical',
                           lineHeight: 1.6,
                           borderColor: focusedField === 'message' ? 'var(--accent)' : 'rgba(255, 255, 255, 0.08)',
@@ -825,7 +881,7 @@ const Contact = () => {
                         alignItems: 'center',
                         justifyContent: 'center',
                         gap: '8px',
-                        padding: '0.95rem 1.5rem',
+                        padding: '0.9rem 1.5rem',
                         borderRadius: '10px',
                         background: status === 'error' ? '#EF4444' : 'var(--accent)',
                         border: 'none',
@@ -839,6 +895,7 @@ const Contact = () => {
                         transition: 'background-color 0.2s ease, opacity 0.2s ease',
                         width: '100%',
                         minHeight: '48px',
+                        touchAction: 'manipulation',
                       }}
                     >
                       {status === 'sending' ? (
@@ -877,14 +934,15 @@ const Contact = () => {
                             gap: '10px',
                             color: '#EF4444',
                             fontSize: '0.82rem',
+                            flexWrap: 'wrap',
                           }}
                         >
                           <FiAlertCircle size={16} style={{ flexShrink: 0 }} />
-                          <span>
+                          <span style={{ wordBreak: 'break-word' }}>
                             Something went wrong. Please email directly at{' '}
                             <a
                               href="mailto:shreyasgshetty.18@gmail.com"
-                              style={{ color: '#FFFFFF', textDecoration: 'underline', fontWeight: 600 }}
+                              style={{ color: '#FFFFFF', textDecoration: 'underline', fontWeight: 600, wordBreak: 'break-all' }}
                             >
                               shreyasgshetty.18@gmail.com
                             </a>
