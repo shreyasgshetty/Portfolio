@@ -83,7 +83,7 @@ function App() {
       </AnimatePresence>
 
       {!loading && (
-        <div style={{ minHeight: '100vh', background: 'var(--bg)', position: 'relative', overflowX: 'hidden' }}>
+        <div style={{ minHeight: '100vh', background: 'var(--bg)', position: 'relative', overflowX: 'hidden', width: '100%', maxWidth: '100vw' }}>
           {/* Global background noise */}
           <div style={{
             position: 'fixed', inset: 0, pointerEvents: 'none', zIndex: 0, opacity: 0.5,
@@ -92,7 +92,7 @@ function App() {
 
           <Navbar />
 
-          <main style={{ position: 'relative', zIndex: 1 }}>
+          <main style={{ position: 'relative', zIndex: 1, width: '100%', maxWidth: '100vw', overflowX: 'hidden' }}>
             <Hero />
             <Suspense fallback={<SectionLoader />}><About /></Suspense>
             <Suspense fallback={<SectionLoader />}><Skills /></Suspense>
